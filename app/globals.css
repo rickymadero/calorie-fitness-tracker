@@ -1,26 +1,147 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f8f7;
+  --foreground: #0a0a0a;
+  --muted: #6b7280;
+  --muted-bg: #eef0ee;
+  --card: #ffffff;
+  --card-elevated: #ffffff;
+  --border: #e2e5e2;
+  --accent: #1dbf73;
+  --accent-dim: #17a563;
+  --accent-soft: rgba(29, 191, 115, 0.14);
+  --accent-fg: #ffffff;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --overlay: rgba(0, 0, 0, 0.55);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.1);
+  --radius: 1rem;
+  --radius-sm: 0.75rem;
+  --radius-lg: 1.5rem;
+  --nav: #0a0a0a;
+  --nav-fg: #f5f5f5;
+  --ring-track: #e5e7eb;
+}
+
+.dark {
+  --background: #070807;
+  --foreground: #f4f5f4;
+  --muted: #9ca3af;
+  --muted-bg: #141614;
+  --card: #101210;
+  --card-elevated: #161916;
+  --border: #252825;
+  --accent: #22d484;
+  --accent-dim: #1dbf73;
+  --accent-soft: rgba(34, 212, 132, 0.16);
+  --accent-fg: #04140c;
+  --danger: #f87171;
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --overlay: rgba(0, 0, 0, 0.7);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --nav: #0c0e0c;
+  --nav-fg: #f4f5f4;
+  --ring-track: #2a2d2a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-muted-bg: var(--muted-bg);
+  --color-card: var(--card);
+  --color-card-elevated: var(--card-elevated);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-fg: var(--accent-fg);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-nav: var(--nav);
+  --color-nav-fg: var(--nav-fg);
+  --color-ring-track: var(--ring-track);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-sora);
+  --radius-apex: var(--radius);
+  --radius-apex-sm: var(--radius-sm);
+  --radius-apex-lg: var(--radius-lg);
+  --shadow-apex: var(--shadow);
+  --shadow-apex-lg: var(--shadow-lg);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  min-height: 100dvh;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-sora), system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+@layer utilities {
+  .apex-gradient-bg {
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 40%, rgba(29, 191, 115, 0.22), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 20%, rgba(29, 191, 115, 0.1), transparent),
+      linear-gradient(160deg, #0a0a0a 0%, #101612 50%, #0a0a0a 100%);
+  }
+
+  .apex-mesh {
+    background-image:
+      linear-gradient(rgba(29, 191, 115, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(29, 191, 115, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Leaflet maps inside Evolve activity cards */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: var(--muted-bg);
+  font: inherit !important;
+  z-index: 0;
+}
+.leaflet-control-attribution {
+  font-size: 9px !important;
+  background: rgba(0, 0, 0, 0.45) !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+  max-width: 70%;
+  padding: 2px 6px !important;
+}
+.leaflet-control-attribution a {
+  color: rgba(255, 255, 255, 0.85) !important;
 }

@@ -1,0 +1,107 @@
+import type { SocialProfile } from "@/lib/types/social";
+
+/** Seed athletes for Discover / Search (frontend demo). */
+export const SEED_SOCIAL_PROFILES: SocialProfile[] = [
+  {
+    userId: "seed-maya",
+    username: "maya_runs",
+    displayName: "Maya Chen",
+    bio: "5K PR hunter. Early mornings + espresso.",
+    avatarUrl: "",
+    fitnessGoals: ["Improve endurance", "Run consistently"],
+    favoriteWorkouts: ["running", "hiit"],
+    location: "Austin, TX",
+    showLocation: true,
+    instagramUsername: "maya.runs",
+    showInstagram: true,
+    visibility: "public",
+    joinedAt: "2025-11-02T10:00:00.000Z",
+    stats: { workoutsCompleted: 86, totalRunKm: 412, totalWorkoutMinutes: 5400 },
+  },
+  {
+    userId: "seed-jordan",
+    username: "jordanlifts",
+    displayName: "Jordan Blake",
+    bio: "Strength first. Sharing gym sessions weekly.",
+    avatarUrl: "",
+    fitnessGoals: ["Build muscle", "Increase strength"],
+    favoriteWorkouts: ["gym", "weightlifting"],
+    location: "Denver, CO",
+    showLocation: true,
+    showInstagram: false,
+    visibility: "public",
+    joinedAt: "2025-09-14T10:00:00.000Z",
+    stats: { workoutsCompleted: 120, totalRunKm: 48, totalWorkoutMinutes: 7200 },
+  },
+  {
+    userId: "seed-sofia",
+    username: "sofia.moves",
+    displayName: "Sofia Reyes",
+    bio: "Private account — request to follow. Yoga + lifts.",
+    avatarUrl: "",
+    fitnessGoals: ["Overall health", "Flexibility"],
+    favoriteWorkouts: ["yoga", "gym"],
+    location: "Miami, FL",
+    showLocation: false,
+    instagramUsername: "sofia.moves",
+    showInstagram: true,
+    visibility: "private",
+    joinedAt: "2026-01-20T10:00:00.000Z",
+    stats: { workoutsCompleted: 54, totalRunKm: 22, totalWorkoutMinutes: 3100 },
+  },
+  {
+    userId: "seed-noah",
+    username: "noah_cycle",
+    displayName: "Noah Patel",
+    bio: "Weekend rides. Metric enthusiast.",
+    avatarUrl: "",
+    fitnessGoals: ["Athletic performance"],
+    favoriteWorkouts: ["cycling", "running"],
+    location: "Portland, OR",
+    showLocation: true,
+    showInstagram: false,
+    visibility: "public",
+    joinedAt: "2025-12-01T10:00:00.000Z",
+    stats: { workoutsCompleted: 67, totalRunKm: 190, totalWorkoutMinutes: 4800 },
+  },
+  {
+    userId: "seed-ava",
+    username: "ava.train",
+    displayName: "Ava Kim",
+    bio: "Building consistency. Follow along.",
+    avatarUrl: "",
+    fitnessGoals: ["Lose weight", "Build habits"],
+    favoriteWorkouts: ["walking", "hiit", "gym"],
+    location: "Seattle, WA",
+    showLocation: true,
+    instagramUsername: "ava.train",
+    showInstagram: true,
+    visibility: "public",
+    joinedAt: "2026-02-11T10:00:00.000Z",
+    stats: { workoutsCompleted: 41, totalRunKm: 95, totalWorkoutMinutes: 2600 },
+  },
+  {
+    userId: "seed-leo",
+    username: "leo.hybrid",
+    displayName: "Leo Martins",
+    bio: "Hybrid athlete. Strength + trail runs.",
+    avatarUrl: "",
+    fitnessGoals: ["Increase strength", "Improve endurance"],
+    favoriteWorkouts: ["hiking", "weightlifting", "running"],
+    location: "Boulder, CO",
+    showLocation: true,
+    showInstagram: false,
+    visibility: "private",
+    joinedAt: "2025-10-08T10:00:00.000Z",
+    stats: { workoutsCompleted: 98, totalRunKm: 260, totalWorkoutMinutes: 6100 },
+  },
+];
+
+export function slugifyUsername(name: string) {
+  const base = name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 18);
+  return base || "athlete";
+}
