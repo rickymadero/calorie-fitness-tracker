@@ -37,8 +37,8 @@ export default function FollowersPage({
     return (
       <div className="py-16 text-center">
         <p className="font-medium">User not found</p>
-        <Link href="/social/discover" className="mt-4 inline-block">
-          <Button>Discover</Button>
+        <Link href="/explore" className="mt-4 inline-block">
+          <Button>Explore</Button>
         </Link>
       </div>
     );

@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Moon, Sun, LogOut, Crown, MapPin, Settings } from "lucide-react";
-import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Badge } from "@/components/ui/Badge";
@@ -29,6 +28,7 @@ export default function ProfilePage() {
     useSocial();
   const { tick, postsByAuthor, authorStats } = usePosts();
   const [showSettings, setShowSettings] = useState(false);
+  const [showSocialEdit, setShowSocialEdit] = useState(false);
 
   const profile = myProfile ?? (ready ? ensureMyProfile() : null);
 
@@ -46,6 +46,7 @@ export default function ProfilePage() {
 
   const followerCount = profile ? followersOf(profile.userId).length : 0;
   const followingCount = profile ? followingOf(profile.userId).length : 0;
+  const postCount = posts.length;
 
   if (!user) return null;
 
@@ -56,113 +57,130 @@ export default function ProfilePage() {
   }
 
   return (
-    <div>
+    <div className="min-w-0 w-full">
       <PageHeader
         title="Profile"
-        subtitle="Your public fitness identity on Evolve."
+        subtitle="Your fitness identity"
         sticky
         actions={
           <>
             <Button
-              variant="secondary"
+              variant="ghost"
               size="sm"
               onClick={() => setShowSettings(true)}
               aria-label="Settings"
+              className="!min-w-11 !px-0"
             >
-              <Settings size={16} />
-              <span className="hidden sm:inline">Settings</span>
+              <Settings size={18} />
             </Button>
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
               onClick={handleLogout}
               aria-label="Log out"
+              className="!min-w-11 !px-0"
             >
-              <LogOut size={16} />
-              <span className="hidden sm:inline">Log out</span>
+              <LogOut size={18} />
             </Button>
           </>
         }
       />
 
       {profile && (
-        <Card className="mt-6">
-          <div className="flex flex-wrap gap-5">
+        <section className="mt-4 min-w-0">
+          {/* Instagram-style identity row */}
+          <div className="flex items-center gap-5">
             <SocialAvatar name={profile.displayName} size="lg" />
-            <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <h2 className="font-display text-xl font-bold">
-                  {profile.displayName}
-                </h2>
-                <Badge variant={user.plan === "pro" ? "accent" : "default"}>
-                  {user.plan === "pro" ? "Pro" : "Free"}
-                </Badge>
+            <div className="grid min-w-0 flex-1 grid-cols-3 gap-1 text-center">
+              <div className="min-w-0">
+                <p className="font-display text-lg font-bold tabular-nums">
+                  {postCount}
+                </p>
+                <p className="text-[11px] text-muted">posts</p>
               </div>
-              <p className="text-muted">@{profile.username}</p>
-              {profile.bio ? (
-                <p className="mt-2 max-w-xl text-sm leading-relaxed">
-                  {profile.bio}
+              <Link href="/network" className="min-w-0 hover:text-accent">
+                <p className="font-display text-lg font-bold tabular-nums">
+                  {followerCount}
                 </p>
-              ) : (
-                <p className="mt-2 text-sm text-muted">
-                  Add a bio in social settings so athletes know who you are.
-                </p>
-              )}
-              {profile.showLocation && profile.location ? (
-                <p className="mt-2 inline-flex items-center gap-1 text-sm text-muted">
-                  <MapPin size={14} />
-                  {profile.location}
-                </p>
-              ) : null}
-              <div className="mt-4 flex flex-wrap gap-4 text-sm">
-                <Link href="/network" className="hover:text-accent">
-                  <span className="font-semibold">{followerCount}</span>{" "}
-                  <span className="text-muted">followers</span>
-                </Link>
-                <Link href="/network" className="hover:text-accent">
-                  <span className="font-semibold">{followingCount}</span>{" "}
-                  <span className="text-muted">following</span>
-                </Link>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <Link href={`/social/u/${profile.username}`}>
-                <Button variant="secondary" size="sm">
-                  Public view
-                </Button>
+                <p className="text-[11px] text-muted">followers</p>
               </Link>
-              <Link href="/posts/new">
-                <Button size="sm">Share workout</Button>
+              <Link href="/network" className="min-w-0 hover:text-accent">
+                <p className="font-display text-lg font-bold tabular-nums">
+                  {followingCount}
+                </p>
+                <p className="text-[11px] text-muted">following</p>
               </Link>
             </div>
           </div>
 
+          {/* Name + handle + bio — full width, no side buttons */}
+          <div className="mt-4 min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="truncate font-display text-base font-bold">
+                {profile.displayName}
+              </h2>
+              <Badge variant={user.plan === "pro" ? "accent" : "default"}>
+                {user.plan === "pro" ? "Pro" : "Free"}
+              </Badge>
+            </div>
+            <p className="truncate text-sm text-muted">@{profile.username}</p>
+            {profile.bio ? (
+              <p className="mt-2 text-sm leading-relaxed text-foreground/90">
+                {profile.bio}
+              </p>
+            ) : (
+              <p className="mt-2 text-sm text-muted">
+                Add a bio in settings so athletes know who you are.
+              </p>
+            )}
+            {profile.showLocation && profile.location ? (
+              <p className="mt-1.5 inline-flex items-center gap-1 text-sm text-muted">
+                <MapPin size={14} />
+                {profile.location}
+              </p>
+            ) : null}
+          </div>
+
+          {/* Full-width CTAs under identity */}
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <Link href={`/social/u/${profile.username}`} className="min-w-0">
+              <Button variant="secondary" size="sm" fullWidth>
+                Public view
+              </Button>
+            </Link>
+            <Button
+              size="sm"
+              fullWidth
+              onClick={() => setShowSocialEdit(true)}
+            >
+              Edit profile
+            </Button>
+          </div>
+
           {stats && (
-            <div className="evolve-stats-vivid mt-6 grid grid-cols-3 gap-2 rounded-2xl p-3 text-center">
+            <div className="evolve-stats-vivid mt-4 grid grid-cols-3 gap-1 rounded-2xl px-2 py-3 text-center">
               {[
-                { label: "This month", value: stats.workoutsThisMonth },
+                { label: "Month", value: stats.workoutsThisMonth },
                 { label: "Distance", value: `${stats.totalKm} km` },
                 { label: "Streak", value: `${stats.streakDays}d` },
               ].map((s) => (
-                <div key={s.label} className="min-w-0">
-                  <p className="truncate font-display text-lg font-bold">
+                <div key={s.label} className="min-w-0 px-1">
+                  <p className="truncate font-display text-base font-bold sm:text-lg">
                     {s.value}
                   </p>
-                  <p className="mt-0.5 truncate text-[11px] font-medium uppercase tracking-wide text-muted">
+                  <p className="mt-0.5 truncate text-[10px] font-medium uppercase tracking-wide text-muted">
                     {s.label}
                   </p>
                 </div>
               ))}
             </div>
           )}
-        </Card>
+        </section>
       )}
 
-      <div className="mt-6">
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="font-display text-lg font-semibold">
-            Recent workouts
-          </h2>
+      <div className="mt-6 min-w-0">
+        <div className="mb-3 flex items-center justify-between gap-2">
+          <h2 className="font-display text-lg font-semibold">Recent workouts</h2>
           <Link href="/posts/new">
             <Button size="sm" variant="outline">
               New post
@@ -181,7 +199,17 @@ export default function ProfilePage() {
         />
       </div>
 
-      <SocialProfileEditor />
+      <Modal
+        open={showSocialEdit}
+        onClose={() => setShowSocialEdit(false)}
+        title="Edit social profile"
+        size="lg"
+      >
+        <SocialProfileEditor
+          embedded
+          onSaved={() => setShowSocialEdit(false)}
+        />
+      </Modal>
 
       <Modal
         open={showSettings}

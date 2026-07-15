@@ -32,8 +32,8 @@ export default function FollowingPage({
     return (
       <div className="py-16 text-center">
         <p className="font-medium">User not found</p>
-        <Link href="/social/discover" className="mt-4 inline-block">
-          <Button>Discover</Button>
+        <Link href="/explore" className="mt-4 inline-block">
+          <Button>Explore</Button>
         </Link>
       </div>
     );
@@ -87,8 +87,8 @@ export default function FollowingPage({
           <p className="mt-1 text-sm text-muted">
             Discover athletes to build a feed.
           </p>
-          <Link href="/social/discover" className="mt-4 inline-block">
-            <Button>Discover people</Button>
+          <Link href="/explore" className="mt-4 inline-block">
+            <Button>Explore people</Button>
           </Link>
         </div>
       ) : (

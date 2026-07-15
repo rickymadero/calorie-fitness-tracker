@@ -136,7 +136,7 @@ export function BottomNav() {
       className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/90 shadow-[0_-8px_24px_rgba(17,20,24,0.06)] backdrop-blur-xl dark:shadow-[0_-8px_24px_rgba(0,0,0,0.4)] lg:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      <div className="mx-auto grid max-w-[390px] grid-cols-5 px-2 pt-1.5">
+      <div className="mx-auto grid w-full max-w-full grid-cols-5 px-1 pt-1.5">
         {MOBILE_TABS.map((item) => {
           const active =
             item.kind === "create"

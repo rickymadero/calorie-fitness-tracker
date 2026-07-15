@@ -17,7 +17,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       router.replace("/");
       return;
     }
-    // No email verification gate — only enforce onboarding / intro / pricing once
     if (!user.onboardingComplete) {
       router.replace("/onboarding");
       return;
@@ -36,11 +35,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="evolve-app-shell flex min-h-dvh bg-background">
+    <div className="evolve-app-shell flex min-h-dvh w-full max-w-[100vw] overflow-x-hidden bg-background">
       <SideNav />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <main className="flex-1 px-5 pb-[var(--mobile-nav-clearance)] pt-4 sm:px-5 sm:pt-6 lg:px-8 lg:pb-8 lg:pt-8">
-          <div className="mx-auto w-full max-w-[390px] lg:max-w-6xl">
+      <div className="flex min-w-0 w-full flex-1 flex-col overflow-x-hidden">
+        {/*
+          Phone viewport (= iframe 390px) IS the canvas.
+          Never nest another max-w-[390px] here — that + padding + sticky -mx caused overflow.
+        */}
+        <main className="min-w-0 w-full flex-1 overflow-x-hidden px-4 pb-[var(--mobile-nav-clearance)] pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-5 sm:pt-6 lg:px-8 lg:pb-8 lg:pt-8">
+          <div className="mx-auto w-full min-w-0 max-w-full lg:max-w-6xl">
             <PageTransition>{children}</PageTransition>
           </div>
         </main>

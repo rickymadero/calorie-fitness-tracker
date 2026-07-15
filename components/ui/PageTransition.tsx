@@ -20,7 +20,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
         initial={pageFade.initial}
         animate={pageFade.animate}
         exit={pageFade.exit}
-        className="w-full"
+        className="w-full min-w-0 max-w-full"
       >
         {children}
       </motion.div>

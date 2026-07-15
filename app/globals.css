@@ -122,6 +122,7 @@
 html {
   scroll-behavior: smooth;
   overflow-x: clip;
+  max-width: 100%;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -131,6 +132,7 @@ body {
   color: var(--foreground);
   font-family: var(--font-dm-sans), system-ui, sans-serif;
   min-height: 100dvh;
+  max-width: 100%;
   overflow-x: clip;
   overscroll-behavior-y: none;
   -webkit-overflow-scrolling: touch;
@@ -203,10 +205,12 @@ h3,
       box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1),
       border-color 0.28s ease;
   }
-  .evolve-card-lift:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-    border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+  @media (hover: hover) and (pointer: fine) {
+    .evolve-card-lift:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+      border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+    }
   }
 
   .evolve-press {
@@ -293,7 +297,8 @@ h3,
 }
 
 .leaflet-container {
-  width: 100%;
+  width: 100% !important;
+  max-width: 100% !important;
   height: 100%;
   background: var(--muted-bg);
   font: inherit !important;

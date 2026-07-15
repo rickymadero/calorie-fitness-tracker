@@ -29,7 +29,7 @@ export function SocialAvatar({
   const dims = {
     sm: "h-9 w-9 text-xs",
     md: "h-12 w-12 text-sm",
-    lg: "h-16 w-16 text-lg",
+    lg: "h-[76px] w-[76px] text-xl",
   };
   return (
     <div
@@ -40,14 +40,20 @@ export function SocialAvatar({
   );
 }
 
-export function FollowButton({ card }: { card: PublicSocialCard }) {
+export function FollowButton({
+  card,
+  fullWidth = false,
+}: {
+  card: PublicSocialCard;
+  fullWidth?: boolean;
+}) {
   const { follow, unfollow, cancelRequest } = useSocial();
   const { toast } = useToast();
   const { relation, profile } = card;
 
   if (relation === "blocked") {
     return (
-      <Button size="sm" variant="outline" disabled>
+      <Button size="sm" variant="outline" disabled fullWidth={fullWidth}>
         Unavailable
       </Button>
     );
@@ -58,6 +64,7 @@ export function FollowButton({ card }: { card: PublicSocialCard }) {
       <Button
         size="sm"
         variant="secondary"
+        fullWidth={fullWidth}
         onClick={() => {
           unfollow(profile.userId);
           toast("Unfollowed.", "info");
@@ -74,6 +81,7 @@ export function FollowButton({ card }: { card: PublicSocialCard }) {
       <Button
         size="sm"
         variant="outline"
+        fullWidth={fullWidth}
         onClick={() => {
           cancelRequest(profile.userId);
           toast("Request cancelled.", "info");
@@ -88,6 +96,7 @@ export function FollowButton({ card }: { card: PublicSocialCard }) {
   return (
     <Button
       size="sm"
+      fullWidth={fullWidth}
       onClick={() => {
         const res = follow(profile.userId);
         toast(res.message, res.ok ? "success" : "error");
@@ -107,42 +116,46 @@ export function PersonCard({ card }: { card: PublicSocialCard }) {
     <motion.div
       whileHover={reduce ? undefined : { y: -2 }}
       transition={{ type: "spring", stiffness: 400, damping: 28 }}
-      className="evolve-card-lift flex items-center gap-3 rounded-apex-lg border border-border bg-card p-4 shadow-apex"
+      className="evolve-card-lift min-w-0 rounded-apex-lg border border-border bg-card p-3 shadow-apex sm:p-4"
     >
-      <Link href={`/social/u/${profile.username}`} className="shrink-0">
-        <SocialAvatar name={profile.displayName} />
-      </Link>
-      <div className="min-w-0 flex-1">
-        <Link
-          href={`/social/u/${profile.username}`}
-          className="flex items-center gap-2"
-        >
-          <p className="truncate font-display font-semibold">
-            {profile.displayName}
-          </p>
-          {profile.visibility === "private" && (
-            <Lock size={12} className="shrink-0 text-muted" />
-          )}
+      <div className="flex items-start gap-3">
+        <Link href={`/social/u/${profile.username}`} className="shrink-0">
+          <SocialAvatar name={profile.displayName} />
         </Link>
-        <p className="truncate text-sm text-muted">@{profile.username}</p>
-        {!limited && profile.bio ? (
-          <p className="mt-1 line-clamp-2 text-xs text-muted">{profile.bio}</p>
-        ) : null}
-        {!limited && (
-          <p className="mt-1 text-xs text-muted">
-            {followersCount} followers
-            {profile.showLocation && profile.location
-              ? ` · ${profile.location}`
-              : ""}
-          </p>
-        )}
-        {limited && (
-          <Badge className="mt-2" variant="default">
-            Private account
-          </Badge>
-        )}
+        <div className="min-w-0 flex-1">
+          <Link
+            href={`/social/u/${profile.username}`}
+            className="flex items-center gap-2"
+          >
+            <p className="truncate font-display font-semibold">
+              {profile.displayName}
+            </p>
+            {profile.visibility === "private" && (
+              <Lock size={12} className="shrink-0 text-muted" />
+            )}
+          </Link>
+          <p className="truncate text-sm text-muted">@{profile.username}</p>
+          {!limited && profile.bio ? (
+            <p className="mt-1 line-clamp-2 text-xs text-muted">{profile.bio}</p>
+          ) : null}
+          {!limited && (
+            <p className="mt-1 text-xs text-muted">
+              {followersCount} followers
+              {profile.showLocation && profile.location
+                ? ` · ${profile.location}`
+                : ""}
+            </p>
+          )}
+          {limited && (
+            <Badge className="mt-2" variant="default">
+              Private account
+            </Badge>
+          )}
+        </div>
       </div>
-      <FollowButton card={card} />
+      <div className="mt-3">
+        <FollowButton card={card} fullWidth />
+      </div>
     </motion.div>
   );
 }

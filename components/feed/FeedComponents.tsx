@@ -269,10 +269,10 @@ export function PostCard({
   return (
     <motion.article
       layout
-      className="evolve-card-lift overflow-hidden rounded-apex-lg border border-border bg-card shadow-apex"
+      className="evolve-card-lift w-full min-w-0 max-w-full overflow-hidden rounded-apex-lg border border-border bg-card shadow-apex"
     >
-      <div className="p-4 pb-0">
-        <div className="flex items-center gap-3">
+      <div className="p-3 pb-0 sm:p-4 sm:pb-0">
+        <div className="flex items-center gap-2.5">
           <Link href={`/social/u/${username}`} className="shrink-0">
             <SocialAvatar name={name} size="sm" />
           </Link>
@@ -292,7 +292,6 @@ export function PostCard({
               @{username} · {formatWhen(post.occurredAt)}
             </p>
           </div>
-          {!isSelf && author && <FollowButton card={author} />}
           <div className="relative shrink-0">
             <button
               type="button"
@@ -325,6 +324,11 @@ export function PostCard({
             )}
           </div>
         </div>
+        {!isSelf && author && (
+          <div className="mt-2 flex justify-end">
+            <FollowButton card={author} />
+          </div>
+        )}
 
         <Link href={`/posts/${post.id}`} className="mt-3 block">
           <Badge className={`capitalize ${ACTIVITY_COLORS[post.type].badge}`}>
@@ -348,19 +352,19 @@ export function PostCard({
       </div>
 
       {isOutdoor && hasRoute && !hideMap && (
-        <div className="mt-3 px-4">
+        <div className="mt-3 w-full min-w-0 max-w-full px-3 sm:px-4">
           <RouteMapPreview
             points={mapPoints}
             hideStart={post.hideStart}
             hideEnd={post.hideEnd}
             routeVisible={post.routeVisible !== false}
             href={`/posts/${post.id}`}
-            height={compact ? 140 : 188}
+            height={compact ? 140 : 168}
           />
         </div>
       )}
 
-      <div className="px-4">
+      <div className="min-w-0 px-3 sm:px-4">
         {post.type === "gym" ? (
           <GymBody post={post} />
         ) : isOutdoor || post.distanceKm != null || post.durationMin != null ? (

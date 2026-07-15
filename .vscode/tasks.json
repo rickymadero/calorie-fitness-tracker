@@ -24,9 +24,9 @@
       }
     },
     {
-      "label": "Evolve: Show Simple Browser",
+      "label": "Evolve: Show Mobile Preview",
       "type": "shell",
-      "command": "echo ${input:evolveOpenPreview}",
+      "command": "echo ${input:evolveOpenMobilePreview}",
       "problemMatcher": [],
       "presentation": {
         "reveal": "silent",
@@ -36,10 +36,10 @@
       }
     },
     {
-      "label": "Evolve: Live Preview",
+      "label": "Evolve: Mobile Preview",
       "dependsOn": [
         "Evolve: Start Dev Server",
-        "Evolve: Show Simple Browser"
+        "Evolve: Show Mobile Preview"
       ],
       "dependsOrder": "sequence",
       "problemMatcher": [],
@@ -51,14 +51,32 @@
         "reveal": "always",
         "panel": "dedicated"
       }
+    },
+    {
+      "label": "Evolve: Show Full Browser",
+      "type": "shell",
+      "command": "echo ${input:evolveOpenFullPreview}",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "echo": false,
+        "close": true,
+        "panel": "shared"
+      }
     }
   ],
   "inputs": [
     {
-      "id": "evolveOpenPreview",
+      "id": "evolveOpenMobilePreview",
       "type": "command",
       "command": "simpleBrowser.show",
-      "args": ["http://localhost:3000"]
+      "args": ["http://127.0.0.1:3000/dev/preview"]
+    },
+    {
+      "id": "evolveOpenFullPreview",
+      "type": "command",
+      "command": "simpleBrowser.show",
+      "args": ["http://127.0.0.1:3000"]
     }
   ]
 }

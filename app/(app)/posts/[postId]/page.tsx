@@ -120,8 +120,8 @@ export default function PostDetailPage({
   }
 
   return (
-    <div className="mx-auto max-w-[390px] lg:max-w-2xl">
-      <div className="sticky top-0 z-30 -mx-5 mb-4 flex items-center justify-between gap-2 border-b border-border/70 bg-background/85 px-5 pt-[max(0.5rem,env(safe-area-inset-top))] pb-2 backdrop-blur-xl">
+    <div className="mx-auto w-full min-w-0 max-w-full lg:max-w-2xl">
+      <div className="sticky top-0 z-30 mb-4 flex items-center justify-between gap-2 border-b border-border/70 bg-background/90 pb-2 pt-1 backdrop-blur-xl">
         <Link
           href="/feed"
           className="evolve-press inline-flex min-h-11 items-center gap-0.5 text-sm font-medium text-muted hover:text-foreground"
