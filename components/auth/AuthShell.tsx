@@ -99,7 +99,7 @@ export function AuthShell({
       </aside>
 
       <main className="relative flex flex-col bg-background">
-        <div className="apex-gradient-bg relative overflow-hidden px-6 pb-10 pt-8 lg:hidden">
+        <div className="apex-gradient-bg relative overflow-hidden px-6 pb-10 pt-[max(2rem,env(safe-area-inset-top))] lg:hidden">
           <div className="absolute inset-0 bg-black/50" />
           <div className="relative z-10">
             <EvolveLogo light href="/" />
@@ -117,7 +117,7 @@ export function AuthShell({
           </div>
         </div>
 
-        <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-6 py-10">
+        <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-6 py-10 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
           {children}
         </div>
       </main>

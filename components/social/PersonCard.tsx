@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 import { UserPlus, UserCheck, Clock, UserMinus, Lock } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { useSocial } from "@/components/social/SocialProvider";
 import { useToast } from "@/components/providers/ToastProvider";
+import { avatarPalette } from "@/lib/colors/vivid";
 import type { PublicSocialCard } from "@/lib/types/social";
 
 function initials(name: string) {
@@ -24,10 +26,14 @@ export function SocialAvatar({
   name: string;
   size?: "sm" | "md" | "lg";
 }) {
-  const dims = { sm: "h-9 w-9 text-xs", md: "h-12 w-12 text-sm", lg: "h-16 w-16 text-lg" };
+  const dims = {
+    sm: "h-9 w-9 text-xs",
+    md: "h-12 w-12 text-sm",
+    lg: "h-16 w-16 text-lg",
+  };
   return (
     <div
-      className={`flex shrink-0 items-center justify-center rounded-full bg-accent-soft font-display font-bold text-accent-dim dark:text-accent ${dims[size]}`}
+      className={`flex shrink-0 items-center justify-center rounded-full font-display font-bold transition duration-300 ${avatarPalette(name)} ${dims[size]}`}
     >
       {initials(name)}
     </div>
@@ -35,11 +41,7 @@ export function SocialAvatar({
 }
 
 export function FollowButton({ card }: { card: PublicSocialCard }) {
-  const {
-    follow,
-    unfollow,
-    cancelRequest,
-  } = useSocial();
+  const { follow, unfollow, cancelRequest } = useSocial();
   const { toast } = useToast();
   const { relation, profile } = card;
 
@@ -99,8 +101,14 @@ export function FollowButton({ card }: { card: PublicSocialCard }) {
 
 export function PersonCard({ card }: { card: PublicSocialCard }) {
   const { profile, followersCount, limited } = card;
+  const reduce = useReducedMotion();
+
   return (
-    <div className="flex items-center gap-3 rounded-apex-lg border border-border bg-card p-4 shadow-apex">
+    <motion.div
+      whileHover={reduce ? undefined : { y: -2 }}
+      transition={{ type: "spring", stiffness: 400, damping: 28 }}
+      className="evolve-card-lift flex items-center gap-3 rounded-apex-lg border border-border bg-card p-4 shadow-apex"
+    >
       <Link href={`/social/u/${profile.username}`} className="shrink-0">
         <SocialAvatar name={profile.displayName} />
       </Link>
@@ -135,7 +143,7 @@ export function PersonCard({ card }: { card: PublicSocialCard }) {
         )}
       </div>
       <FollowButton card={card} />
-    </div>
+    </motion.div>
   );
 }
 

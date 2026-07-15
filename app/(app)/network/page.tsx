@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Check, X } from "lucide-react";
+import { Check, X, UserPlus, Users, Clock } from "lucide-react";
 import { useSocial } from "@/components/social/SocialProvider";
 import {
   PersonCard,
@@ -10,6 +10,9 @@ import {
   SocialAvatar,
 } from "@/components/social/PersonCard";
 import { Button } from "@/components/ui/Button";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { SegmentedControl } from "@/components/ui/SegmentedControl";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
 
@@ -49,51 +52,42 @@ export default function NetworkPage() {
   }, [ready, pendingRequestsToMe]);
 
   if (!ready || !profile) {
-    return <div className="h-40 animate-pulse rounded-apex-lg bg-muted-bg" />;
+    return <div className="evolve-shimmer h-40 rounded-apex-lg bg-muted-bg" />;
   }
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold tracking-tight md:text-3xl">
-        Network
-      </h1>
-      <p className="mt-1 text-sm text-muted">
-        Followers, following, and follow requests.
-      </p>
+      <PageHeader
+        title="Network"
+        subtitle="Followers, following, and follow requests."
+        sticky
+      />
 
-      <div className="mt-6 flex flex-wrap gap-2">
-        {(
-          [
-            { id: "following", label: `Following (${following.length})` },
-            { id: "followers", label: `Followers (${followers.length})` },
-            {
-              id: "requests",
-              label: `Requests (${requests.length})`,
-            },
-          ] as const
-        ).map((t) => (
-          <button
-            key={t.id}
-            type="button"
-            onClick={() => setTab(t.id)}
-            className={`rounded-full px-4 py-2 text-sm font-medium ${
-              tab === t.id
-                ? "bg-accent text-accent-fg"
-                : "bg-muted-bg text-muted"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="mt-4">
+        <SegmentedControl
+          scroll
+          segments={[
+            { id: "following", label: `Following · ${following.length}` },
+            { id: "followers", label: `Followers · ${followers.length}` },
+            { id: "requests", label: `Requests · ${requests.length}` },
+          ]}
+          value={tab}
+          onChange={setTab}
+        />
       </div>
 
-      <div className="mt-6 space-y-3">
+      <div className="mt-5 space-y-3">
         {tab === "following" &&
           (following.length === 0 ? (
-            <Empty
+            <EmptyState
+              icon={<UserPlus size={28} />}
               title="Not following anyone yet"
-              hint="Discover athletes on Explore."
-              href="/explore"
+              description="Discover athletes on Explore."
+              action={
+                <Link href="/explore">
+                  <Button variant="outline">Explore</Button>
+                </Link>
+              }
             />
           ) : (
             following.map((c) => (
@@ -103,10 +97,15 @@ export default function NetworkPage() {
 
         {tab === "followers" &&
           (followers.length === 0 ? (
-            <Empty
+            <EmptyState
+              icon={<Users size={28} />}
               title="No followers yet"
-              hint="Share workouts to grow your network."
-              href="/posts/new"
+              description="Share workouts to grow your network."
+              action={
+                <Link href="/posts/new">
+                  <Button variant="outline">Share a workout</Button>
+                </Link>
+              }
             />
           ) : (
             followers.map((c) => (
@@ -123,9 +122,10 @@ export default function NetworkPage() {
 
         {tab === "requests" &&
           (requests.length === 0 ? (
-            <Empty
+            <EmptyState
+              icon={<Clock size={28} />}
               title="No pending requests"
-              hint="When someone requests to follow your private profile, they appear here."
+              description="When someone requests to follow your private profile, they appear here."
             />
           ) : (
             requests.map((req) => {
@@ -134,66 +134,49 @@ export default function NetworkPage() {
               return (
                 <div
                   key={req.id}
-                  className="flex items-center gap-3 rounded-apex-lg border border-border bg-card p-4 shadow-apex"
+                  className="rounded-apex-lg border border-border bg-card p-4 shadow-apex"
                 >
-                  <SocialAvatar name={card.profile.displayName} />
-                  <div className="min-w-0 flex-1">
-                    <Link href={`/social/u/${card.profile.username}`}>
-                      <p className="font-display font-semibold">
-                        {card.profile.displayName}
+                  <div className="flex items-center gap-3">
+                    <SocialAvatar name={card.profile.displayName} />
+                    <div className="min-w-0 flex-1">
+                      <Link href={`/social/u/${card.profile.username}`}>
+                        <p className="truncate font-display font-semibold">
+                          {card.profile.displayName}
+                        </p>
+                      </Link>
+                      <p className="truncate text-sm text-muted">
+                        @{card.profile.username}
                       </p>
-                    </Link>
-                    <p className="text-sm text-muted">
-                      @{card.profile.username}
-                    </p>
+                    </div>
                   </div>
-                  <Button
-                    size="sm"
-                    onClick={() => {
-                      acceptRequest(req.id);
-                      toast("Accepted.", "success");
-                    }}
-                  >
-                    <Check size={14} />
-                    Accept
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      rejectRequest(req.id);
-                      toast("Declined.", "info");
-                    }}
-                  >
-                    <X size={14} />
-                  </Button>
+                  <div className="mt-3 grid grid-cols-2 gap-2">
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        acceptRequest(req.id);
+                        toast("Accepted.", "success");
+                      }}
+                    >
+                      <Check size={14} />
+                      Accept
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        rejectRequest(req.id);
+                        toast("Declined.", "info");
+                      }}
+                    >
+                      <X size={14} />
+                      Decline
+                    </Button>
+                  </div>
                 </div>
               );
             })
           ))}
       </div>
-    </div>
-  );
-}
-
-function Empty({
-  title,
-  hint,
-  href,
-}: {
-  title: string;
-  hint: string;
-  href?: string;
-}) {
-  return (
-    <div className="rounded-apex-lg border border-dashed border-border px-6 py-12 text-center">
-      <p className="font-medium">{title}</p>
-      <p className="mt-1 text-sm text-muted">{hint}</p>
-      {href && (
-        <Link href={href} className="mt-4 inline-block">
-          <Button variant="outline">Go</Button>
-        </Link>
-      )}
     </div>
   );
 }

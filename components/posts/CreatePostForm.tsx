@@ -35,7 +35,7 @@ export function ActivityTypePicker({
           key={t.id}
           type="button"
           onClick={() => onChange(t.id)}
-          className={`rounded-full border px-3 py-1.5 text-xs font-medium ${
+          className={`min-h-11 rounded-full border px-4 py-2.5 text-sm font-medium ${
             value === t.id
               ? "border-accent bg-accent-soft text-accent-dim dark:text-accent"
               : "border-border text-muted"
@@ -132,7 +132,7 @@ export function CreatePostForm() {
             onChange={(e) => setCaption(e.target.value.slice(0, 280))}
             rows={3}
             placeholder="How did it feel? Add a hashtag…"
-            className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-accent"
+            className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-base outline-none focus:border-accent"
           />
         </div>
 
@@ -192,7 +192,7 @@ export function CreatePostForm() {
                 key={v.id}
                 type="button"
                 onClick={() => setVisibility(v.id)}
-                className={`rounded-2xl border py-2.5 text-sm font-medium ${
+                className={`min-h-11 rounded-2xl border text-sm font-medium ${
                   visibility === v.id
                     ? "border-accent bg-accent-soft"
                     : "border-border"
@@ -224,16 +224,18 @@ export function CreatePostForm() {
           )}
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          <Button type="submit" loading={saving}>
-            Publish workout
-          </Button>
+        <div className="flex flex-col-reverse gap-2 sm:flex-row">
           <Button
             type="button"
             variant="outline"
+            fullWidth
             onClick={() => router.back()}
+            className="sm:w-auto"
           >
             Cancel
+          </Button>
+          <Button type="submit" loading={saving} fullWidth size="lg">
+            Publish workout
           </Button>
         </div>
       </form>

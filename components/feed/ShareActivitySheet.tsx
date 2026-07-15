@@ -138,8 +138,15 @@ export function ShareActivitySheet({
 
   function downloadImage() {
     if (!blob) return;
-    downloadBlob(blob, `evolve-${post.id}.png`);
-    toast("Image downloaded.", "success");
+    void saveImageOnDevice(blob, `evolve-${post.id}.png`, shareNative).then(
+      (mode) => {
+        if (mode === "shared") {
+          toast("Use Share → Save Image if prompted.", "success");
+        } else {
+          toast("Image downloaded.", "success");
+        }
+      },
+    );
   }
 
   async function copyLink() {
@@ -158,7 +165,7 @@ export function ShareActivitySheet({
         </p>
 
         {/* Mini live stats strip */}
-        <div className="grid grid-cols-4 gap-2 rounded-2xl bg-muted-bg p-3 text-center">
+        <div className="evolve-stats-vivid grid grid-cols-4 gap-2 rounded-2xl p-3 text-center">
           <MiniStat
             label="Type"
             value={post.type.slice(0, 1).toUpperCase() + post.type.slice(1)}
@@ -285,6 +292,28 @@ function downloadBlob(blob: Blob, filename: string) {
   const a = document.createElement("a");
   a.href = url;
   a.download = filename;
+  a.rel = "noopener";
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  a.remove();
+  // Delay revoke so Safari can start the download/navigation
+  window.setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
+
+/** iOS Safari often ignores <a download> — prefer share sheet with the file. */
+async function saveImageOnDevice(
+  blob: Blob,
+  filename: string,
+  shareNative: (files?: File[]) => Promise<void>,
+): Promise<"shared" | "downloaded"> {
+  const file = new File([blob], filename, { type: "image/png" });
+  const isIOS =
+    typeof navigator !== "undefined" &&
+    /iPad|iPhone|iPod/.test(navigator.userAgent);
+  if (isIOS && navigator.canShare?.({ files: [file] })) {
+    await shareNative([file]);
+    return "shared";
+  }
+  downloadBlob(blob, filename);
+  return "downloaded";
 }

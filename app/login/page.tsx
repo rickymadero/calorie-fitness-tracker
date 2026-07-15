@@ -1,16 +1,15 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   AuthDivider,
-  AuthFooterLinks,
-  AuthShell,
-  SocialAuthButtons,
-} from "@/components/auth/AuthShell";
+  AuthField,
+  AuthSwitchLink,
+  InstagramContinueButton,
+  MinimalAuthShell,
+} from "@/components/auth/MinimalAuthShell";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
 import { getPostAuthPath } from "@/lib/auth/routes";
@@ -49,50 +48,38 @@ export default function LoginPage() {
   }
 
   return (
-    <AuthShell>
-      <div>
-        <h2 className="font-display text-2xl font-bold">Log in</h2>
-        <p className="mt-2 text-sm text-muted">
-          Jump back into your feed. New here?{" "}
-          <Link
-            href="/register"
-            className="font-medium text-accent-dim dark:text-accent"
-          >
-            Create an account
-          </Link>
-        </p>
+    <MinimalAuthShell>
+      <form onSubmit={onSubmit} className="flex flex-col gap-4">
+        <AuthField
+          label="Email"
+          type="email"
+          autoComplete="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@email.com"
+        />
+        <AuthField
+          label="Password"
+          type="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="••••••••"
+        />
+        {error && <p className="text-sm text-red-400">{error}</p>}
+        <Button type="submit" fullWidth size="lg" loading={loading} className="mt-2">
+          Sign in
+        </Button>
+      </form>
 
-        <div className="mt-8">
-          <SocialAuthButtons layout="instagram-first" />
-        </div>
+      <AuthDivider />
+      <InstagramContinueButton />
 
-        <AuthDivider label="or log in with email" />
-
-        <form onSubmit={onSubmit} className="space-y-4">
-          <Input
-            label="Email"
-            type="email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@email.com"
-          />
-          <Input
-            label="Password"
-            type="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
-          />
-          {error && <p className="text-sm text-danger">{error}</p>}
-          <Button type="submit" fullWidth size="lg" loading={loading}>
-            Log in
-          </Button>
-        </form>
-
-        <AuthFooterLinks />
-      </div>
-    </AuthShell>
+      <AuthSwitchLink
+        prompt="New to Evolve?"
+        actionLabel="Create account"
+        href="/register"
+      />
+    </MinimalAuthShell>
   );
 }

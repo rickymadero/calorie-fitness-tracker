@@ -25,7 +25,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
   ) => (
     <div
       ref={ref}
-      className={`rounded-apex-lg border border-border ${elevated ? "bg-card-elevated shadow-apex-lg" : "bg-card shadow-apex"} ${paddings[padding]} ${className}`}
+      className={`evolve-card-lift rounded-apex-lg border border-border ${elevated ? "bg-card-elevated shadow-apex-lg" : "bg-card shadow-apex"} ${paddings[padding]} ${className}`}
       {...props}
     >
       {children}

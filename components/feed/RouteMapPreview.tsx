@@ -50,6 +50,8 @@ export function RouteMapPreview({
     return <MapFallback height={height} message="Map unavailable" />;
   }
 
+  // Feed cards (href) and interactive=false must not steal page scroll on iOS.
+  const canInteract = interactive && !href;
   const map = (
     <LeafletRouteMap
       points={points}
@@ -57,8 +59,8 @@ export function RouteMapPreview({
       hideEnd={hideEnd}
       height={height}
       label={label}
-      scrollWheel={!href}
-      dragging={!href}
+      scrollWheel={canInteract}
+      dragging={canInteract}
     />
   );
 
@@ -136,9 +138,14 @@ function LeafletRouteMap({
           doubleClickZoom: scrollWheel,
           boxZoom: false,
           keyboard: false,
+          touchZoom: scrollWheel,
           preferCanvas: true,
         });
         mapRef.current = map;
+        if (!dragging) {
+          // Let the page scroll under non-interactive feed/detail maps on iOS
+          containerRef.current.style.touchAction = "pan-y";
+        }
 
         // Voyager = streets + buildings (Google Maps–like). Dark Matter for dark theme.
         const isDark = theme === "dark";

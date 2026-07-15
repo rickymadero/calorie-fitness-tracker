@@ -1,0 +1,11 @@
+{
+  // Workspace defaults so HMR feels instant while coding Evolve
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 800,
+  "editor.formatOnSave": false,
+  "simpleBrowser.focusLockIndicator.enabled": true,
+  // Helpful when focusing the in-editor preview next to code
+  "workbench.editorAssociations": {
+    "*.md": "vscode.markdown.preview.editor"
+  }
+}

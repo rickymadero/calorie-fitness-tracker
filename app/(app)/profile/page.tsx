@@ -3,11 +3,13 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Moon, Sun, LogOut, Crown, MapPin } from "lucide-react";
+import { Moon, Sun, LogOut, Crown, MapPin, Settings } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Badge } from "@/components/ui/Badge";
+import { Modal } from "@/components/ui/Modal";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useTheme } from "@/components/providers/ThemeProvider";
 import { useToast } from "@/components/providers/ToastProvider";
@@ -55,29 +57,33 @@ export default function ProfilePage() {
 
   return (
     <div>
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="font-display text-2xl font-bold tracking-tight md:text-3xl">
-            Profile
-          </h1>
-          <p className="mt-1 text-sm text-muted">
-            Your public fitness identity on Evolve.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => setShowSettings((v) => !v)}
-          >
-            {showSettings ? "Hide settings" : "Account settings"}
-          </Button>
-          <Button variant="outline" size="sm" onClick={handleLogout}>
-            <LogOut size={16} />
-            Log out
-          </Button>
-        </div>
-      </div>
+      <PageHeader
+        title="Profile"
+        subtitle="Your public fitness identity on Evolve."
+        sticky
+        actions={
+          <>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setShowSettings(true)}
+              aria-label="Settings"
+            >
+              <Settings size={16} />
+              <span className="hidden sm:inline">Settings</span>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleLogout}
+              aria-label="Log out"
+            >
+              <LogOut size={16} />
+              <span className="hidden sm:inline">Log out</span>
+            </Button>
+          </>
+        }
+      />
 
       {profile && (
         <Card className="mt-6">
@@ -132,16 +138,18 @@ export default function ProfilePage() {
           </div>
 
           {stats && (
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            <div className="evolve-stats-vivid mt-6 grid grid-cols-3 gap-2 rounded-2xl p-3 text-center">
               {[
                 { label: "This month", value: stats.workoutsThisMonth },
-                { label: "Total distance", value: `${stats.totalKm} km` },
-                { label: "Streak", value: `${stats.streakDays} days` },
+                { label: "Distance", value: `${stats.totalKm} km` },
+                { label: "Streak", value: `${stats.streakDays}d` },
               ].map((s) => (
-                <div key={s.label} className="rounded-2xl bg-muted-bg p-4">
-                  <p className="text-xs text-muted">{s.label}</p>
-                  <p className="mt-1 font-display text-lg font-bold">
+                <div key={s.label} className="min-w-0">
+                  <p className="truncate font-display text-lg font-bold">
                     {s.value}
+                  </p>
+                  <p className="mt-0.5 truncate text-[11px] font-medium uppercase tracking-wide text-muted">
+                    {s.label}
                   </p>
                 </div>
               ))}
@@ -175,26 +183,38 @@ export default function ProfilePage() {
 
       <SocialProfileEditor />
 
-      {showSettings && (
-        <div className="mt-6 grid gap-6 lg:grid-cols-2">
-          <Card>
-            <h2 className="font-display text-lg font-semibold">Account</h2>
-            <div className="mt-4 space-y-4">
+      <Modal
+        open={showSettings}
+        onClose={() => setShowSettings(false)}
+        title="Settings"
+        size="md"
+      >
+        <div className="space-y-6">
+          <section>
+            <h3 className="font-display text-sm font-semibold uppercase tracking-wide text-muted">
+              Account
+            </h3>
+            <div className="mt-3 space-y-4">
               <Input
                 label="Full name"
                 value={user.fullName}
                 onChange={(e) => updateUser({ fullName: e.target.value })}
               />
               <Input label="Email" value={user.email} disabled />
-              <Button onClick={() => toast("Profile saved.", "success")}>
+              <Button
+                fullWidth
+                onClick={() => toast("Profile saved.", "success")}
+              >
                 Save changes
               </Button>
             </div>
-          </Card>
+          </section>
 
-          <Card>
-            <h2 className="font-display text-lg font-semibold">Preferences</h2>
-            <div className="mt-4 space-y-4">
+          <section>
+            <h3 className="font-display text-sm font-semibold uppercase tracking-wide text-muted">
+              Preferences
+            </h3>
+            <div className="mt-3 space-y-4">
               <div>
                 <p className="mb-2 text-sm font-medium">Measurement system</p>
                 <div className="grid grid-cols-2 gap-3">
@@ -203,7 +223,7 @@ export default function ProfilePage() {
                       key={s}
                       type="button"
                       onClick={() => updateUser({ measurementSystem: s })}
-                      className={`rounded-2xl border py-3 text-sm font-medium capitalize ${
+                      className={`min-h-11 rounded-2xl border text-sm font-medium capitalize ${
                         user.measurementSystem === s
                           ? "border-accent bg-accent-soft"
                           : "border-border"
@@ -238,9 +258,10 @@ export default function ProfilePage() {
                   Social feed is free. Pro unlocks food logging, plans,
                   scanners, and analytics.
                 </p>
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="mt-3">
                   {user.plan !== "pro" ? (
                     <Button
+                      fullWidth
                       size="sm"
                       onClick={() => {
                         setPlan("pro");
@@ -248,10 +269,11 @@ export default function ProfilePage() {
                       }}
                     >
                       <Crown size={14} />
-                      Upgrade
+                      Upgrade to Pro
                     </Button>
                   ) : (
                     <Button
+                      fullWidth
                       size="sm"
                       variant="outline"
                       onClick={() => {
@@ -265,9 +287,9 @@ export default function ProfilePage() {
                 </div>
               </div>
             </div>
-          </Card>
+          </section>
         </div>
-      )}
+      </Modal>
     </div>
   );
 }

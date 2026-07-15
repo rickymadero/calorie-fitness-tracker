@@ -1,52 +1,81 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f8f7;
-  --foreground: #0a0a0a;
-  --muted: #6b7280;
-  --muted-bg: #eef0ee;
+  /* Athletic cool base — charcoal + steel, not candy */
+  --background: #f2f4f6;
+  --foreground: #111418;
+  --muted: #646b75;
+  --muted-bg: #e6e9ed;
   --card: #ffffff;
   --card-elevated: #ffffff;
-  --border: #e2e5e2;
-  --accent: #1dbf73;
-  --accent-dim: #17a563;
-  --accent-soft: rgba(29, 191, 115, 0.14);
+  --border: #d5dade;
+
+  /* Primary: athletic emerald */
+  --accent: #1a9f63;
+  --accent-dim: #158552;
+  --accent-soft: rgba(26, 159, 99, 0.14);
   --accent-fg: #ffffff;
-  --danger: #ef4444;
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --overlay: rgba(0, 0, 0, 0.55);
-  --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.1);
+
+  /* Supporting hues — restrained, sporty */
+  --steel: #3d5a80;
+  --steel-soft: rgba(61, 90, 128, 0.14);
+  --steel-fg: #243b55;
+  --bronze: #c4783b;
+  --bronze-soft: rgba(196, 120, 59, 0.14);
+  --bronze-fg: #7a4518;
+  --slate: #4a5568;
+  --slate-soft: rgba(74, 85, 104, 0.12);
+  --slate-fg: #2d3748;
+  --ink: #14181f;
+
+  --danger: #dc4a3d;
+  --success: #1a9f63;
+  --warning: #c4783b;
+  --overlay: rgba(17, 20, 24, 0.55);
+  --shadow: 0 4px 22px rgba(17, 20, 24, 0.07);
+  --shadow-lg: 0 14px 40px rgba(17, 20, 24, 0.12);
   --radius: 1rem;
   --radius-sm: 0.75rem;
   --radius-lg: 1.5rem;
-  --nav: #0a0a0a;
-  --nav-fg: #f5f5f5;
-  --ring-track: #e5e7eb;
+  --nav: #14181f;
+  --nav-fg: #f2f4f6;
+  --ring-track: #dfe3e8;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --mobile-nav-clearance: calc(5.5rem + env(safe-area-inset-bottom, 0px));
 }
 
 .dark {
-  --background: #070807;
-  --foreground: #f4f5f4;
-  --muted: #9ca3af;
-  --muted-bg: #141614;
-  --card: #101210;
-  --card-elevated: #161916;
-  --border: #252825;
-  --accent: #22d484;
-  --accent-dim: #1dbf73;
-  --accent-soft: rgba(34, 212, 132, 0.16);
-  --accent-fg: #04140c;
-  --danger: #f87171;
-  --success: #4ade80;
-  --warning: #fbbf24;
-  --overlay: rgba(0, 0, 0, 0.7);
-  --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
-  --nav: #0c0e0c;
-  --nav-fg: #f4f5f4;
-  --ring-track: #2a2d2a;
+  --background: #0b0d10;
+  --foreground: #eef0f2;
+  --muted: #8b929c;
+  --muted-bg: #151920;
+  --card: #12161c;
+  --card-elevated: #181d25;
+  --border: #262c36;
+  --accent: #2ecf87;
+  --accent-dim: #1a9f63;
+  --accent-soft: rgba(46, 207, 135, 0.14);
+  --accent-fg: #042214;
+  --steel: #7a97b8;
+  --steel-soft: rgba(122, 151, 184, 0.16);
+  --steel-fg: #c5d4e6;
+  --bronze: #d4925a;
+  --bronze-soft: rgba(212, 146, 90, 0.16);
+  --bronze-fg: #f0d0b0;
+  --slate: #a0a8b4;
+  --slate-soft: rgba(160, 168, 180, 0.14);
+  --slate-fg: #d8dde4;
+  --ink: #0b0d10;
+  --danger: #f07167;
+  --success: #2ecf87;
+  --warning: #d4925a;
+  --overlay: rgba(0, 0, 0, 0.72);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 44px rgba(0, 0, 0, 0.55);
+  --nav: #0b0d10;
+  --nav-fg: #eef0f2;
+  --ring-track: #262c36;
 }
 
 @theme inline {
@@ -61,6 +90,16 @@
   --color-accent-dim: var(--accent-dim);
   --color-accent-soft: var(--accent-soft);
   --color-accent-fg: var(--accent-fg);
+  --color-steel: var(--steel);
+  --color-steel-soft: var(--steel-soft);
+  --color-steel-fg: var(--steel-fg);
+  --color-bronze: var(--bronze);
+  --color-bronze-soft: var(--bronze-soft);
+  --color-bronze-fg: var(--bronze-fg);
+  --color-slate: var(--slate);
+  --color-slate-soft: var(--slate-soft);
+  --color-slate-fg: var(--slate-fg);
+  --color-ink: var(--ink);
   --color-danger: var(--danger);
   --color-success: var(--success);
   --color-warning: var(--warning);
@@ -82,6 +121,9 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -89,6 +131,35 @@ body {
   color: var(--foreground);
   font-family: var(--font-dm-sans), system-ui, sans-serif;
   min-height: 100dvh;
+  overflow-x: clip;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Quiet athletic wash — steel + green only */
+.evolve-app-shell {
+  background:
+    radial-gradient(ellipse 80% 50% at 0% -8%, rgba(26, 159, 99, 0.1), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(61, 90, 128, 0.1), transparent 50%),
+    var(--background);
+}
+
+.dark .evolve-app-shell {
+  background:
+    radial-gradient(ellipse 80% 50% at 0% -8%, rgba(46, 207, 135, 0.08), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(122, 151, 184, 0.08), transparent 50%),
+    var(--background);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 h1,
@@ -106,15 +177,15 @@ h3,
 @layer utilities {
   .apex-gradient-bg {
     background:
-      radial-gradient(ellipse 80% 50% at 20% 40%, rgba(29, 191, 115, 0.22), transparent),
-      radial-gradient(ellipse 60% 40% at 80% 20%, rgba(29, 191, 115, 0.1), transparent),
-      linear-gradient(160deg, #0a0a0a 0%, #101612 50%, #0a0a0a 100%);
+      radial-gradient(ellipse 75% 50% at 18% 38%, rgba(26, 159, 99, 0.28), transparent 55%),
+      radial-gradient(ellipse 55% 40% at 88% 18%, rgba(61, 90, 128, 0.22), transparent 50%),
+      linear-gradient(165deg, #111418 0%, #14181f 50%, #10151c 100%);
   }
 
   .apex-mesh {
     background-image:
-      linear-gradient(rgba(29, 191, 115, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(29, 191, 115, 0.04) 1px, transparent 1px);
+      linear-gradient(rgba(61, 90, 128, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26, 159, 99, 0.04) 1px, transparent 1px);
     background-size: 48px 48px;
   }
 
@@ -125,9 +196,102 @@ h3,
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
+  .evolve-card-lift {
+    transition:
+      transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.28s ease;
+  }
+  .evolve-card-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+  }
+
+  .evolve-press {
+    transition: transform 0.15s ease;
+  }
+  .evolve-press:active {
+    transform: scale(0.97);
+  }
+
+  .evolve-stats-vivid {
+    background: color-mix(in srgb, var(--steel) 6%, var(--muted-bg));
+  }
+
+  .evolve-shimmer {
+    background: linear-gradient(
+      110deg,
+      transparent 30%,
+      rgba(61, 90, 128, 0.1) 45%,
+      rgba(26, 159, 99, 0.08) 55%,
+      transparent 70%
+    );
+    background-size: 200% 100%;
+    animation: evolve-shimmer 2.8s ease-in-out infinite;
+  }
+
+  @keyframes evolve-shimmer {
+    0% {
+      background-position: 120% 0;
+    }
+    100% {
+      background-position: -40% 0;
+    }
+  }
+
+  @keyframes evolve-pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.88;
+      transform: scale(1.03);
+    }
+  }
+
+  .evolve-pulse-soft {
+    animation: evolve-pulse-soft 2.4s ease-in-out infinite;
+  }
+
+  /* Minimal auth pages (/login, /register, landing) — always dark, ink + green wash. */
+  .evolve-auth-bg {
+    background:
+      radial-gradient(ellipse 65% 42% at 20% 12%, rgba(46, 207, 135, 0.16), transparent 55%),
+      radial-gradient(ellipse 55% 40% at 88% 92%, rgba(61, 90, 128, 0.16), transparent 55%),
+      linear-gradient(180deg, #0a0c0f 0%, #111620 55%, #0a0c0f 100%);
+  }
+
+  .evolve-auth-mesh {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black, transparent 75%);
+  }
+
+  .evolve-auth-glow {
+    background: radial-gradient(circle, rgba(46, 207, 135, 0.28), transparent 72%);
+    filter: blur(30px);
+    animation: evolve-auth-glow-pulse 6s ease-in-out infinite;
+  }
+
+  @keyframes evolve-auth-glow-pulse {
+    0%,
+    100% {
+      opacity: 0.7;
+      transform: translateX(-50%) scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: translateX(-50%) scale(1.08);
+    }
+  }
 }
 
-/* Leaflet maps inside Evolve activity cards */
 .leaflet-container {
   width: 100%;
   height: 100%;

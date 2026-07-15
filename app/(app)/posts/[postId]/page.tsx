@@ -3,7 +3,7 @@
 import { use, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Trash2, Share2, Bookmark } from "lucide-react";
+import { Trash2, Share2, Bookmark, ChevronLeft } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { usePosts } from "@/components/posts/PostsProvider";
 import { useSocial } from "@/components/social/SocialProvider";
@@ -32,6 +32,7 @@ export default function PostDetailPage({
   const { getCard } = useSocial();
   const { toast } = useToast();
   const router = useRouter();
+  const [shareOpen, setShareOpen] = useState(false);
 
   const post = useMemo(() => {
     void tick;
@@ -118,33 +119,20 @@ export default function PostDetailPage({
     });
   }
 
-  async function share() {
-    const url = `${window.location.origin}/posts/${post!.id}`;
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: post!.title, url });
-      } else {
-        await navigator.clipboard.writeText(url);
-        toast("Link copied.", "success");
-      }
-    } catch {
-      toast("Share cancelled.", "info");
-    }
-  }
-
   return (
-    <div className="mx-auto max-w-xl">
-      <div className="mb-4 flex items-center justify-between">
+    <div className="mx-auto max-w-[390px] lg:max-w-2xl">
+      <div className="sticky top-0 z-30 -mx-5 mb-4 flex items-center justify-between gap-2 border-b border-border/70 bg-background/85 px-5 pt-[max(0.5rem,env(safe-area-inset-top))] pb-2 backdrop-blur-xl">
         <Link
           href="/feed"
-          className="text-sm font-medium text-muted hover:text-foreground"
+          className="evolve-press inline-flex min-h-11 items-center gap-0.5 text-sm font-medium text-muted hover:text-foreground"
         >
-          ← Feed
+          <ChevronLeft size={18} />
+          Feed
         </Link>
-        <div className="flex items-center gap-1">
-          <Button size="sm" variant="ghost" onClick={() => void share()}>
+        <div className="flex items-center justify-end gap-0.5">
+          <Button size="sm" variant="ghost" onClick={() => setShareOpen(true)}>
             <Share2 size={14} />
-            Share
+            <span className="sr-only sm:not-sr-only sm:inline">Share</span>
           </Button>
           <Button
             size="sm"
@@ -161,7 +149,9 @@ export default function PostDetailPage({
               size={14}
               className={saved ? "fill-accent text-accent" : ""}
             />
-            {saved ? "Saved" : "Save"}
+            <span className="sr-only sm:not-sr-only sm:inline">
+              {saved ? "Saved" : "Save"}
+            </span>
           </Button>
           {isOwner && (
             <Button
@@ -175,14 +165,14 @@ export default function PostDetailPage({
               }}
             >
               <Trash2 size={14} />
-              Delete
+              <span className="sr-only sm:not-sr-only sm:inline">Delete</span>
             </Button>
           )}
         </div>
       </div>
 
-      {/* Full activity summary */}
-      <PostCard post={post} />
+      {/* Full activity summary (map shown once in Route card below) */}
+      <PostCard post={post} hideMap={hasFullMap} />
 
       {hasFullMap && (
         <Card className="mt-4 overflow-hidden p-0">
@@ -198,7 +188,7 @@ export default function PostDetailPage({
               hideStart={post.hideStart}
               hideEnd={post.hideEnd}
               routeVisible={post.routeVisible !== false}
-              height={280}
+              height={240}
               interactive={false}
             />
           </div>
@@ -208,10 +198,10 @@ export default function PostDetailPage({
       {detailStats.length > 0 && (
         <Card className="mt-4">
           <h2 className="font-display text-lg font-semibold">Statistics</h2>
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
             {detailStats.map((s) => (
-              <div key={s.label} className="rounded-2xl bg-muted-bg p-3">
-                <p className="text-[10px] uppercase tracking-wide text-muted">
+              <div key={s.label} className="evolve-stats-vivid rounded-2xl p-3">
+                <p className="text-[11px] font-medium uppercase tracking-wide text-muted">
                   {s.label}
                 </p>
                 <p className="mt-1 font-display text-base font-bold">{s.value}</p>
@@ -305,6 +295,12 @@ export default function PostDetailPage({
           </Link>
         </p>
       )}
+
+      <ShareActivitySheet
+        post={post}
+        open={shareOpen}
+        onClose={() => setShareOpen(false)}
+      />
     </div>
   );
 }

@@ -42,7 +42,7 @@ export function CommentComposer({
         value={body}
         onChange={(e) => setBody(e.target.value)}
         placeholder={parentId ? "Write a reply…" : "Encourage them…"}
-        className="h-11 flex-1 rounded-2xl border border-border bg-background px-4 text-sm outline-none focus:border-accent"
+        className="h-11 flex-1 rounded-2xl border border-border bg-background px-4 text-base outline-none focus:border-accent"
       />
       <Button type="submit" size="sm" disabled={!body.trim()}>
         Post
@@ -75,7 +75,7 @@ function CommentItem({
   );
 
   return (
-    <div className={depth > 0 ? "ml-8 mt-3 border-l border-border pl-3" : ""}>
+    <div className={depth > 0 ? "ml-4 mt-3 border-l border-border pl-3 sm:ml-8" : ""}>
       <div className="flex gap-3">
         <Link href={`/social/u/${username}`}>
           <SocialAvatar name={name} size="sm" />
@@ -93,11 +93,11 @@ function CommentItem({
             </span>
           </div>
           <p className="mt-1 text-sm leading-relaxed">{comment.body}</p>
-          <div className="mt-2 flex gap-3">
+          <div className="mt-1 flex gap-1">
             {depth < 1 && (
               <button
                 type="button"
-                className="text-xs font-medium text-muted hover:text-foreground"
+                className="evolve-press inline-flex min-h-9 items-center rounded-lg px-2 text-xs font-medium text-muted hover:bg-muted-bg hover:text-foreground"
                 onClick={() => setReplying((v) => !v)}
               >
                 Reply
@@ -106,7 +106,7 @@ function CommentItem({
             {canDelete && (
               <button
                 type="button"
-                className="inline-flex items-center gap-1 text-xs text-muted hover:text-danger"
+                className="evolve-press inline-flex min-h-9 items-center gap-1 rounded-lg px-2 text-xs text-muted hover:bg-muted-bg hover:text-danger"
                 onClick={() => {
                   deleteComment(comment.id);
                   toast("Comment removed.", "info");

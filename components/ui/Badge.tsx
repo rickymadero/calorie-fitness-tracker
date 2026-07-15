@@ -1,20 +1,34 @@
 interface BadgeProps {
   children: React.ReactNode;
-  variant?: "default" | "accent" | "success" | "warning";
+  variant?:
+    | "default"
+    | "accent"
+    | "success"
+    | "warning"
+    | "steel"
+    | "bronze"
+    | "slate";
   className?: string;
 }
 
 const variants = {
   default: "bg-muted-bg text-muted",
   accent: "bg-accent-soft text-accent-dim dark:text-accent",
-  success: "bg-success/15 text-success",
-  warning: "bg-warning/15 text-warning",
+  success: "bg-accent-soft text-accent-dim dark:text-accent",
+  warning: "bg-bronze-soft text-bronze-fg",
+  steel: "bg-steel-soft text-steel-fg",
+  bronze: "bg-bronze-soft text-bronze-fg",
+  slate: "bg-slate-soft text-slate-fg",
 };
 
-export function Badge({ children, variant = "default", className = "" }: BadgeProps) {
+export function Badge({
+  children,
+  variant = "default",
+  className = "",
+}: BadgeProps) {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ${variants[variant]} ${className}`}
+      className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold transition-transform duration-200 active:scale-95 ${variants[variant]} ${className}`}
     >
       {children}
     </span>

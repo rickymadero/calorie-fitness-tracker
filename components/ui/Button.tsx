@@ -24,9 +24,9 @@ const variants: Record<Variant, string> = {
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-10 px-4 text-sm rounded-xl",
-  md: "h-12 px-5 text-sm rounded-2xl",
-  lg: "h-14 px-6 text-base rounded-2xl",
+  sm: "min-h-11 px-4 py-2 text-sm rounded-xl",
+  md: "min-h-12 px-5 py-2.5 text-sm rounded-2xl",
+  lg: "min-h-14 px-6 py-3 text-base rounded-2xl",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -46,7 +46,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     <button
       ref={ref}
       disabled={disabled || loading}
-      className={`inline-flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 ${variants[variant]} ${sizes[size]} ${fullWidth ? "w-full" : ""} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 transition-all duration-200 hover:brightness-[1.03] active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 ${variants[variant]} ${sizes[size]} ${fullWidth ? "w-full" : ""} ${className}`}
       {...props}
     >
       {loading && (

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   Heart,
   MessageCircle,
@@ -11,11 +12,14 @@ import {
   Lock,
   Users,
   Globe,
+  MapPin,
+  Activity,
 } from "lucide-react";
 import { usePosts } from "@/components/posts/PostsProvider";
 import { useSocial } from "@/components/social/SocialProvider";
 import { SocialAvatar, FollowButton } from "@/components/social/PersonCard";
 import { Badge } from "@/components/ui/Badge";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { RouteMapPreview } from "@/components/feed/RouteMapPreview";
 import { ShareActivitySheet } from "@/components/feed/ShareActivitySheet";
 import { useToast } from "@/components/providers/ToastProvider";
@@ -24,6 +28,8 @@ import {
   formatDurationClock,
   formatPace,
 } from "@/lib/geo/routes";
+import { ACTIVITY_COLORS } from "@/lib/colors/vivid";
+import { feedItem, feedStagger, tapScale } from "@/lib/motion";
 import type { WorkoutPost } from "@/lib/types/posts";
 
 function formatWhen(iso: string) {
@@ -51,16 +57,24 @@ export function LikeButton({
 }) {
   const { hasLiked, toggleLike } = usePosts();
   const liked = hasLiked(postId);
+  const reduce = useReducedMotion();
 
   return (
-    <button
+    <motion.button
       type="button"
+      whileTap={reduce ? undefined : tapScale}
+      animate={
+        liked && !reduce
+          ? { scale: [1, 1.18, 1] }
+          : { scale: 1 }
+      }
+      transition={{ type: "spring", stiffness: 500, damping: 18 }}
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
         toggleLike(postId);
       }}
-      className={`inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 text-sm font-medium transition ${
+      className={`inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 text-sm font-medium transition-colors ${
         liked ? "text-accent" : "text-muted hover:text-foreground"
       }`}
       aria-pressed={liked}
@@ -71,17 +85,17 @@ export function LikeButton({
         strokeWidth={liked ? 0 : 2}
       />
       {likesCount}
-    </button>
+    </motion.button>
   );
 }
 
 function StatCell({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0 text-center">
-      <p className="font-display text-base font-bold tracking-tight sm:text-lg">
+      <p className="truncate font-display text-base font-bold tracking-tight sm:text-lg">
         {value}
       </p>
-      <p className="mt-0.5 text-[10px] uppercase tracking-wide text-muted">
+      <p className="mt-0.5 truncate text-[11px] font-medium uppercase tracking-wide text-muted">
         {label}
       </p>
     </div>
@@ -107,7 +121,7 @@ function OutdoorStats({ post }: { post: WorkoutPost }) {
   }
   return (
     <div
-      className={`mt-3 grid gap-2 rounded-2xl bg-muted-bg px-2 py-3 ${
+      className={`evolve-stats-vivid mt-3 grid gap-2 rounded-2xl px-2 py-3 ${
         cells.length >= 4 ? "grid-cols-4" : `grid-cols-${Math.max(cells.length, 2)}`
       }`}
       style={{
@@ -127,14 +141,14 @@ function GymBody({ post }: { post: WorkoutPost }) {
       {post.muscleGroups && post.muscleGroups.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {post.muscleGroups.map((m) => (
-            <Badge key={m} variant="accent">
+            <Badge key={m} variant="steel">
               {m}
             </Badge>
           ))}
         </div>
       )}
       <div
-        className="grid gap-2 rounded-2xl bg-muted-bg px-2 py-3"
+        className="evolve-stats-vivid grid gap-2 rounded-2xl px-2 py-3"
         style={{
           gridTemplateColumns: `repeat(${Math.min(
             [
@@ -172,7 +186,7 @@ function GymBody({ post }: { post: WorkoutPost }) {
               key={ex.name}
               className="flex items-baseline justify-between gap-2 text-sm"
             >
-              <span className="font-medium">{ex.name}</span>
+              <span className="min-w-0 truncate font-medium">{ex.name}</span>
               <span className="shrink-0 text-xs text-muted">
                 {ex.sets} sets
                 {ex.reps != null ? ` · ${ex.reps} reps` : ""}
@@ -223,9 +237,11 @@ function CommentPreview({ postId }: { postId: string }) {
 export function PostCard({
   post,
   compact = false,
+  hideMap = false,
 }: {
   post: WorkoutPost;
   compact?: boolean;
+  hideMap?: boolean;
 }) {
   const { user } = useAuth();
   const { getCard } = useSocial();
@@ -251,70 +267,70 @@ export function PostCard({
   const saved = hasSaved(post.id);
 
   return (
-    <article className="overflow-hidden rounded-apex-lg border border-border bg-card shadow-apex">
+    <motion.article
+      layout
+      className="evolve-card-lift overflow-hidden rounded-apex-lg border border-border bg-card shadow-apex"
+    >
       <div className="p-4 pb-0">
-        <div className="flex items-start gap-3">
+        <div className="flex items-center gap-3">
           <Link href={`/social/u/${username}`} className="shrink-0">
             <SocialAvatar name={name} size="sm" />
           </Link>
           <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <Link
                 href={`/social/u/${username}`}
-                className="font-display text-sm font-semibold hover:text-accent-dim dark:hover:text-accent"
+                className="truncate font-display text-sm font-semibold hover:text-accent-dim dark:hover:text-accent"
               >
                 {name}
               </Link>
-              <span className="text-xs text-muted">@{username}</span>
-              <Badge className="capitalize">{post.type}</Badge>
-              <span className="inline-flex items-center gap-1 text-xs text-muted">
+              <span className="shrink-0 text-muted">
                 <VisibilityIcon v={post.visibility} />
               </span>
             </div>
-            <p className="text-xs text-muted">{formatWhen(post.occurredAt)}</p>
+            <p className="truncate text-xs text-muted">
+              @{username} · {formatWhen(post.occurredAt)}
+            </p>
           </div>
-          <div className="flex shrink-0 items-center gap-1">
-            {!isSelf && author && (
-              <div className="hidden sm:block">
-                <FollowButton card={author} />
+          {!isSelf && author && <FollowButton card={author} />}
+          <div className="relative shrink-0">
+            <button
+              type="button"
+              className="evolve-press inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted hover:bg-muted-bg hover:text-foreground"
+              aria-label="Options"
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              <MoreHorizontal size={18} />
+            </button>
+            {menuOpen && (
+              <div className="absolute right-0 z-20 mt-1 w-44 overflow-hidden rounded-2xl border border-border bg-card py-1 shadow-apex-lg">
+                <Link
+                  href={`/posts/${post.id}`}
+                  className="block px-4 py-2.5 text-sm hover:bg-muted-bg"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Open activity
+                </Link>
+                <button
+                  type="button"
+                  className="block w-full px-4 py-2.5 text-left text-sm hover:bg-muted-bg"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    setShareOpen(true);
+                  }}
+                >
+                  Share activity…
+                </button>
               </div>
             )}
-            <div className="relative">
-              <button
-                type="button"
-                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted hover:bg-muted-bg hover:text-foreground"
-                aria-label="Options"
-                onClick={() => setMenuOpen((v) => !v)}
-              >
-                <MoreHorizontal size={18} />
-              </button>
-              {menuOpen && (
-                <div className="absolute right-0 z-20 mt-1 w-40 rounded-xl border border-border bg-card py-1 shadow-apex-lg">
-                  <Link
-                    href={`/posts/${post.id}`}
-                    className="block px-3 py-2 text-sm hover:bg-muted-bg"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Open activity
-                  </Link>
-                  <button
-                    type="button"
-                    className="block w-full px-3 py-2 text-left text-sm hover:bg-muted-bg"
-                    onClick={() => {
-                      setMenuOpen(false);
-                      setShareOpen(true);
-                    }}
-                  >
-                    Share activity…
-                  </button>
-                </div>
-              )}
-            </div>
           </div>
         </div>
 
         <Link href={`/posts/${post.id}`} className="mt-3 block">
-          <h3 className="font-display text-lg font-bold tracking-tight">
+          <Badge className={`capitalize ${ACTIVITY_COLORS[post.type].badge}`}>
+            {post.type}
+          </Badge>
+          <h3 className="mt-1.5 font-display text-lg font-bold leading-snug tracking-tight">
             {post.title}
           </h3>
           {post.caption ? (
@@ -323,12 +339,15 @@ export function PostCard({
             </p>
           ) : null}
           {post.locationName && (
-            <p className="mt-1 text-xs text-muted">{post.locationName}</p>
+            <p className="mt-1 inline-flex items-center gap-1 text-xs text-muted">
+              <MapPin size={12} />
+              {post.locationName}
+            </p>
           )}
         </Link>
       </div>
 
-      {isOutdoor && hasRoute && (
+      {isOutdoor && hasRoute && !hideMap && (
         <div className="mt-3 px-4">
           <RouteMapPreview
             points={mapPoints}
@@ -347,7 +366,7 @@ export function PostCard({
         ) : isOutdoor || post.distanceKm != null || post.durationMin != null ? (
           <OutdoorStats post={post} />
         ) : post.durationMin != null ? (
-          <div className="mt-3 grid grid-cols-2 gap-2 rounded-2xl bg-muted-bg px-2 py-3">
+          <div className="evolve-stats-vivid mt-3 grid grid-cols-2 gap-2 rounded-2xl px-2 py-3">
             <StatCell
               label="Duration"
               value={formatDurationClock(post.durationMin)}
@@ -361,7 +380,7 @@ export function PostCard({
         {post.achievements && post.achievements.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-1.5">
             {post.achievements.map((a) => (
-              <Badge key={a.id} variant="success">
+              <Badge key={a.id} variant="bronze">
                 {a.label}
               </Badge>
             ))}
@@ -381,20 +400,20 @@ export function PostCard({
       </div>
 
       <div className="mt-3 flex items-center justify-between gap-2 border-t border-border px-2 py-1">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
           <LikeButton postId={post.id} likesCount={post.likesCount} />
           <Link
             href={`/posts/${post.id}`}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 text-sm text-muted hover:text-foreground"
+            className="evolve-press inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 text-sm font-medium text-muted hover:text-foreground"
           >
             <MessageCircle size={18} />
             {post.commentsCount}
           </Link>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
           <button
             type="button"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center text-muted hover:text-foreground"
+            className="evolve-press inline-flex min-h-11 min-w-11 items-center justify-center text-muted hover:text-foreground"
             aria-label="Share"
             onClick={() => setShareOpen(true)}
           >
@@ -402,7 +421,7 @@ export function PostCard({
           </button>
           <button
             type="button"
-            className={`inline-flex min-h-11 min-w-11 items-center justify-center ${
+            className={`inline-flex min-h-11 min-w-11 items-center justify-center transition-transform active:scale-90 ${
               saved ? "text-accent" : "text-muted hover:text-foreground"
             }`}
             aria-label="Save"
@@ -429,7 +448,7 @@ export function PostCard({
         open={shareOpen}
         onClose={() => setShareOpen(false)}
       />
-    </article>
+    </motion.article>
   );
 }
 
@@ -444,22 +463,32 @@ export function FeedList({
   emptyHint: string;
   emptyAction?: React.ReactNode;
 }) {
+  const reduce = useReducedMotion();
+
   if (posts.length === 0) {
     return (
-      <div className="rounded-apex-lg border border-dashed border-border px-6 py-14 text-center">
-        <p className="font-display font-semibold">{emptyTitle}</p>
-        <p className="mt-1 text-sm text-muted">{emptyHint}</p>
-        {emptyAction ? <div className="mt-4">{emptyAction}</div> : null}
-      </div>
+      <EmptyState
+        icon={<Activity size={28} />}
+        title={emptyTitle}
+        description={emptyHint}
+        action={emptyAction}
+      />
     );
   }
 
   return (
-    <div className="grid gap-5">
+    <motion.div
+      className="grid gap-5"
+      variants={reduce ? undefined : feedStagger}
+      initial={reduce ? false : "initial"}
+      animate="animate"
+    >
       {posts.map((post) => (
-        <PostCard key={post.id} post={post} />
+        <motion.div key={post.id} variants={reduce ? undefined : feedItem}>
+          <PostCard post={post} />
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 }
 
@@ -469,7 +498,8 @@ export function FeedSkeleton() {
       {[1, 2, 3].map((i) => (
         <div
           key={i}
-          className="h-72 animate-pulse rounded-apex-lg bg-muted-bg"
+          className="evolve-shimmer h-72 rounded-apex-lg bg-muted-bg"
+          style={{ animationDelay: `${i * 0.12}s` }}
         />
       ))}
     </div>
@@ -477,20 +507,27 @@ export function FeedSkeleton() {
 }
 
 export function ComposeBar() {
+  const reduce = useReducedMotion();
   return (
-    <Link
-      href="/posts/new"
-      className="flex min-h-14 items-center gap-3 rounded-apex-lg border border-border bg-card p-4 shadow-apex transition hover:border-accent/40"
+    <motion.div
+      whileHover={reduce ? undefined : { y: -2 }}
+      whileTap={reduce ? undefined : { scale: 0.985 }}
+      transition={{ type: "spring", stiffness: 400, damping: 28 }}
     >
-      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent-soft text-lg font-bold text-accent-dim dark:text-accent">
-        +
-      </div>
-      <div>
-        <p className="text-sm font-medium">Share a workout</p>
-        <p className="text-xs text-muted">
-          Run, gym, ride — publish a visual activity summary
-        </p>
-      </div>
-    </Link>
+      <Link
+        href="/posts/new"
+        className="evolve-card-lift flex min-h-14 items-center gap-3 rounded-apex-lg border border-border bg-card p-4 shadow-apex"
+      >
+        <div className="evolve-pulse-soft flex h-10 w-10 items-center justify-center rounded-full bg-accent-soft text-lg font-bold text-accent-dim dark:text-accent">
+          +
+        </div>
+        <div>
+          <p className="text-sm font-medium">Share a workout</p>
+          <p className="text-xs text-muted">
+            Run, gym, ride — publish a visual activity summary
+          </p>
+        </div>
+      </Link>
+    </motion.div>
   );
 }

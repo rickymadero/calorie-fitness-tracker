@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { SideNav, BottomNav } from "@/components/layout/AppNav";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { PageLoader } from "@/components/ui/Spinner";
+import { PageTransition } from "@/components/ui/PageTransition";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { user, isReady } = useAuth();
@@ -35,11 +36,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-dvh bg-background">
+    <div className="evolve-app-shell flex min-h-dvh bg-background">
       <SideNav />
       <div className="flex min-w-0 flex-1 flex-col">
-        <main className="flex-1 px-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-4 sm:px-5 sm:pt-6 lg:px-8 lg:pb-8 lg:pt-8">
-          <div className="mx-auto w-full max-w-xl lg:max-w-6xl">{children}</div>
+        <main className="flex-1 px-5 pb-[var(--mobile-nav-clearance)] pt-4 sm:px-5 sm:pt-6 lg:px-8 lg:pb-8 lg:pt-8">
+          <div className="mx-auto w-full max-w-[390px] lg:max-w-6xl">
+            <PageTransition>{children}</PageTransition>
+          </div>
         </main>
         <BottomNav />
       </div>

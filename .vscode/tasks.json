@@ -1,0 +1,64 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Evolve: Start Dev Server",
+      "type": "npm",
+      "script": "dev",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "evolve"
+      },
+      "problemMatcher": {
+        "owner": "nextjs",
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "(✓ Ready|Ready in|Local:)"
+        }
+      }
+    },
+    {
+      "label": "Evolve: Show Simple Browser",
+      "type": "shell",
+      "command": "echo ${input:evolveOpenPreview}",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "echo": false,
+        "close": true,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Evolve: Live Preview",
+      "dependsOn": [
+        "Evolve: Start Dev Server",
+        "Evolve: Show Simple Browser"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "evolveOpenPreview",
+      "type": "command",
+      "command": "simpleBrowser.show",
+      "args": ["http://localhost:3000"]
+    }
+  ]
+}
