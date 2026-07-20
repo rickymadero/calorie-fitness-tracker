@@ -89,7 +89,31 @@ function read(): PostsStore {
 
 function write(store: PostsStore) {
   if (!canUse()) return;
-  localStorage.setItem(KEY, JSON.stringify(store));
+  try {
+    localStorage.setItem(KEY, JSON.stringify(store));
+  } catch (err) {
+    // Photos are stored as data-URLs; oversized payloads can hit quota.
+    const slim = {
+      ...store,
+      posts: store.posts.map((p) => {
+        const { photoUrl, photos, videoUrl, ...rest } = p;
+        const keepPhoto =
+          photoUrl && photoUrl.length < 400_000 ? photoUrl : undefined;
+        const keepVideo =
+          videoUrl && videoUrl.length < 1_200_000 ? videoUrl : undefined;
+        return {
+          ...rest,
+          ...(keepPhoto ? { photoUrl: keepPhoto } : {}),
+          ...(keepVideo ? { videoUrl: keepVideo } : {}),
+        };
+      }),
+    };
+    try {
+      localStorage.setItem(KEY, JSON.stringify(slim));
+    } catch {
+      console.error("evolve.posts: localStorage write failed", err);
+    }
+  }
 }
 
 function syncCounts(store: PostsStore, postId: string) {
@@ -145,6 +169,68 @@ export const postsStorage = {
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   },
 
+  /**
+   * Home feed: mostly people you follow, plus a few high-performing
+   * public posts from others (sprinkled in).
+   */
+  listHomeFeed(viewerId: string) {
+    const followingIds = new Set(
+      socialStorage
+        .getFollows()
+        .filter((f) => f.followerId === viewerId)
+        .map((f) => f.followingId),
+    );
+    followingIds.add(viewerId);
+
+    const fromFollowing = this.listFollowingFeed(viewerId);
+
+    const engagement = (p: WorkoutPost) =>
+      (p.likesCount ?? 0) * 2 + (p.commentsCount ?? 0);
+
+    const popularOutside = this.listPublicFeed(viewerId)
+      .filter((p) => !followingIds.has(p.authorId))
+      .filter((p) => engagement(p) >= 6)
+      .sort((a, b) => engagement(b) - engagement(a));
+
+    // No follows yet → show popular public workouts
+    if (fromFollowing.filter((p) => p.authorId !== viewerId).length === 0) {
+      const own = fromFollowing;
+      const discover = (
+        popularOutside.length > 0
+          ? popularOutside
+          : this.listPublicFeed(viewerId).filter(
+              (p) => !followingIds.has(p.authorId),
+            )
+      ).slice(0, 12);
+      return [...own, ...discover];
+    }
+
+    const sprinkleMax = Math.min(
+      3,
+      Math.max(1, Math.ceil(fromFollowing.length / 5)),
+      popularOutside.length,
+    );
+    const sprinkle = popularOutside.slice(0, sprinkleMax);
+
+    if (sprinkle.length === 0) return fromFollowing;
+
+    const out: WorkoutPost[] = [];
+    const step = Math.max(3, Math.floor(fromFollowing.length / sprinkle.length));
+    let s = 0;
+    fromFollowing.forEach((post, i) => {
+      out.push(post);
+      if (s < sprinkle.length && (i + 1) % step === 0) {
+        out.push(sprinkle[s]!);
+        s += 1;
+      }
+    });
+    while (s < sprinkle.length) {
+      out.push(sprinkle[s]!);
+      s += 1;
+    }
+    return out;
+  },
+
   listPublicFeed(viewerId?: string | null) {
     return read()
       .posts.filter(
@@ -181,6 +267,7 @@ export const postsStorage = {
       visibility: input.visibility,
       photoUrl: input.photoUrl,
       photos: input.photos,
+      videoUrl: input.videoUrl,
       distanceKm: input.distanceKm,
       durationMin: input.durationMin,
       paceMinPerKm:
@@ -359,6 +446,79 @@ export const postsStorage = {
       totalWorkouts: posts.length,
       totalKm: Math.round(totalKm * 10) / 10,
       streakDays: estimateStreak(posts),
+    };
+  },
+
+  /** Free basic stats: last 7 days of activity for the author. */
+  weekStats(authorId: string) {
+    const posts = read().posts.filter((p) => p.authorId === authorId);
+    const now = new Date();
+    const start = new Date(now);
+    start.setHours(0, 0, 0, 0);
+    start.setDate(start.getDate() - 6);
+
+    const days: {
+      key: string;
+      label: string;
+      workouts: number;
+      minutes: number;
+      distanceKm: number;
+      calories: number;
+    }[] = [];
+
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(start);
+      d.setDate(start.getDate() + i);
+      const key = d.toISOString().slice(0, 10);
+      days.push({
+        key,
+        label: d.toLocaleDateString(undefined, { weekday: "short" }),
+        workouts: 0,
+        minutes: 0,
+        distanceKm: 0,
+        calories: 0,
+      });
+    }
+
+    const byKey = new Map(days.map((d) => [d.key, d]));
+    for (const p of posts) {
+      const key = p.occurredAt.slice(0, 10);
+      const bucket = byKey.get(key);
+      if (!bucket) continue;
+      const minutes = p.durationMin ?? p.movingTimeMin ?? 0;
+      const distance = p.distanceKm ?? 0;
+      const calories =
+        p.caloriesBurned ??
+        Math.round(minutes * 7.5 + distance * 55);
+      bucket.workouts += 1;
+      bucket.minutes += minutes;
+      bucket.distanceKm += distance;
+      bucket.calories += calories;
+    }
+
+    const totals = days.reduce(
+      (acc, d) => {
+        acc.workouts += d.workouts;
+        acc.minutes += d.minutes;
+        acc.distanceKm += d.distanceKm;
+        acc.calories += d.calories;
+        return acc;
+      },
+      { workouts: 0, minutes: 0, distanceKm: 0, calories: 0 },
+    );
+
+    return {
+      days: days.map((d) => ({
+        ...d,
+        distanceKm: Math.round(d.distanceKm * 10) / 10,
+        calories: Math.round(d.calories),
+      })),
+      totals: {
+        workouts: totals.workouts,
+        minutes: Math.round(totals.minutes),
+        distanceKm: Math.round(totals.distanceKm * 10) / 10,
+        calories: Math.round(totals.calories),
+      },
     };
   },
 };

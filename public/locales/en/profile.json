@@ -1,0 +1,37 @@
+{
+  "edit": "Edit profile",
+  "publicView": "Public view",
+  "createPost": "Create post",
+  "emptyPosts": "No posts yet",
+  "emptyPostsHint": "Share your first workout with the network.",
+  "addBio": "Add a bio in settings so athletes know who you are.",
+  "statMonth": "Month",
+  "statDistance": "Distance",
+  "statStreak": "Streak",
+  "tabWorkouts": "Workouts",
+  "tabPrs": "PRs",
+  "recentWorkouts": "Recent workouts",
+  "newPost": "New post",
+  "savedTitle": "Saved Posts",
+  "savedEmpty": "No saved workouts",
+  "savedEmptyHint": "Tap the bookmark on any post to save it here.",
+  "browseFeed": "Browse feed",
+  "signedOut": "Signed out.",
+  "menuAria": "Profile menu",
+  "prs": {
+    "empty": "No PRs yet",
+    "emptySelf": "Add your first PR",
+    "emptySelfHint": "Bench, squat, 5K, HYROX, Ironman — show the network what you've hit.",
+    "addTitle": "Add personal record",
+    "label": "Label",
+    "result": "Result",
+    "saved": "PR saved.",
+    "removed": "PR removed.",
+    "cat": {
+      "strength": "Strength",
+      "running": "Running",
+      "endurance": "Endurance & races",
+      "other": "Other"
+    }
+  }
+}

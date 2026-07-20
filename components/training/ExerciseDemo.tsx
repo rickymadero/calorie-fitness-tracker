@@ -11,14 +11,21 @@ import {
   AthleteFormDemo,
   AthleteFormThumb,
 } from "@/components/training/AthleteFormDemo";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 
 export function ProDemoGate({ onClose }: { onClose?: () => void }) {
   const router = useRouter();
+  const { t } = useAppTranslation(["workouts", "common"]);
   return (
     <div className="rounded-apex-lg border border-accent/40 bg-card p-6 text-center shadow-apex-lg">
       {onClose && (
         <div className="mb-2 flex justify-end">
-          <button type="button" onClick={onClose} className="text-muted" aria-label="Close">
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-muted"
+            aria-label={t("buttons.close", { ns: "common" })}
+          >
             <X size={18} />
           </button>
         </div>
@@ -27,12 +34,10 @@ export function ProDemoGate({ onClose }: { onClose?: () => void }) {
         <Crown size={22} />
       </div>
       <h3 className="font-display text-xl font-bold">
-        Unlock full exercise demonstrations and train with confidence.
+        {t("demo.gateTitle")}
       </h3>
       <p className="mt-3 text-sm text-muted">
-        Upgrade to Pro to access real athlete form guides, proper technique
-        instructions, exercise alternatives, and personalized coaching
-        recommendations.
+        {t("demo.gateBody")}
       </p>
       <Button
         className="mt-6"
@@ -40,10 +45,10 @@ export function ProDemoGate({ onClose }: { onClose?: () => void }) {
         fullWidth
         onClick={() => router.push("/pricing")}
       >
-        Upgrade to Pro
+        {t("buttons.upgradePro", { ns: "common" })}
       </Button>
       <p className="mt-3 text-xs text-muted">
-        Free users can still complete workouts with basic exercise info.
+        {t("demo.gateFooter")}
       </p>
     </div>
   );
@@ -58,6 +63,7 @@ export function ExerciseDemoPlayer({
   isPro: boolean;
   compact?: boolean;
 }) {
+  const { t } = useAppTranslation(["workouts", "common"]);
   const media = getAthleteDemoMedia(exercise.id, exercise.tags);
 
   if (!isPro) {
@@ -81,8 +87,8 @@ export function ExerciseDemoPlayer({
         compact={compact}
       />
       <div className="flex items-center justify-between gap-2 border-t border-border bg-card px-3 py-2 text-xs text-muted">
-        <span>Full-body athlete form · looping movement demo</span>
-        <Badge variant="accent">Pro</Badge>
+        <span>{t("demo.footerCaption")}</span>
+        <Badge variant="accent">{t("labels.pro", { ns: "common" })}</Badge>
       </div>
     </div>
   );

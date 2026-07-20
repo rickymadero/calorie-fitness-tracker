@@ -1,0 +1,42 @@
+{
+  "title": "الوصفات",
+  "subtitle": "أفكار وجبات مرتبطة بماكروزك. Pro يفتح خططًا أسبوعية مخصصة وتوصيات قائمة على الماكروز.",
+  "recommendedNow": "موصى به لك الآن",
+  "remainingMacros": "~{{kcal}} سعرة و{{protein}}غ بروتين متبقية",
+  "postWorkoutFocus": " · تركيز ما بعد التمرين",
+  "unlockProMeals": "فتح وجبات Pro",
+  "recipeCardMeta": "{{calories}} سعرة · {{protein}}P · {{carbs}}C · {{fat}}F",
+  "searchPlaceholder": "ابحث عن وصفات...",
+  "filter": {
+    "all": "الكل",
+    "breakfast": "فطور",
+    "lunch": "غداء",
+    "dinner": "عشاء",
+    "snack": "وجبة خفيفة",
+    "highProtein": "عالية البروتين",
+    "quick": "سريعة",
+    "vegetarian": "نباتية",
+    "keto": "كيتو"
+  },
+  "cardMeta": "{{calories}} سعرة · {{protein}}غ بروتين · {{minutes}} د",
+  "notFound": "الوصفة غير موجودة.",
+  "back": "الوصفات",
+  "timing": "تحضير {{prep}}د · طبخ {{cook}}د · {{difficulty}}",
+  "portions": "الحصص",
+  "logToTracker": "تسجيل في متتبع السعرات",
+  "groceryList": "قائمة البقالة",
+  "toast": {
+    "logProRequired": "رقِّ إلى Pro لتسجيل وصفات مخصصة.",
+    "loggedDemo": "تم تسجيل {{name}} في متتبع الطعام (تجريبي).",
+    "groceryDemo": "أُضيفت المكونات إلى قائمة البقالة (تجريبي).",
+    "groceryProOnly": "قوائم البقالة الذكية ميزة Pro."
+  },
+  "lockedTitle": "افتح وصفات Pro المخصصة",
+  "lockedBody": "احصل على تعليمات كاملة وخطط وجبات أسبوعية واقتراحات ماكروز وضبط حصص تلقائي.",
+  "ingredients": "المكونات",
+  "allergens": "مسببات الحساسية: {{list}}",
+  "steps": "الخطوات",
+  "equipmentPortion": "المعدات: {{equipment}} · الحصة: {{portion}}",
+  "disclaimer": "قيم التغذية تقديرات للتخطيط فقط وليست نصيحة طبية.",
+  "openMealPlan": "فتح تخطيط الوجبات"
+}

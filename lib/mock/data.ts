@@ -4,6 +4,7 @@ import type {
   LoggedMeal,
   WorkoutSession,
 } from "@/lib/types";
+import { HOUSEHOLD_FOODS } from "./householdFoods";
 
 export const MOTIVATIONAL_QUOTES = [
   "One day or day one. You decide.",
@@ -13,7 +14,7 @@ export const MOTIVATIONAL_QUOTES = [
   "Show up for yourself today.",
 ];
 
-export const FOODS: FoodItem[] = [
+const BRANDED_FOODS: FoodItem[] = [
   // Grocery / everyday staples
   {
     id: "f1",
@@ -686,6 +687,9 @@ export const FOODS: FoodItem[] = [
     category: "snack",
   },
 ];
+
+/** Full catalog: branded/chain items + household groceries (500+) */
+export const FOODS: FoodItem[] = [...BRANDED_FOODS, ...HOUSEHOLD_FOODS];
 
 export type MealPlanSuggestion = {
   id: string;

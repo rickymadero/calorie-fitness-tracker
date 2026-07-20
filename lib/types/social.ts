@@ -22,6 +22,20 @@ export type WorkoutInterest =
   | "hiking"
   | "sports";
 
+/** Public-facing personal records shown on athlete profiles */
+export type PrCategory = "strength" | "running" | "endurance" | "other";
+
+export interface AthletePersonalRecord {
+  id: string;
+  category: PrCategory;
+  /** e.g. Bench press, 5K, HYROX, Ironman */
+  label: string;
+  /** Display value e.g. "100 kg", "22:14", "1:18:42" */
+  value: string;
+  achievedAt?: string;
+  notes?: string;
+}
+
 export interface SocialProfile {
   userId: string;
   username: string;
@@ -33,6 +47,8 @@ export interface SocialProfile {
   favoriteWorkouts: WorkoutInterest[];
   location?: string;
   showLocation: boolean;
+  /** ISO 3166-1 alpha-2 — shown as flag on feed + profiles */
+  countryCode?: string;
   instagramUsername?: string;
   showInstagram: boolean;
   visibility: ProfileVisibility;
@@ -43,6 +59,8 @@ export interface SocialProfile {
     totalRunKm: number;
     totalWorkoutMinutes: number;
   };
+  /** Strength / run / race PRs visible on the public profile */
+  personalRecords: AthletePersonalRecord[];
 }
 
 export interface FollowEdge {
@@ -73,6 +91,8 @@ export interface SocialStore {
   follows: FollowEdge[];
   requests: FollowRequest[];
   blocks: BlockEdge[];
+  /** UserIds dismissed from Feed suggested-people carousel */
+  dismissedSuggestions?: string[];
 }
 
 export interface PublicSocialCard {

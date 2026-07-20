@@ -13,6 +13,7 @@ import { PageLoader } from "@/components/ui/Spinner";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useTraining } from "@/components/training/TrainingProvider";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { EXERCISES } from "@/lib/mock/exercises";
 import type {
   EquipmentType,
@@ -21,12 +22,13 @@ import type {
   WorkoutPlan,
 } from "@/lib/types/training";
 import type { ExperienceLevel, FitnessGoal } from "@/lib/types";
+import type { TFunction } from "i18next";
 
-function emptyPlan(): WorkoutPlan {
+function emptyPlan(t: TFunction): WorkoutPlan {
   return {
     id: `plan-${crypto.randomUUID()}`,
-    name: "New workout plan",
-    description: "Custom plan created in admin builder.",
+    name: t("editor.defaults.name"),
+    description: t("editor.defaults.description"),
     mainGoal: "build-muscle",
     experienceLevel: "beginner",
     requiredEquipment: ["dumbbells", "bodyweight"],
@@ -35,17 +37,17 @@ function emptyPlan(): WorkoutPlan {
     isTemplate: true,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    instructions: "Train with controlled tempo and leave 1–2 reps in reserve.",
-    restDayGuidance: "Walk and stretch on non-training days.",
-    progressionStrategy: "Add reps, then load, when all sets are completed cleanly.",
-    nutritionNotes: "Hit daily protein and stay near calorie target.",
-    safetyNotes: "Stop for sharp pain. Scale range of motion as needed.",
+    instructions: t("editor.defaults.instructions"),
+    restDayGuidance: t("editor.defaults.restDayGuidance"),
+    progressionStrategy: t("editor.defaults.progression"),
+    nutritionNotes: t("editor.defaults.nutrition"),
+    safetyNotes: t("editor.defaults.safety"),
     phases: [
       {
         id: `phase-${crypto.randomUUID()}`,
-        name: "Phase 1",
+        name: t("editor.defaults.phaseName"),
         weeks: 4,
-        focus: "Foundation",
+        focus: t("editor.defaults.phaseFocus"),
         order: 0,
       },
     ],
@@ -54,17 +56,17 @@ function emptyPlan(): WorkoutPlan {
   };
 }
 
-function emptyDay(index: number): WorkoutDay {
+function emptyDay(t: TFunction, index: number): WorkoutDay {
   return {
     id: `day-${crypto.randomUUID()}`,
-    name: `Day ${index + 1}`,
+    name: t("editor.defaults.dayName", { n: index + 1 }),
     dayOfWeek: index,
     isRestDay: false,
     muscleGroups: ["full-body"],
     estimatedMinutes: 45,
     difficulty: "beginner",
-    warmUpNotes: "Light cardio + mobility",
-    cooldownNotes: "Walk + stretch",
+    warmUpNotes: t("editor.defaults.warmUpNotes"),
+    cooldownNotes: t("editor.defaults.cooldownNotes"),
     trainerNotes: "",
     exercises: [],
   };
@@ -75,6 +77,7 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
   const { user, isReady: authReady } = useAuth();
   const { plans, savePlan, assignPlanToUser, isReady } = useTraining();
   const { toast } = useToast();
+  const { t } = useAppTranslation(["admin", "common"]);
   const [plan, setPlan] = useState<WorkoutPlan | null>(null);
   const [selectedDay, setSelectedDay] = useState(0);
   const [booted, setBooted] = useState(false);
@@ -85,10 +88,10 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
       const existing = plans.find((p) => p.id === planId);
       if (existing) setPlan(JSON.parse(JSON.stringify(existing)));
     } else {
-      setPlan(emptyPlan());
+      setPlan(emptyPlan(t));
     }
     setBooted(true);
-  }, [isReady, planId, plans, booted]);
+  }, [isReady, planId, plans, booted, t]);
 
   const day = plan?.days[selectedDay];
 
@@ -148,7 +151,7 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
       daysPerWeek: plan.days.filter((d) => !d.isRestDay).length || plan.daysPerWeek,
     };
     savePlan(next);
-    toast("Plan saved.", "success");
+    toast(t("toast.planSaved"), "success");
     router.push("/admin");
   }
 
@@ -157,14 +160,14 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
       <header className="border-b border-border px-4 py-4 md:px-8">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <EvolveLogo href="/admin" size="sm" />
+            <EvolveLogo size="sm" />
             <Link href="/admin" className="text-sm text-muted hover:text-foreground">
-              <ArrowLeft size={16} className="inline" /> Back
+              <ArrowLeft size={16} className="inline" /> {t("editor.back")}
             </Link>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={() => save(true)}>
-              Save template
+              {t("editor.saveTemplate")}
             </Button>
             <Button
               variant="secondary"
@@ -173,9 +176,9 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
                 assignPlanToUser(plan.id, user.id, false);
               }}
             >
-              Save & assign to me
+              {t("editor.saveAndAssign")}
             </Button>
-            <Button onClick={() => save()}>Save</Button>
+            <Button onClick={() => save()}>{t("editor.save")}</Button>
           </div>
         </div>
       </header>
@@ -183,36 +186,51 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
       <main className="mx-auto grid max-w-6xl gap-6 px-4 py-8 lg:grid-cols-3 md:px-8">
         <div className="space-y-4 lg:col-span-1">
           <Card>
-            <h2 className="font-display font-semibold">Plan details</h2>
+            <h2 className="font-display font-semibold">{t("editor.planDetails")}</h2>
             <div className="mt-3 space-y-3">
               <Input
-                label="Plan name"
+                label={t("editor.planName")}
                 value={plan.name}
                 onChange={(e) => updatePlan({ name: e.target.value })}
               />
               <Input
-                label="Description"
+                label={t("editor.description")}
                 value={plan.description}
                 onChange={(e) => updatePlan({ description: e.target.value })}
               />
               <Select
-                label="Main goal"
+                label={t("editor.mainGoal")}
                 value={plan.mainGoal}
                 onChange={(e) =>
                   updatePlan({ mainGoal: e.target.value as FitnessGoal })
                 }
                 options={[
-                  { value: "lose-weight", label: "Lose weight" },
-                  { value: "build-muscle", label: "Build muscle" },
-                  { value: "increase-strength", label: "Increase strength" },
-                  { value: "improve-endurance", label: "Improve endurance" },
-                  { value: "overall-health", label: "Overall health" },
-                  { value: "athletic-performance", label: "Athletic performance" },
-                  { value: "maintain-weight", label: "Maintain weight" },
+                  { value: "lose-weight", label: t("editor.goal.loseWeight") },
+                  { value: "build-muscle", label: t("editor.goal.buildMuscle") },
+                  {
+                    value: "increase-strength",
+                    label: t("editor.goal.increaseStrength"),
+                  },
+                  {
+                    value: "improve-endurance",
+                    label: t("editor.goal.improveEndurance"),
+                  },
+                  {
+                    value: "overall-health",
+                    label: t("editor.goal.overallHealth"),
+                  },
+                  {
+                    value: "athletic-performance",
+                    label: t("editor.goal.athleticPerformance"),
+                  },
+                  {
+                    value: "maintain-weight",
+                    label: t("editor.goal.maintainWeight"),
+                  },
                 ]}
               />
               <Select
-                label="Experience"
+                label={t("editor.experience")}
                 value={plan.experienceLevel}
                 onChange={(e) =>
                   updatePlan({
@@ -220,13 +238,16 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
                   })
                 }
                 options={[
-                  { value: "beginner", label: "Beginner" },
-                  { value: "intermediate", label: "Intermediate" },
-                  { value: "advanced", label: "Advanced" },
+                  { value: "beginner", label: t("editor.level.beginner") },
+                  {
+                    value: "intermediate",
+                    label: t("editor.level.intermediate"),
+                  },
+                  { value: "advanced", label: t("editor.level.advanced") },
                 ]}
               />
               <Input
-                label="Duration (weeks)"
+                label={t("editor.durationWeeks")}
                 type="number"
                 value={plan.durationWeeks}
                 onChange={(e) =>
@@ -234,7 +255,7 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
                 }
               />
               <Input
-                label="Equipment (comma-separated)"
+                label={t("editor.equipment")}
                 value={plan.requiredEquipment.join(", ")}
                 onChange={(e) =>
                   updatePlan({
@@ -246,24 +267,24 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
                 }
               />
               <Input
-                label="Instructions"
+                label={t("editor.instructions")}
                 value={plan.instructions}
                 onChange={(e) => updatePlan({ instructions: e.target.value })}
               />
               <Input
-                label="Progression strategy"
+                label={t("editor.progressionStrategy")}
                 value={plan.progressionStrategy}
                 onChange={(e) =>
                   updatePlan({ progressionStrategy: e.target.value })
                 }
               />
               <Input
-                label="Nutrition notes"
+                label={t("editor.nutritionNotes")}
                 value={plan.nutritionNotes}
                 onChange={(e) => updatePlan({ nutritionNotes: e.target.value })}
               />
               <Input
-                label="Safety notes"
+                label={t("editor.safetyNotes")}
                 value={plan.safetyNotes}
                 onChange={(e) => updatePlan({ safetyNotes: e.target.value })}
               />
@@ -272,18 +293,18 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
 
           <Card>
             <div className="flex items-center justify-between">
-              <h2 className="font-display font-semibold">Training days</h2>
+              <h2 className="font-display font-semibold">{t("editor.trainingDays")}</h2>
               <Button
                 size="sm"
                 variant="secondary"
                 onClick={() => {
-                  const days = [...plan.days, emptyDay(plan.days.length)];
+                  const days = [...plan.days, emptyDay(t, plan.days.length)];
                   updatePlan({ days, daysPerWeek: days.length });
                   setSelectedDay(days.length - 1);
                 }}
               >
                 <Plus size={14} />
-                Add day
+                {t("editor.addDay")}
               </Button>
             </div>
             <ul className="mt-3 space-y-2">
@@ -299,7 +320,7 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
                     }`}
                   >
                     {d.name}
-                    {d.isRestDay ? " (rest)" : ""}
+                    {d.isRestDay ? t("editor.restSuffix") : ""}
                   </button>
                   <Button
                     size="sm"
@@ -309,13 +330,13 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
                       days.splice(i, 0, {
                         ...JSON.parse(JSON.stringify(d)),
                         id: `day-${crypto.randomUUID()}`,
-                        name: `${d.name} copy`,
+                        name: t("editor.dayCopySuffix", { name: d.name }),
                       });
                       updatePlan({ days });
-                      toast("Day duplicated.", "success");
+                      toast(t("toast.dayDuplicated"), "success");
                     }}
                   >
-                    Copy
+                    {t("editor.copy")}
                   </Button>
                 </li>
               ))}
@@ -326,18 +347,18 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
         <div className="lg:col-span-2">
           {!day ? (
             <Card>
-              <p className="text-sm text-muted">Add a training day to begin.</p>
+              <p className="text-sm text-muted">{t("editor.addDayPrompt")}</p>
             </Card>
           ) : (
             <Card elevated>
               <div className="grid gap-3 sm:grid-cols-2">
                 <Input
-                  label="Workout name"
+                  label={t("editor.workoutName")}
                   value={day.name}
                   onChange={(e) => updateDay({ name: e.target.value })}
                 />
                 <Input
-                  label="Estimated minutes"
+                  label={t("editor.estimatedMinutes")}
                   type="number"
                   value={day.estimatedMinutes}
                   onChange={(e) =>
@@ -345,22 +366,22 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
                   }
                 />
                 <Input
-                  label="Warm-up"
+                  label={t("editor.warmUp")}
                   value={day.warmUpNotes || ""}
                   onChange={(e) => updateDay({ warmUpNotes: e.target.value })}
                 />
                 <Input
-                  label="Cardio notes"
+                  label={t("editor.cardioNotes")}
                   value={day.cardioNotes || ""}
                   onChange={(e) => updateDay({ cardioNotes: e.target.value })}
                 />
                 <Input
-                  label="Cooldown"
+                  label={t("editor.cooldown")}
                   value={day.cooldownNotes || ""}
                   onChange={(e) => updateDay({ cooldownNotes: e.target.value })}
                 />
                 <Input
-                  label="Trainer notes"
+                  label={t("editor.trainerNotes")}
                   value={day.trainerNotes || ""}
                   onChange={(e) => updateDay({ trainerNotes: e.target.value })}
                 />
@@ -371,14 +392,14 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
                   checked={day.isRestDay}
                   onChange={(e) => updateDay({ isRestDay: e.target.checked })}
                 />
-                Mark as rest day
+                {t("editor.markRestDay")}
               </label>
 
               <div className="mt-6 flex items-center justify-between">
-                <h3 className="font-display font-semibold">Exercises</h3>
+                <h3 className="font-display font-semibold">{t("editor.exercises")}</h3>
                 <Button size="sm" onClick={addExercise}>
                   <Plus size={14} />
-                  Add exercise
+                  {t("editor.addExercise")}
                 </Button>
               </div>
 
@@ -390,7 +411,7 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
                   >
                     <div className="grid gap-2 sm:grid-cols-2">
                       <Select
-                        label="Exercise"
+                        label={t("editor.exercise")}
                         value={ex.exerciseId}
                         options={exerciseOptions}
                         onChange={(e) => {
@@ -403,14 +424,20 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
                         }}
                       />
                       <Select
-                        label="Section"
+                        label={t("editor.section")}
                         value={ex.section}
                         options={[
-                          { value: "warmup", label: "Warm-up" },
-                          { value: "mobility", label: "Mobility" },
-                          { value: "main", label: "Main" },
-                          { value: "cardio", label: "Cardio" },
-                          { value: "cooldown", label: "Cooldown" },
+                          { value: "warmup", label: t("editor.sectionWarmup") },
+                          {
+                            value: "mobility",
+                            label: t("editor.sectionMobility"),
+                          },
+                          { value: "main", label: t("editor.sectionMain") },
+                          { value: "cardio", label: t("editor.sectionCardio") },
+                          {
+                            value: "cooldown",
+                            label: t("editor.sectionCooldown"),
+                          },
                         ]}
                         onChange={(e) => {
                           const exercises = [...day.exercises];
@@ -422,7 +449,7 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
                         }}
                       />
                       <Input
-                        label="Sets"
+                        label={t("editor.sets")}
                         type="number"
                         value={ex.sets}
                         onChange={(e) => {
@@ -435,7 +462,7 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
                         }}
                       />
                       <Input
-                        label="Reps"
+                        label={t("editor.reps")}
                         value={ex.reps}
                         onChange={(e) => {
                           const exercises = [...day.exercises];
@@ -444,7 +471,7 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
                         }}
                       />
                       <Input
-                        label="Weight guidance"
+                        label={t("editor.weightGuidance")}
                         value={ex.recommendedWeight}
                         onChange={(e) => {
                           const exercises = [...day.exercises];
@@ -456,7 +483,7 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
                         }}
                       />
                       <Input
-                        label="Rest (sec)"
+                        label={t("editor.restSec")}
                         type="number"
                         value={ex.restSeconds}
                         onChange={(e) => {

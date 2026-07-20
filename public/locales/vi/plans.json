@@ -1,0 +1,40 @@
+{
+  "title": "Kế hoạch",
+  "subtitle": "Bữa ăn đời thực — Chipotle, burger, pizza, cà phê mang đi — xây quanh mục tiêu calo của bạn.",
+  "adjustWeek": "Điều chỉnh tuần",
+  "toast": {
+    "weekRefreshed": "Hoán đổi bữa tuần đã làm mới với tùy chọn nhà hàng mới.",
+    "weekProOnly": "Điều chỉnh hàng tuần là tính năng Pro.",
+    "loggedMealDemo": "Đã thêm {{name}} vào {{slot}} (demo).",
+    "addedSuggestion": "Đã thêm gợi ý: {{name}} (demo)."
+  },
+  "nutritionTitle": "Kế hoạch dinh dưỡng",
+  "dailyCalories": "Calo hàng ngày",
+  "strategy": "Chiến lược",
+  "proteinBar": "Đạm {{n}}g",
+  "carbsBar": "Tinh bột {{n}}g",
+  "fatBar": "Chất béo {{n}}g",
+  "strategyExtra": "Lồng đồ ăn nhanh bằng cách bỏ khoai chiên, nửa phần cơm ở Chipotle, hoặc pizza + salad thay vì cả ổ.",
+  "nutritionEmpty": "Hoàn thành onboarding để tạo kế hoạch dinh dưỡng.",
+  "workoutProgram": "Chương trình tập",
+  "defaultPlanName": "Kế hoạch tập cá nhân hóa",
+  "programMeta": "{{sessions}} buổi / tuần · trình độ {{level}} · {{access}}",
+  "gymAccess": "có phòng gym",
+  "homeFriendly": "tập tại nhà",
+  "openTrainingPlan": "Mở kế hoạch tập",
+  "recipeLibrary": "Thư viện công thức",
+  "weekMealPlanTitle": "Kế hoạch bữa tuần này",
+  "weekMealPlanSubtitle": "Kết hợp thực phẩm siêu thị và nhà hàng bạn thật sự sẽ đến.",
+  "logThisMeal": "Ghi bữa này",
+  "mealIdeasTitle": "Ý tưởng bữa cho macro còn lại",
+  "vibe": {
+    "all": "Tất cả",
+    "flexible": "Linh hoạt",
+    "highProtein": "Nhiều protein",
+    "craving": "Thèm",
+    "lighter": "Nhẹ hơn"
+  },
+  "addToPlan": "Thêm vào kế hoạch",
+  "popularPlaces": "Địa điểm phổ biến trong nhật ký ăn",
+  "placeCount": "{{place}} · {{count}} mục"
+}

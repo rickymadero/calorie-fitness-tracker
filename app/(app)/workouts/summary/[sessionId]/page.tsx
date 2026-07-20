@@ -7,8 +7,10 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { PageLoader } from "@/components/ui/Spinner";
 import { useTraining } from "@/components/training/TrainingProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { calculateSessionStats } from "@/lib/training/adjustments";
 import { getExerciseById } from "@/lib/mock/exercises";
+import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
 
 export default function WorkoutSummaryPage({
   params,
@@ -17,6 +19,7 @@ export default function WorkoutSummaryPage({
 }) {
   const { sessionId } = use(params);
   const { sessions, adjustments, setAdjustmentStatus, isReady } = useTraining();
+  const { t } = useAppTranslation(["workouts", "common"]);
   const [rating, setRating] = useState(3);
   const [notes, setNotes] = useState("");
 
@@ -29,9 +32,9 @@ export default function WorkoutSummaryPage({
   if (!session) {
     return (
       <div className="py-10 text-center">
-        <p>Session not found.</p>
+        <p>{t("session.notFound")}</p>
         <Link href="/workouts">
-          <Button className="mt-4">Back to workouts</Button>
+          <Button className="mt-4">{t("session.backToWorkouts")}</Button>
         </Link>
       </div>
     );
@@ -44,9 +47,13 @@ export default function WorkoutSummaryPage({
 
   return (
     <div className="mx-auto max-w-2xl">
-      <Badge variant="success">Workout complete</Badge>
+      <ExploreBackHeader
+        title={t("session.summaryTitle")}
+        href="/workouts"
+      />
+      <Badge variant="success">{t("session.completeBadge")}</Badge>
       <h1 className="mt-2 font-display text-3xl font-bold tracking-tight">
-        Session summary
+        {t("session.summaryTitle")}
       </h1>
       <p className="mt-1 text-sm text-muted">
         {new Date(session.startedAt).toLocaleString()}
@@ -54,12 +61,18 @@ export default function WorkoutSummaryPage({
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
         {[
-          { label: "Duration", value: `${session.durationMinutes || 0} min` },
-          { label: "Exercises", value: `${stats.completedExercises}` },
-          { label: "Total sets", value: `${stats.totalSets}` },
-          { label: "Total reps", value: `${stats.totalReps}` },
-          { label: "Est. calories", value: `${session.estimatedCalories || 0}` },
-          { label: "Volume", value: `${session.totalVolume || 0}` },
+          {
+            label: t("session.duration"),
+            value: t("session.durationValue", { n: session.durationMinutes || 0 }),
+          },
+          { label: t("session.exercises"), value: `${stats.completedExercises}` },
+          { label: t("session.totalSets"), value: `${stats.totalSets}` },
+          { label: t("session.totalReps"), value: `${stats.totalReps}` },
+          {
+            label: t("session.estCalories"),
+            value: `${session.estimatedCalories || 0}`,
+          },
+          { label: t("session.volume"), value: `${session.totalVolume || 0}` },
         ].map((item) => (
           <Card key={item.label} padding="sm">
             <p className="text-xs text-muted">{item.label}</p>
@@ -70,18 +83,20 @@ export default function WorkoutSummaryPage({
 
       {session.personalRecords && session.personalRecords.length > 0 && (
         <Card className="mt-4">
-          <h2 className="font-display font-semibold">Highlights</h2>
+          <h2 className="font-display font-semibold">{t("session.highlights")}</h2>
           <ul className="mt-2 space-y-1 text-sm text-muted">
             {session.personalRecords.map((pr) => (
               <li key={pr}>• {pr}</li>
             ))}
-            {stats.skipped > 0 && <li>• Skipped exercises: {stats.skipped}</li>}
+            {stats.skipped > 0 && (
+              <li>• {t("session.skippedExercises", { n: stats.skipped })}</li>
+            )}
           </ul>
         </Card>
       )}
 
       <Card className="mt-4">
-        <h2 className="font-display font-semibold">Exercises logged</h2>
+        <h2 className="font-display font-semibold">{t("session.exercisesLogged")}</h2>
         <ul className="mt-3 space-y-2">
           {session.exercises.map((ex) => {
             const def = getExerciseById(ex.exerciseId);
@@ -93,8 +108,10 @@ export default function WorkoutSummaryPage({
                 <span>{def?.name || ex.exerciseId}</span>
                 <span className="text-muted">
                   {ex.skipped
-                    ? "Skipped"
-                    : `${ex.sets.filter((s) => s.completed).length} sets`}
+                    ? t("session.skipped")
+                    : t("session.setsCount", {
+                        n: ex.sets.filter((s) => s.completed).length,
+                      })}
                 </span>
               </li>
             );
@@ -103,7 +120,7 @@ export default function WorkoutSummaryPage({
       </Card>
 
       <Card className="mt-4">
-        <h2 className="font-display font-semibold">How hard was it?</h2>
+        <h2 className="font-display font-semibold">{t("session.howHard")}</h2>
         <div className="mt-3 flex gap-2">
           {[1, 2, 3, 4, 5].map((n) => (
             <button
@@ -120,7 +137,7 @@ export default function WorkoutSummaryPage({
         </div>
         <textarea
           className="mt-3 min-h-24 w-full rounded-2xl border border-border bg-background p-3 text-sm outline-none focus:border-accent"
-          placeholder="Workout notes..."
+          placeholder={t("session.notesPlaceholder")}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
         />
@@ -128,9 +145,11 @@ export default function WorkoutSummaryPage({
 
       {related.length > 0 && (
         <Card className="mt-4">
-          <h2 className="font-display font-semibold">Suggested adjustments</h2>
+          <h2 className="font-display font-semibold">
+            {t("session.suggestedAdjustments")}
+          </h2>
           <p className="mt-1 text-xs text-muted">
-            Approve to apply to your plan later, or dismiss.
+            {t("session.suggestedHint")}
           </p>
           <ul className="mt-4 space-y-3">
             {related.map((adj) => (
@@ -142,14 +161,14 @@ export default function WorkoutSummaryPage({
                     size="sm"
                     onClick={() => setAdjustmentStatus(adj.id, "approved")}
                   >
-                    Approve
+                    {t("buttons.approve", { ns: "common" })}
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => setAdjustmentStatus(adj.id, "dismissed")}
                   >
-                    Dismiss
+                    {t("buttons.dismiss", { ns: "common" })}
                   </Button>
                 </div>
               </li>
@@ -161,11 +180,11 @@ export default function WorkoutSummaryPage({
       <div className="mt-6 flex gap-3">
         <Link href="/workouts" className="flex-1">
           <Button fullWidth variant="outline">
-            Back to plan
+            {t("session.backToPlan")}
           </Button>
         </Link>
         <Link href="/progress" className="flex-1">
-          <Button fullWidth>View progress</Button>
+          <Button fullWidth>{t("session.viewProgress")}</Button>
         </Link>
       </div>
     </div>

@@ -25,12 +25,11 @@ export const feedStagger = {
 };
 
 export const feedItem = {
-  initial: { opacity: 0, y: 18, scale: 0.985 },
+  initial: { opacity: 0, y: 14 },
   animate: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: { duration: 0.38, ease: easeOut },
+    transition: { duration: 0.34, ease: easeOut },
   },
 };
 

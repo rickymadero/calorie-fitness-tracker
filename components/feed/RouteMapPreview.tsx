@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { RoutePoint } from "@/lib/types/posts";
 import { useTheme } from "@/components/providers/ThemeProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import "leaflet/dist/leaflet.css";
 
 interface RouteMapProps {
@@ -39,15 +40,18 @@ export function RouteMapPreview({
   routeVisible = true,
   href,
   height = 180,
-  label = "Route map",
+  label,
   interactive = true,
 }: RouteMapProps) {
+  const { t } = useAppTranslation("feed");
+  const mapLabel = label ?? t("map.label");
+
   if (routeVisible === false) {
-    return <MapFallback height={height} message="Route hidden by privacy settings" />;
+    return <MapFallback height={height} message={t("map.hidden")} />;
   }
 
   if (!points || points.length < 2) {
-    return <MapFallback height={height} message="Map unavailable" />;
+    return <MapFallback height={height} message={t("map.unavailable")} />;
   }
 
   // Feed cards (href) and interactive=false must not steal page scroll on iOS.
@@ -58,9 +62,10 @@ export function RouteMapPreview({
       hideStart={hideStart}
       hideEnd={hideEnd}
       height={height}
-      label={label}
+      label={mapLabel}
       scrollWheel={canInteract}
       dragging={canInteract}
+      loadFailMessage={t("map.loadFail")}
     />
   );
 
@@ -70,14 +75,13 @@ export function RouteMapPreview({
       style={{ height }}
     >
       {map}
-      {/* Soft Evolve gradient fade at bottom edge */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/25 to-transparent dark:from-black/40" />
     </div>
   );
 
   if (href && interactive) {
     return (
-      <Link href={href} className="block" aria-label="Open full route">
+      <Link href={href} className="block" aria-label={t("map.open")}>
         {frame}
       </Link>
     );
@@ -94,6 +98,7 @@ function LeafletRouteMap({
   label,
   scrollWheel,
   dragging,
+  loadFailMessage,
 }: {
   points: RoutePoint[];
   hideStart?: boolean;
@@ -102,6 +107,7 @@ function LeafletRouteMap({
   label: string;
   scrollWheel: boolean;
   dragging: boolean;
+  loadFailMessage: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<import("leaflet").Map | null>(null);
@@ -227,7 +233,7 @@ function LeafletRouteMap({
   }, [points, hideStart, hideEnd, theme, scrollWheel, dragging]);
 
   if (failed) {
-    return <MapFallback height={height} message="Map could not load" />;
+    return <MapFallback height={height} message={loadFailMessage} />;
   }
 
   return (

@@ -8,7 +8,9 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useSocial } from "@/components/social/SocialProvider";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { socialStorage } from "@/lib/storage/social";
+import { COUNTRY_OPTIONS } from "@/lib/geo/countryFlag";
 import type { ProfileVisibility, WorkoutInterest } from "@/lib/types/social";
 
 const WORKOUT_OPTIONS: WorkoutInterest[] = [
@@ -24,15 +26,16 @@ const WORKOUT_OPTIONS: WorkoutInterest[] = [
   "sports",
 ];
 
-const GOAL_OPTIONS = [
-  "Lose weight",
-  "Build muscle",
-  "Improve endurance",
-  "Increase strength",
-  "Overall health",
-  "Run consistently",
-  "Athletic performance",
-];
+/** Stored English values (profile data keys) + i18n display keys */
+const GOAL_KEYS = [
+  { value: "Lose weight", key: "editor.goals.loseWeight" },
+  { value: "Build muscle", key: "editor.goals.buildMuscle" },
+  { value: "Improve endurance", key: "editor.goals.improveEndurance" },
+  { value: "Increase strength", key: "editor.goals.increaseStrength" },
+  { value: "Overall health", key: "editor.goals.overallHealth" },
+  { value: "Run consistently", key: "editor.goals.runConsistently" },
+  { value: "Athletic performance", key: "editor.goals.athleticPerformance" },
+] as const;
 
 export function SocialProfileEditor({
   embedded = false,
@@ -43,11 +46,13 @@ export function SocialProfileEditor({
 }) {
   const { myProfile, ensureMyProfile, updateMyProfile } = useSocial();
   const { toast } = useToast();
+  const { t } = useAppTranslation(["social", "common"]);
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
+  const [countryCode, setCountryCode] = useState("");
   const [showLocation, setShowLocation] = useState(false);
   const [instagramUsername, setInstagramUsername] = useState("");
   const [showInstagram, setShowInstagram] = useState(false);
@@ -63,6 +68,7 @@ export function SocialProfileEditor({
     setDisplayName(p.displayName);
     setBio(p.bio);
     setLocation(p.location ?? "");
+    setCountryCode(p.countryCode ?? "");
     setShowLocation(p.showLocation);
     setInstagramUsername(p.instagramUsername ?? "");
     setShowInstagram(p.showInstagram);
@@ -89,22 +95,26 @@ export function SocialProfileEditor({
       .replace(/[^a-z0-9_]/g, "")
       .slice(0, 24);
     if (clean.length < 3) {
-      setUsernameError("Username must be at least 3 characters.");
+      setUsernameError(t("common:errors.usernameMin"));
       return;
     }
     if (
       myProfile &&
       socialStorage.isUsernameTaken(clean, myProfile.userId)
     ) {
-      setUsernameError("That username is taken.");
+      setUsernameError(t("common:errors.usernameTaken"));
       return;
     }
     setUsernameError("");
     updateMyProfile({
       username: clean,
-      displayName: displayName.trim() || myProfile?.displayName || "Athlete",
+      displayName:
+        displayName.trim() ||
+        myProfile?.displayName ||
+        t("common:labels.athlete"),
       bio: bio.slice(0, 160),
       location: location.trim() || undefined,
+      countryCode: countryCode || undefined,
       showLocation,
       instagramUsername: instagramUsername.replace(/^@/, "").trim() || undefined,
       showInstagram,
@@ -112,7 +122,7 @@ export function SocialProfileEditor({
       fitnessGoals,
       favoriteWorkouts,
     });
-    toast("Social profile saved.", "success");
+    toast(t("profileSaved"), "success");
     onSaved?.();
   }
 
@@ -121,13 +131,13 @@ export function SocialProfileEditor({
   const form = (
     <div className="space-y-4">
       <Input
-        label="Display name"
+        label={t("displayName")}
         value={displayName}
         onChange={(e) => setDisplayName(e.target.value)}
       />
       <div>
         <Input
-          label="Username"
+          label={t("editor.username")}
           value={username}
           onChange={(e) => {
             setUsername(e.target.value);
@@ -138,32 +148,38 @@ export function SocialProfileEditor({
           <p className="mt-1 text-xs text-red-500">{usernameError}</p>
         ) : (
           <p className="mt-1 text-xs text-muted">
-            Letters, numbers, underscore. Shown as @{username || "…"}
+            {t("editor.usernameHint", { username: username || "…" })}
           </p>
         )}
       </div>
       <div>
-        <label className="mb-1.5 block text-sm font-medium">Bio</label>
+        <label className="mb-1.5 block text-sm font-medium">
+          {t("editor.bio")}
+        </label>
         <textarea
           value={bio}
           onChange={(e) => setBio(e.target.value.slice(0, 160))}
           rows={3}
           className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-base outline-none focus:border-accent"
-          placeholder="Short intro for other athletes…"
+          placeholder={t("editor.bioPlaceholder")}
         />
         <p className="mt-1 text-xs text-muted">{bio.length}/160</p>
       </div>
 
       <div>
-        <p className="mb-2 text-sm font-medium">Profile visibility</p>
+        <p className="mb-2 text-sm font-medium">{t("editor.visibility")}</p>
         <div className="grid grid-cols-2 gap-2">
           {(
             [
-              { id: "public", label: "Public", hint: "Anyone can follow" },
               {
-                id: "private",
-                label: "Private",
-                hint: "Approve requests",
+                id: "public" as const,
+                label: t("common:labels.public"),
+                hint: t("editor.publicHint"),
+              },
+              {
+                id: "private" as const,
+                label: t("common:labels.private"),
+                hint: t("editor.privateHint"),
               },
             ] as const
           ).map((opt) => (
@@ -185,27 +201,29 @@ export function SocialProfileEditor({
       </div>
 
       <div>
-        <p className="mb-2 text-sm font-medium">Fitness goals</p>
+        <p className="mb-2 text-sm font-medium">{t("editor.fitnessGoals")}</p>
         <div className="flex flex-wrap gap-2">
-          {GOAL_OPTIONS.map((g) => (
+          {GOAL_KEYS.map(({ value, key }) => (
             <button
-              key={g}
+              key={value}
               type="button"
-              onClick={() => toggleGoal(g)}
+              onClick={() => toggleGoal(value)}
               className={`min-h-9 rounded-full border px-3 py-1.5 text-xs font-medium ${
-                fitnessGoals.includes(g)
+                fitnessGoals.includes(value)
                   ? "border-accent bg-accent-soft text-accent-dim dark:text-accent"
                   : "border-border text-muted"
               }`}
             >
-              {g}
+              {t(key)}
             </button>
           ))}
         </div>
       </div>
 
       <div>
-        <p className="mb-2 text-sm font-medium">Favorite workouts</p>
+        <p className="mb-2 text-sm font-medium">
+          {t("editor.favoriteWorkouts")}
+        </p>
         <div className="flex flex-wrap gap-2">
           {WORKOUT_OPTIONS.map((w) => (
             <button
@@ -218,17 +236,36 @@ export function SocialProfileEditor({
                   : "border-border text-muted"
               }`}
             >
-              {w}
+              {t(`editor.workouts.${w}`)}
             </button>
           ))}
         </div>
       </div>
 
+      <div>
+        <label className="mb-1.5 block text-sm font-medium">
+          {t("editor.country")}
+        </label>
+        <select
+          value={countryCode}
+          onChange={(e) => setCountryCode(e.target.value)}
+          className="min-h-11 w-full rounded-2xl border border-border bg-background px-4 py-2.5 text-base outline-none focus:border-accent"
+        >
+          <option value="">{t("editor.selectCountry")}</option>
+          {COUNTRY_OPTIONS.map((c) => (
+            <option key={c.code} value={c.code}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+        <p className="mt-1 text-xs text-muted">{t("editor.countryHint")}</p>
+      </div>
+
       <Input
-        label="Location (optional)"
+        label={t("editor.location")}
         value={location}
         onChange={(e) => setLocation(e.target.value)}
-        placeholder="City, region"
+        placeholder={t("editor.locationPlaceholder")}
       />
       <label className="flex min-h-11 items-center gap-2 text-sm">
         <input
@@ -237,14 +274,14 @@ export function SocialProfileEditor({
           onChange={(e) => setShowLocation(e.target.checked)}
           className="rounded border-border"
         />
-        Show location publicly
+        {t("editor.showLocation")}
       </label>
 
       <Input
-        label="Instagram (optional)"
+        label={t("editor.instagram")}
         value={instagramUsername}
         onChange={(e) => setInstagramUsername(e.target.value)}
-        placeholder="username"
+        placeholder={t("editor.instagramPlaceholder")}
       />
       <label className="flex min-h-11 items-center gap-2 text-sm">
         <input
@@ -253,11 +290,11 @@ export function SocialProfileEditor({
           onChange={(e) => setShowInstagram(e.target.checked)}
           className="rounded border-border"
         />
-        Show Instagram publicly
+        {t("editor.showInstagram")}
       </label>
 
       <Button fullWidth onClick={save}>
-        Save profile
+        {t("editor.save")}
       </Button>
     </div>
   );
@@ -268,24 +305,24 @@ export function SocialProfileEditor({
     <Card className="mt-6">
       <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <h2 className="font-display text-lg font-semibold">Social profile</h2>
-          <p className="mt-1 text-sm text-muted">
-            Visible to the Evolve network.
-          </p>
+          <h2 className="font-display text-lg font-semibold">
+            {t("editor.title")}
+          </h2>
+          <p className="mt-1 text-sm text-muted">{t("editor.subtitle")}</p>
         </div>
         <Button
           variant="outline"
           size="sm"
           onClick={() => router.push(`/social/u/${myProfile.username}`)}
         >
-          View public
+          {t("editor.viewPublic")}
         </Button>
       </div>
       {form}
       <div className="mt-3">
         <Link href="/feed">
           <Button variant="outline" fullWidth size="sm">
-            Open Social
+            {t("editor.openSocial")}
           </Button>
         </Link>
       </div>

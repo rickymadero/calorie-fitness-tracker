@@ -9,6 +9,7 @@ import { useSocial } from "@/components/social/SocialProvider";
 import { SocialAvatar } from "@/components/social/PersonCard";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import type { PostComment } from "@/lib/types/posts";
 
 export function CommentComposer({
@@ -22,17 +23,18 @@ export function CommentComposer({
 }) {
   const { addComment } = usePosts();
   const { toast } = useToast();
+  const { t } = useAppTranslation(["posts", "common"]);
   const [body, setBody] = useState("");
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
     const c = addComment(postId, body, parentId);
     if (!c) {
-      toast("Could not post comment.", "error");
+      toast(t("commentFailed"), "error");
       return;
     }
     setBody("");
-    toast("Comment posted.", "success");
+    toast(t("commentPosted"), "success");
     onDone?.();
   }
 
@@ -41,11 +43,13 @@ export function CommentComposer({
       <input
         value={body}
         onChange={(e) => setBody(e.target.value)}
-        placeholder={parentId ? "Write a reply…" : "Encourage them…"}
+        placeholder={
+          parentId ? t("replyPlaceholder") : t("commentPlaceholder")
+        }
         className="h-11 flex-1 rounded-2xl border border-border bg-background px-4 text-base outline-none focus:border-accent"
       />
       <Button type="submit" size="sm" disabled={!body.trim()}>
-        Post
+        {t("postComment")}
       </Button>
     </form>
   );
@@ -64,9 +68,10 @@ function CommentItem({
   const { commentsFor, deleteComment } = usePosts();
   const { getCard } = useSocial();
   const { toast } = useToast();
+  const { t } = useAppTranslation(["posts", "common"]);
   const [replying, setReplying] = useState(false);
   const author = getCard(comment.authorId);
-  const name = author?.profile.displayName ?? "Athlete";
+  const name = author?.profile.displayName ?? t("labels.athlete", { ns: "common" });
   const username = author?.profile.username ?? "athlete";
   const canDelete =
     user?.id === comment.authorId || user?.id === postAuthorId;
@@ -100,7 +105,7 @@ function CommentItem({
                 className="evolve-press inline-flex min-h-9 items-center rounded-lg px-2 text-xs font-medium text-muted hover:bg-muted-bg hover:text-foreground"
                 onClick={() => setReplying((v) => !v)}
               >
-                Reply
+                {t("reply")}
               </button>
             )}
             {canDelete && (
@@ -109,11 +114,11 @@ function CommentItem({
                 className="evolve-press inline-flex min-h-9 items-center gap-1 rounded-lg px-2 text-xs text-muted hover:bg-muted-bg hover:text-danger"
                 onClick={() => {
                   deleteComment(comment.id);
-                  toast("Comment removed.", "info");
+                  toast(t("commentRemoved"), "info");
                 }}
               >
                 <Trash2 size={12} />
-                Delete
+                {t("buttons.delete", { ns: "common" })}
               </button>
             )}
           </div>

@@ -1,0 +1,37 @@
+{
+  "edit": "编辑主页",
+  "publicView": "公开预览",
+  "createPost": "发布动态",
+  "emptyPosts": "还没有动态",
+  "emptyPostsHint": "与人脉分享你的第一次训练。",
+  "addBio": "在设置中添加个人简介，让运动员们了解你。",
+  "statMonth": "本月",
+  "statDistance": "距离",
+  "statStreak": "连续天数",
+  "tabWorkouts": "训练",
+  "tabPrs": "个人记录",
+  "recentWorkouts": "近期训练",
+  "newPost": "新动态",
+  "savedTitle": "已保存的动态",
+  "savedEmpty": "没有已保存的训练",
+  "savedEmptyHint": "点击任意动态上的收藏图标，将其保存在这里。",
+  "browseFeed": "浏览动态",
+  "signedOut": "已退出登录。",
+  "menuAria": "个人主页菜单",
+  "prs": {
+    "empty": "暂无个人记录",
+    "emptySelf": "添加你的第一个个人记录",
+    "emptySelfHint": "卧推、深蹲、5K、HYROX、Ironman——向人脉展示你的成绩。",
+    "addTitle": "添加个人记录",
+    "label": "名称",
+    "result": "成绩",
+    "saved": "个人记录已保存。",
+    "removed": "个人记录已删除。",
+    "cat": {
+      "strength": "力量",
+      "running": "跑步",
+      "endurance": "耐力与比赛",
+      "other": "其他"
+    }
+  }
+}

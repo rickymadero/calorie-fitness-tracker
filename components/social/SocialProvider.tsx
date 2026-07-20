@@ -11,6 +11,7 @@ import {
 import { useAuth } from "@/components/auth/AuthProvider";
 import { socialStorage } from "@/lib/storage/social";
 import { slugifyUsername } from "@/lib/mock/socialUsers";
+import { i18n } from "@/lib/i18n/i18n";
 import type {
   FollowRequest,
   FollowStatus,
@@ -20,6 +21,34 @@ import type {
 
 function uid(prefix: string) {
   return `${prefix}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+/** Never treat the signed-in athlete as a discoverable / followable peer. */
+export function isViewerSelf(
+  profile: SocialProfile,
+  viewer?: {
+    userId?: string | null;
+    username?: string | null;
+    displayName?: string | null;
+    fullName?: string | null;
+  } | null,
+) {
+  if (!viewer) return false;
+  const { userId, username, displayName, fullName } = viewer;
+  if (userId && profile.userId === userId) return true;
+  const pUser = profile.username.toLowerCase();
+  const pName = profile.displayName.trim().toLowerCase();
+  if (username && pUser === username.toLowerCase()) return true;
+  if (displayName && pName === displayName.trim().toLowerCase()) return true;
+  if (fullName && pName === fullName.trim().toLowerCase()) return true;
+  if (fullName) {
+    const slug = fullName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_")
+      .replace(/^_+|_+$/g, "");
+    if (slug.length >= 3 && pUser === slug) return true;
+  }
+  return false;
 }
 
 function defaultProfileForUser(userId: string, fullName: string): SocialProfile {
@@ -47,6 +76,7 @@ function defaultProfileForUser(userId: string, fullName: string): SocialProfile 
       totalRunKm: 0,
       totalWorkoutMinutes: 0,
     },
+    personalRecords: [],
   };
 }
 
@@ -59,6 +89,8 @@ interface SocialContextValue {
   getCardByUsername: (username: string) => PublicSocialCard | null;
   searchPeople: (query: string) => PublicSocialCard[];
   suggestedPeople: () => PublicSocialCard[];
+  dismissSuggestion: (userId: string) => void;
+  suggestionReason: (card: PublicSocialCard) => string;
   followersOf: (userId: string) => PublicSocialCard[];
   followingOf: (userId: string) => PublicSocialCard[];
   follow: (targetUserId: string) => { ok: boolean; message: string };
@@ -91,13 +123,13 @@ export function SocialProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!user) return;
-    const existing = socialStorage.getProfileByUserId(user.id);
-    if (!existing) {
-      socialStorage.upsertProfile(
-        defaultProfileForUser(user.id, user.fullName),
-      );
-      refresh();
-    }
+    socialStorage.claimProfileForAuthUser(
+      user.id,
+      user.fullName,
+      undefined,
+      user.country,
+    );
+    refresh();
   }, [user, refresh]);
 
   const myProfile = useMemo(() => {
@@ -105,6 +137,19 @@ export function SocialProvider({ children }: { children: React.ReactNode }) {
     if (!user) return null;
     return socialStorage.getProfileByUserId(user.id);
   }, [user, tick]);
+
+  const viewerIdentity = useMemo(
+    () =>
+      user
+        ? {
+            userId: user.id,
+            username: myProfile?.username,
+            displayName: myProfile?.displayName,
+            fullName: user.fullName,
+          }
+        : null,
+    [user, myProfile?.username, myProfile?.displayName],
+  );
 
   const relationTo = useCallback(
     (viewerId: string | undefined, targetId: string): FollowStatus => {
@@ -171,6 +216,7 @@ export function SocialProvider({ children }: { children: React.ReactNode }) {
               bio: "",
               location: undefined,
               instagramUsername: undefined,
+              personalRecords: [],
               stats: {
                 workoutsCompleted: 0,
                 totalRunKm: 0,
@@ -189,13 +235,13 @@ export function SocialProvider({ children }: { children: React.ReactNode }) {
 
   const ensureMyProfile = useCallback(() => {
     if (!user) return null;
-    let p = socialStorage.getProfileByUserId(user.id);
-    if (!p) {
-      p = socialStorage.upsertProfile(
-        defaultProfileForUser(user.id, user.fullName),
-      );
-      refresh();
-    }
+    const p = socialStorage.claimProfileForAuthUser(
+      user.id,
+      user.fullName,
+      undefined,
+      user.country,
+    );
+    refresh();
     return p;
   }, [user, refresh]);
 
@@ -242,12 +288,12 @@ export function SocialProvider({ children }: { children: React.ReactNode }) {
       searchPeople: (query) => {
         const q = query.trim().toLowerCase();
         if (!q) return [];
-        const viewerId = user?.id;
+        if (!viewerIdentity?.userId) return [];
         return socialStorage
           .listProfiles()
-          .filter((p) => p.userId !== viewerId)
+          .filter((p) => !isViewerSelf(p, viewerIdentity))
           .filter((p) => {
-            if (viewerId && relationTo(viewerId, p.userId) === "blocked") {
+            if (relationTo(viewerIdentity.userId!, p.userId) === "blocked") {
               return false;
             }
             const hay = [
@@ -266,17 +312,22 @@ export function SocialProvider({ children }: { children: React.ReactNode }) {
           .slice(0, 40);
       },
       suggestedPeople: () => {
-        const viewerId = user?.id;
-        const mine = viewerId
-          ? socialStorage.getProfileByUserId(viewerId)
-          : null;
+        if (!viewerIdentity?.userId) return [];
+        const viewerId = viewerIdentity.userId;
+        const mine = socialStorage.getProfileByUserId(viewerId);
+        const dismissed = new Set(socialStorage.getDismissedSuggestions());
         return socialStorage
           .listProfiles()
-          .filter((p) => p.userId !== viewerId)
+          .filter((p) => !isViewerSelf(p, viewerIdentity))
+          .filter((p) => !dismissed.has(p.userId))
           .filter((p) => {
-            if (!viewerId) return true;
             const r = relationTo(viewerId, p.userId);
-            return r !== "following" && r !== "mutual" && r !== "blocked" && r !== "requested";
+            return (
+              r !== "following" &&
+              r !== "mutual" &&
+              r !== "blocked" &&
+              r !== "requested"
+            );
           })
           .sort((a, b) => {
             const score = (p: SocialProfile) => {
@@ -298,6 +349,36 @@ export function SocialProvider({ children }: { children: React.ReactNode }) {
           .slice(0, 12)
           .map(toCard);
       },
+      dismissSuggestion: (userId: string) => {
+        socialStorage.dismissSuggestion(userId);
+        refresh();
+      },
+      suggestionReason: (card: PublicSocialCard) => {
+        const mine = myProfile;
+        if (!mine) return i18n.t("suggest.active", { ns: "social" });
+        const sharedGoals = card.profile.fitnessGoals.filter((g) =>
+          mine.fitnessGoals.includes(g),
+        );
+        if (sharedGoals[0]) {
+          return i18n.t("suggest.alsoInto", {
+            ns: "social",
+            goal: sharedGoals[0].toLowerCase(),
+          });
+        }
+        const sharedW = card.profile.favoriteWorkouts.filter((w) =>
+          mine.favoriteWorkouts.includes(w),
+        );
+        if (sharedW[0]) {
+          return i18n.t("suggest.similarHabits", {
+            ns: "social",
+            workout: sharedW[0],
+          });
+        }
+        if (card.profile.visibility === "public") {
+          return i18n.t("suggest.popular", { ns: "social" });
+        }
+        return i18n.t("suggest.default", { ns: "social" });
+      },
       followersOf: (userId) => {
         const ids = socialStorage
           .getFollows()
@@ -305,8 +386,8 @@ export function SocialProvider({ children }: { children: React.ReactNode }) {
           .map((f) => f.followerId);
         return ids
           .map((id) => socialStorage.getProfileByUserId(id))
-          .filter(Boolean)
-          .map((p) => toCard(p!));
+          .filter((p): p is SocialProfile => !!p && p.userId !== userId)
+          .map((p) => toCard(p));
       },
       followingOf: (userId) => {
         const ids = socialStorage
@@ -315,25 +396,47 @@ export function SocialProvider({ children }: { children: React.ReactNode }) {
           .map((f) => f.followingId);
         return ids
           .map((id) => socialStorage.getProfileByUserId(id))
-          .filter(Boolean)
-          .map((p) => toCard(p!));
+          .filter((p): p is SocialProfile => !!p && p.userId !== userId)
+          .map((p) => toCard(p));
       },
       follow: (targetUserId) => {
-        if (!user) return { ok: false, message: "Sign in required." };
-        if (targetUserId === user.id) {
-          return { ok: false, message: "You can't follow yourself." };
-        }
-        if (relationTo(user.id, targetUserId) === "blocked") {
-          return { ok: false, message: "Unable to follow this user." };
+        if (!user) {
+          return {
+            ok: false,
+            message: i18n.t("signInRequired", { ns: "social" }),
+          };
         }
         const target = socialStorage.getProfileByUserId(targetUserId);
-        if (!target) return { ok: false, message: "User not found." };
+        if (!target) {
+          return {
+            ok: false,
+            message: i18n.t("userNotFound", { ns: "social" }),
+          };
+        }
+        if (isViewerSelf(target, viewerIdentity)) {
+          return {
+            ok: false,
+            message: i18n.t("cantFollowSelf", { ns: "social" }),
+          };
+        }
+        if (relationTo(user.id, targetUserId) === "blocked") {
+          return {
+            ok: false,
+            message: i18n.t("unableToFollow", { ns: "social" }),
+          };
+        }
         const current = relationTo(user.id, targetUserId);
         if (current === "following" || current === "mutual") {
-          return { ok: false, message: "Already following." };
+          return {
+            ok: false,
+            message: i18n.t("alreadyFollowing", { ns: "social" }),
+          };
         }
         if (current === "requested") {
-          return { ok: false, message: "Request already pending." };
+          return {
+            ok: false,
+            message: i18n.t("requestPending", { ns: "social" }),
+          };
         }
         if (target.visibility === "private") {
           socialStorage.addRequest({
@@ -344,7 +447,10 @@ export function SocialProvider({ children }: { children: React.ReactNode }) {
             createdAt: new Date().toISOString(),
           });
           refresh();
-          return { ok: true, message: "Follow request sent." };
+          return {
+            ok: true,
+            message: i18n.t("requestSent", { ns: "social" }),
+          };
         }
         socialStorage.addFollow({
           id: uid("fol"),
@@ -353,7 +459,7 @@ export function SocialProvider({ children }: { children: React.ReactNode }) {
           createdAt: new Date().toISOString(),
         });
         refresh();
-        return { ok: true, message: "Following." };
+        return { ok: true, message: i18n.t("followOk", { ns: "social" }) };
       },
       unfollow: (targetUserId) => {
         if (!user) return;
@@ -456,6 +562,7 @@ export function SocialProvider({ children }: { children: React.ReactNode }) {
     ready,
     myProfile,
     user,
+    viewerIdentity,
     ensureMyProfile,
     updateMyProfile,
     toCard,

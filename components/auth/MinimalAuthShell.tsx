@@ -9,6 +9,7 @@ import { EvolveLogo } from "@/components/ui/EvolveLogo";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { getPostAuthPath } from "@/lib/auth/routes";
 import { storage } from "@/lib/storage";
@@ -60,21 +61,23 @@ export function AuthField(props: React.ComponentProps<typeof Input>) {
   );
 }
 
-export function AuthDivider({ label = "or" }: { label?: string }) {
+export function AuthDivider({ label }: { label?: string }) {
+  const { t } = useAppTranslation("common");
   return (
     <div className="my-6 flex items-center gap-3 text-xs uppercase tracking-[0.14em] text-white/35">
       <span className="h-px flex-1 bg-white/10" />
-      <span>{label}</span>
+      <span>{label ?? t("labels.or")}</span>
       <span className="h-px flex-1 bg-white/10" />
     </div>
   );
 }
 
 /** Self-contained Instagram demo sign-in — reuses existing demo auth so nothing breaks. */
-export function InstagramContinueButton({ label = "Continue with Instagram" }: { label?: string }) {
+export function InstagramContinueButton({ label }: { label?: string }) {
   const { toast } = useToast();
   const { login } = useAuth();
   const router = useRouter();
+  const { t } = useAppTranslation("auth");
   const [busy, setBusy] = useState(false);
 
   async function demoSocial() {
@@ -82,10 +85,10 @@ export function InstagramContinueButton({ label = "Continue with Instagram" }: {
     const result = await login("instagram.demo@evolve.app", "evolve-social-demo");
     setBusy(false);
     if (!result.ok) {
-      toast(result.error || "Sign-in failed.", "error");
+      toast(result.error || t("signInFailed"), "error");
       return;
     }
-    toast("Signed in with Instagram (demo).", "success");
+    toast(t("signedInInstagram"), "success");
     const user = storage.getUser();
     router.push(getPostAuthPath(user));
   }
@@ -101,7 +104,7 @@ export function InstagramContinueButton({ label = "Continue with Instagram" }: {
       className="!border-white/15 !text-white hover:!border-white/30 hover:!bg-white/[0.06]"
     >
       <AtSign size={18} />
-      {label}
+      {label ?? t("continueInstagram")}
     </Button>
   );
 }

@@ -12,7 +12,25 @@ import { EvolveLogo } from "@/components/ui/EvolveLogo";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useTraining } from "@/components/training/TrainingProvider";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { generatePersonalizedPlan } from "@/lib/training/generatePlan";
+import type { FitnessGoal, ExperienceLevel } from "@/lib/types";
+
+const GOAL_KEY: Record<FitnessGoal, string> = {
+  "lose-weight": "editor.goal.loseWeight",
+  "build-muscle": "editor.goal.buildMuscle",
+  "increase-strength": "editor.goal.increaseStrength",
+  "improve-endurance": "editor.goal.improveEndurance",
+  "overall-health": "editor.goal.overallHealth",
+  "athletic-performance": "editor.goal.athleticPerformance",
+  "maintain-weight": "editor.goal.maintainWeight",
+};
+
+const LEVEL_KEY: Record<ExperienceLevel, string> = {
+  beginner: "editor.level.beginner",
+  intermediate: "editor.level.intermediate",
+  advanced: "editor.level.advanced",
+};
 
 export default function AdminHomePage() {
   const { user, onboarding, isReady: authReady } = useAuth();
@@ -26,6 +44,7 @@ export default function AdminHomePage() {
   } = useTraining();
   const router = useRouter();
   const { toast } = useToast();
+  const { t } = useAppTranslation(["admin", "common"]);
 
   useEffect(() => {
     if (!authReady) return;
@@ -45,13 +64,13 @@ export default function AdminHomePage() {
           <div className="flex gap-2">
             <Link href="/workouts">
               <Button variant="outline" size="sm">
-                User workouts
+                {t("home.userWorkouts")}
               </Button>
             </Link>
             <Link href="/admin/plans/new">
               <Button size="sm">
                 <Plus size={16} />
-                New plan
+                {t("home.newPlan")}
               </Button>
             </Link>
           </div>
@@ -60,11 +79,10 @@ export default function AdminHomePage() {
 
       <main className="mx-auto max-w-6xl px-4 py-8 md:px-8">
         <h1 className="font-display text-3xl font-bold tracking-tight">
-          Admin workout builder
+          {t("home.title")}
         </h1>
         <p className="mt-2 text-sm text-muted">
-          Create templates, assign personalized plans, and edit assigned copies without
-          changing the original template.
+          {t("home.subtitle")}
         </p>
 
         <div className="mt-6 flex flex-wrap gap-2">
@@ -73,13 +91,13 @@ export default function AdminHomePage() {
             onClick={() => {
               const plan = generatePersonalizedPlan(onboarding, user.id);
               plan.isTemplate = true;
-              plan.name = `Template · ${plan.name}`;
+              plan.name = t("home.templateNamePrefix", { name: plan.name });
               plan.assignedUserIds = [];
               savePlan(plan);
-              toast("Template generated from current profile.", "success");
+              toast(t("toast.templateGenerated"), "success");
             }}
           >
-            Generate template from onboarding
+            {t("home.generateTemplate")}
           </Button>
           <Button
             variant="outline"
@@ -87,69 +105,72 @@ export default function AdminHomePage() {
               const plan = generatePersonalizedPlan(onboarding, user.id);
               savePlan(plan);
               assignPlanToUser(plan.id, user.id, false);
-              toast("Plan assigned to your account.", "success");
+              toast(t("toast.planAssigned"), "success");
             }}
           >
             <Users size={16} />
-            Assign fresh plan to me
+            {t("home.assignFresh")}
           </Button>
         </div>
 
         <section className="mt-10">
-          <h2 className="font-display text-xl font-semibold">Templates</h2>
+          <h2 className="font-display text-xl font-semibold">{t("home.templates")}</h2>
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             {templates.length === 0 && (
               <Card>
-                <p className="text-sm text-muted">No templates yet.</p>
+                <p className="text-sm text-muted">{t("home.noTemplates")}</p>
               </Card>
             )}
             {templates.map((plan) => (
               <Card key={plan.id}>
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <Badge>Template</Badge>
+                    <Badge>{t("home.templateBadge")}</Badge>
                     <h3 className="mt-2 font-display font-semibold">{plan.name}</h3>
                     <p className="mt-1 text-xs text-muted">
-                      {plan.daysPerWeek} days · {plan.experienceLevel} ·{" "}
-                      {plan.mainGoal.replace(/-/g, " ")}
+                      {t("home.templateMeta", {
+                        days: plan.daysPerWeek,
+                        level: t(LEVEL_KEY[plan.experienceLevel]),
+                        goal: t(GOAL_KEY[plan.mainGoal]),
+                      })}
                     </p>
                   </div>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Link href={`/admin/plans/${plan.id}`}>
                     <Button size="sm" variant="secondary">
-                      Edit
+                      {t("buttons.edit", { ns: "common" })}
                     </Button>
                   </Link>
                   <Button
                     size="sm"
                     onClick={() => {
                       assignPlanToUser(plan.id, user.id, true);
-                      toast("Assigned a copy to your user account.", "success");
+                      toast(t("toast.assignedCopy"), "success");
                     }}
                   >
-                    Assign to me
+                    {t("home.assignToMe")}
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => {
                       duplicateAsTemplate(plan.id);
-                      toast("Template duplicated.", "success");
+                      toast(t("toast.templateDuplicated"), "success");
                     }}
                   >
                     <Copy size={14} />
-                    Duplicate
+                    {t("home.duplicate")}
                   </Button>
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={() => {
                       deletePlan(plan.id);
-                      toast("Template deleted.", "info");
+                      toast(t("toast.templateDeleted"), "info");
                     }}
                   >
-                    Delete
+                    {t("buttons.delete", { ns: "common" })}
                   </Button>
                 </div>
               </Card>
@@ -158,34 +179,38 @@ export default function AdminHomePage() {
         </section>
 
         <section className="mt-10">
-          <h2 className="font-display text-xl font-semibold">Assigned / custom plans</h2>
+          <h2 className="font-display text-xl font-semibold">{t("home.assignedSection")}</h2>
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             {assigned.length === 0 && (
               <Card>
-                <p className="text-sm text-muted">No assigned plans yet.</p>
+                <p className="text-sm text-muted">{t("home.noAssigned")}</p>
               </Card>
             )}
             {assigned.map((plan) => (
               <Card key={plan.id}>
-                <Badge variant="accent">Assigned copy</Badge>
+                <Badge variant="accent">{t("home.assignedBadge")}</Badge>
                 <h3 className="mt-2 font-display font-semibold">{plan.name}</h3>
                 <p className="mt-1 text-xs text-muted">
-                  Users: {plan.assignedUserIds.join(", ") || "—"} · parent{" "}
-                  {plan.parentTemplateId ? "linked" : "original"}
+                  {t("home.assignedMeta", {
+                    users: plan.assignedUserIds.join(", ") || "—",
+                    parent: plan.parentTemplateId
+                      ? t("home.parentLinked")
+                      : t("home.parentOriginal"),
+                  })}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Link href={`/admin/plans/${plan.id}`}>
-                    <Button size="sm">Edit assigned plan</Button>
+                    <Button size="sm">{t("home.editAssigned")}</Button>
                   </Link>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => {
                       duplicateAsTemplate(plan.id);
-                      toast("Saved as template.", "success");
+                      toast(t("toast.savedAsTemplate"), "success");
                     }}
                   >
-                    Save as template
+                    {t("home.saveAsTemplate")}
                   </Button>
                 </div>
               </Card>

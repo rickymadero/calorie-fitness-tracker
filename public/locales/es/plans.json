@@ -1,0 +1,40 @@
+{
+  "title": "Planes",
+  "subtitle": "Comidas del mundo real — Chipotle, hamburguesas, pizza, café — adaptadas a tus calorías objetivo.",
+  "adjustWeek": "Ajustar semana",
+  "toast": {
+    "weekRefreshed": "Intercambios semanales de comidas actualizados con nuevas opciones de restaurantes.",
+    "weekProOnly": "Los ajustes semanales son una función Pro.",
+    "loggedMealDemo": "Se añadió {{name}} a {{slot}} (demo).",
+    "addedSuggestion": "Sugerencia añadida: {{name}} (demo)."
+  },
+  "nutritionTitle": "Plan de nutrición",
+  "dailyCalories": "Calorías diarias",
+  "strategy": "Estrategia",
+  "proteinBar": "Proteína {{n}}g",
+  "carbsBar": "Carbohidratos {{n}}g",
+  "fatBar": "Grasa {{n}}g",
+  "strategyExtra": "Encaja comida rápida saltándote las patatas, media ración de arroz en Chipotle, o pizza + ensalada en lugar de toda la pizza.",
+  "nutritionEmpty": "Completa el onboarding para generar tu plan de nutrición.",
+  "workoutProgram": "Programa de entrenamiento",
+  "defaultPlanName": "Plan de entrenamiento personalizado",
+  "programMeta": "{{sessions}} sesiones / semana · nivel {{level}} · {{access}}",
+  "gymAccess": "acceso a gimnasio",
+  "homeFriendly": "apto en casa",
+  "openTrainingPlan": "Abrir plan de entrenamiento",
+  "recipeLibrary": "Biblioteca de recetas",
+  "weekMealPlanTitle": "Plan de comidas de esta semana",
+  "weekMealPlanSubtitle": "Mezcla de básicos del súper y restaurantes a los que irías de verdad.",
+  "logThisMeal": "Registrar esta comida",
+  "mealIdeasTitle": "Ideas de comidas para los macros restantes",
+  "vibe": {
+    "all": "Todas",
+    "flexible": "Flexible",
+    "highProtein": "Alta proteína",
+    "craving": "Antojos",
+    "lighter": "Más ligera"
+  },
+  "addToPlan": "Añadir al plan",
+  "popularPlaces": "Lugares populares en tu registro de comida",
+  "placeCount": "{{place}} · {{count}} elementos"
+}

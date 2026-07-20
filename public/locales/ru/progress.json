@@ -1,0 +1,61 @@
+{
+  "title": "Прогресс",
+  "subtitle": "Отслеживайте вес, обхваты, фото и соблюдение плана со временем.",
+  "measurements": "Измерения",
+  "photo": "Фото",
+  "logWeight": "Записать вес",
+  "weightTrend": "Динамика веса",
+  "changeThisMonth": "{{sign}}{{amount}} {{unit}} за этот месяц",
+  "currentGoal": "Сейчас: {{current}} {{unit}} · Цель: {{goal}} {{unit}}",
+  "bodyMeasurements": "Обхваты тела",
+  "measure": {
+    "chest": "Грудь",
+    "waist": "Талия",
+    "hips": "Бёдра",
+    "arms": "Руки"
+  },
+  "consistency": "Стабильность",
+  "calorieAdherence": "Соблюдение калорий",
+  "workoutConsistency": "Стабильность тренировок",
+  "habitCompletion": "Выполнение привычек",
+  "progressPhotos": "Фото прогресса",
+  "photosEmptyTitle": "Пока нет фото",
+  "photosEmptyDescription": "Загружайте фото прогресса, чтобы сравнивать изменения со временем.",
+  "addPhoto": "Добавить фото",
+  "monthlyOverview": "Обзор за месяц",
+  "monthlyOverviewBody": "Заготовки для графиков готовы к библиотеке чартов или analytics API. Текущий мок показывает здоровое снижение веса и хорошую дисциплину тренировок.",
+  "avgDailyCalories": "Средние калории в день",
+  "workoutsCompleted": "Завершённые тренировки",
+  "bestStreak": "Лучшая серия",
+  "bestStreakValue": "{{n}} дн.",
+  "modal": {
+    "logWeightTitle": "Записать вес",
+    "weightLabel": "Вес ({{unit}})",
+    "updateMeasurements": "Обновить измерения",
+    "addPhotoTitle": "Добавить фото прогресса",
+    "addPhotoBody": "Загрузка фото позже подключится к хранилищу. В этой демо добавляется заглушка."
+  },
+  "addPlaceholderPhoto": "Добавить фото-заглушку",
+  "toast": {
+    "invalidWeight": "Введите действительный вес.",
+    "weightLogged": "Вес записан.",
+    "measurementsUpdated": "Измерения обновлены.",
+    "photoAdded": "Фото прогресса добавлено."
+  },
+  "chartToday": "Сегодня",
+  "basic": {
+    "title": "Базовая статистика",
+    "subtitle": "Дистанция, время и калории за эту неделю по вашим тренировкам — бесплатно для всех.",
+    "freeBadge": "Бесплатно",
+    "distance": "Дистанция",
+    "time": "Время",
+    "calories": "Калории",
+    "weeklyActivity": "Эта неделя",
+    "workoutsCount": "{{n}} тренировок",
+    "empty": "Нет тренировок на этой неделе",
+    "emptyHint": "Запишите тренировку, чтобы заполнить недельный график.",
+    "logWorkout": "Записать тренировку",
+    "unlockTitle": "Откройте расширенный Progress",
+    "unlockBody": "Динамика веса, замеры, фото прогресса и месячная аналитика — в Evolve Pro. Базовая статистика выше остаётся бесплатной навсегда."
+  }
+}

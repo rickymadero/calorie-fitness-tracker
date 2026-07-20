@@ -1,0 +1,40 @@
+{
+  "title": "الخطط",
+  "subtitle": "وجبات واقعية — Chipotle والبرغر والبيتزا والقهوة — مبنية حول أهداف سعراتك.",
+  "adjustWeek": "تعديل الأسبوع",
+  "toast": {
+    "weekRefreshed": "تم تحديث تبديلات وجبات الأسبوع بخيارات مطاعم جديدة.",
+    "weekProOnly": "تعديلات الأسبوع ميزة Pro.",
+    "loggedMealDemo": "تمت إضافة {{name}} إلى {{slot}} (تجريبي).",
+    "addedSuggestion": "تمت إضافة اقتراح: {{name}} (تجريبي)."
+  },
+  "nutritionTitle": "خطة التغذية",
+  "dailyCalories": "السعرات اليومية",
+  "strategy": "الاستراتيجية",
+  "proteinBar": "بروتين {{n}}غ",
+  "carbsBar": "كارب {{n}}غ",
+  "fatBar": "دهون {{n}}غ",
+  "strategyExtra": "ناسب الوجبات السريعة بتخطي البطاطس المقلية، أو نصف الأرز في Chipotle، أو بيتزا + سلطة بدل الفطيرة كاملة.",
+  "nutritionEmpty": "أكمل الإعداد لإنشاء خطة تغذيتك.",
+  "workoutProgram": "برنامج التمرين",
+  "defaultPlanName": "خطة تدريب مخصصة",
+  "programMeta": "{{sessions}} جلسات / أسبوع · مستوى {{level}} · {{access}}",
+  "gymAccess": "وصول للنادي",
+  "homeFriendly": "مناسب للمنزل",
+  "openTrainingPlan": "فتح خطة التدريب",
+  "recipeLibrary": "مكتبة الوصفات",
+  "weekMealPlanTitle": "خطة وجبات هذا الأسبوع",
+  "weekMealPlanSubtitle": "مزيج من أساسيات البقالة ومطاعم تزورها فعليًا.",
+  "logThisMeal": "تسجيل هذه الوجبة",
+  "mealIdeasTitle": "أفكار وجبات للماكروز المتبقية",
+  "vibe": {
+    "all": "الكل",
+    "flexible": "مرنة",
+    "highProtein": "عالية البروتين",
+    "craving": "تشهِّي",
+    "lighter": "أخف"
+  },
+  "addToPlan": "إضافة إلى الخطة",
+  "popularPlaces": "أماكن شائعة في سجل طعامك",
+  "placeCount": "{{place}} · {{count}} عناصر"
+}

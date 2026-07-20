@@ -1,0 +1,42 @@
+{
+  "title": "Рецепты",
+  "subtitle": "Идеи блюд под ваши макросы. Pro открывает персональные недельные планы и рекомендации по макросам.",
+  "recommendedNow": "Рекомендуется вам сейчас",
+  "remainingMacros": "Осталось ~{{kcal}} ккал и {{protein}}г белка",
+  "postWorkoutFocus": " · акцент после тренировки",
+  "unlockProMeals": "Открыть блюда Pro",
+  "recipeCardMeta": "{{calories}} ккал · {{protein}}Б · {{carbs}}У · {{fat}}Ж",
+  "searchPlaceholder": "Искать рецепты...",
+  "filter": {
+    "all": "все",
+    "breakfast": "завтрак",
+    "lunch": "обед",
+    "dinner": "ужин",
+    "snack": "перекус",
+    "highProtein": "высокий белок",
+    "quick": "быстро",
+    "vegetarian": "вегетарианское",
+    "keto": "кето"
+  },
+  "cardMeta": "{{calories}} ккал · {{protein}}г белка · {{minutes}} мин",
+  "notFound": "Рецепт не найден.",
+  "back": "Рецепты",
+  "timing": "Подготовка {{prep}}м · Готовка {{cook}}м · {{difficulty}}",
+  "portions": "Порции",
+  "logToTracker": "Записать в трекер калорий",
+  "groceryList": "Список покупок",
+  "toast": {
+    "logProRequired": "Перейдите на Pro, чтобы записывать персональные рецепты.",
+    "loggedDemo": "{{name}} записано в трекер питания (демо).",
+    "groceryDemo": "Ингредиенты добавлены в список покупок (демо).",
+    "groceryProOnly": "Умные списки покупок — функция Pro."
+  },
+  "lockedTitle": "Откройте персональные рецепты Pro",
+  "lockedBody": "Полные инструкции, недельные планы питания, предложения по макросам и автокоррекция порций.",
+  "ingredients": "Ингредиенты",
+  "allergens": "Аллергены: {{list}}",
+  "steps": "Шаги",
+  "equipmentPortion": "Оборудование: {{equipment}} · Порция: {{portion}}",
+  "disclaimer": "Пищевая ценность — ориентировочная для планирования и не является медицинской рекомендацией.",
+  "openMealPlan": "Открыть план питания"
+}

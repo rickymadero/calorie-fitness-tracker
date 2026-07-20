@@ -1,0 +1,42 @@
+{
+  "title": "食譜",
+  "subtitle": "與你的巨量營養素連動的餐食靈感。Pro 解鎖個人化週計畫與基於巨量的推薦。",
+  "recommendedNow": "此刻為你推薦",
+  "remainingMacros": "還剩約 {{kcal}} 大卡與 {{protein}}g 蛋白質",
+  "postWorkoutFocus": " · 練後重點",
+  "unlockProMeals": "解鎖 Pro 餐食",
+  "recipeCardMeta": "{{calories}} 大卡 · {{protein}}蛋白 · {{carbs}}碳水 · {{fat}}脂肪",
+  "searchPlaceholder": "搜尋食譜...",
+  "filter": {
+    "all": "全部",
+    "breakfast": "早餐",
+    "lunch": "午餐",
+    "dinner": "晚餐",
+    "snack": "點心",
+    "highProtein": "高蛋白",
+    "quick": "快速",
+    "vegetarian": "素食",
+    "keto": "生酮"
+  },
+  "cardMeta": "{{calories}} 大卡 · {{protein}}g 蛋白質 · {{minutes}} 分鐘",
+  "notFound": "找不到食譜。",
+  "back": "食譜",
+  "timing": "準備 {{prep}}分鐘 · 烹調 {{cook}}分鐘 · {{difficulty}}",
+  "portions": "份量",
+  "logToTracker": "記錄到卡路里追蹤",
+  "groceryList": "購物清單",
+  "toast": {
+    "logProRequired": "升級至 Pro 即可記錄個人化食譜。",
+    "loggedDemo": "已將 {{name}} 記錄到飲食追蹤（示範）。",
+    "groceryDemo": "食材已加入購物清單（示範）。",
+    "groceryProOnly": "智慧購物清單是 Pro 功能。"
+  },
+  "lockedTitle": "解鎖個人化 Pro 食譜",
+  "lockedBody": "取得完整步驟、每週餐食計畫、基於巨量的建議，以及自動份量調整。",
+  "ingredients": "食材",
+  "allergens": "過敏原：{{list}}",
+  "steps": "步驟",
+  "equipmentPortion": "廚具：{{equipment}} · 份量：{{portion}}",
+  "disclaimer": "營養數值僅為規劃估算，不構成醫療建議。",
+  "openMealPlan": "開啟飲食計畫"
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Ricette",
+  "subtitle": "Idee pasto collegate ai tuoi macro. Pro sblocca piani settimanali personalizzati e raccomandazioni basate sui macro.",
+  "recommendedNow": "Consigliato per te ora",
+  "remainingMacros": "~{{kcal}} kcal e {{protein}}g di proteine rimanenti",
+  "postWorkoutFocus": " · focus post-allenamento",
+  "unlockProMeals": "Sblocca i pasti Pro",
+  "recipeCardMeta": "{{calories}} kcal · {{protein}}P · {{carbs}}C · {{fat}}F",
+  "searchPlaceholder": "Cerca ricette...",
+  "filter": {
+    "all": "tutte",
+    "breakfast": "colazione",
+    "lunch": "pranzo",
+    "dinner": "cena",
+    "snack": "snack",
+    "highProtein": "alto contenuto proteico",
+    "quick": "veloce",
+    "vegetarian": "vegetariano",
+    "keto": "keto"
+  },
+  "cardMeta": "{{calories}} kcal · {{protein}}g proteine · {{minutes}} min",
+  "notFound": "Ricetta non trovata.",
+  "back": "Ricette",
+  "timing": "Prep {{prep}}m · Cottura {{cook}}m · {{difficulty}}",
+  "portions": "Porzioni",
+  "logToTracker": "Registra nel tracker calorie",
+  "groceryList": "Lista della spesa",
+  "toast": {
+    "logProRequired": "Passa a Pro per registrare ricette personalizzate.",
+    "loggedDemo": "{{name}} registrato nel food tracker (demo).",
+    "groceryDemo": "Ingredienti aggiunti alla lista della spesa (demo).",
+    "groceryProOnly": "Le liste della spesa smart sono una funzione Pro."
+  },
+  "lockedTitle": "Sblocca le ricette Pro personalizzate",
+  "lockedBody": "Ottieni istruzioni complete, piani pasti settimanali, suggerimenti basati sui macro e regolazioni automatiche delle porzioni.",
+  "ingredients": "Ingredienti",
+  "allergens": "Allergeni: {{list}}",
+  "steps": "Passaggi",
+  "equipmentPortion": "Attrezzatura: {{equipment}} · Porzione: {{portion}}",
+  "disclaimer": "I valori nutrizionali sono stime solo a fini di pianificazione e non costituiscono consiglio medico.",
+  "openMealPlan": "Apri pianificazione pasti"
+}

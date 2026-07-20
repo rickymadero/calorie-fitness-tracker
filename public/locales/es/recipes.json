@@ -1,0 +1,42 @@
+{
+  "title": "Recetas",
+  "subtitle": "Ideas de comidas conectadas a tus macros. Pro desbloquea planes semanales personalizados y recomendaciones por macros.",
+  "recommendedNow": "Recomendado para ti ahora",
+  "remainingMacros": "~{{kcal}} kcal y {{protein}}g de proteína restantes",
+  "postWorkoutFocus": " · enfoque post-entreno",
+  "unlockProMeals": "Desbloquear comidas Pro",
+  "recipeCardMeta": "{{calories}} kcal · {{protein}}P · {{carbs}}C · {{fat}}G",
+  "searchPlaceholder": "Buscar recetas...",
+  "filter": {
+    "all": "todas",
+    "breakfast": "desayuno",
+    "lunch": "comida",
+    "dinner": "cena",
+    "snack": "snack",
+    "highProtein": "alta-proteína",
+    "quick": "rápida",
+    "vegetarian": "vegetariana",
+    "keto": "keto"
+  },
+  "cardMeta": "{{calories}} kcal · {{protein}}g proteína · {{minutes}} min",
+  "notFound": "Receta no encontrada.",
+  "back": "Recetas",
+  "timing": "Prep {{prep}}m · Cocción {{cook}}m · {{difficulty}}",
+  "portions": "Porciones",
+  "logToTracker": "Registrar en el tracker de calorías",
+  "groceryList": "Lista de la compra",
+  "toast": {
+    "logProRequired": "Mejora a Pro para registrar recetas personalizadas.",
+    "loggedDemo": "Se registró {{name}} en el tracker de comida (demo).",
+    "groceryDemo": "Ingredientes añadidos a la lista de la compra (demo).",
+    "groceryProOnly": "Las listas de compra inteligentes son una función Pro."
+  },
+  "lockedTitle": "Desbloquea recetas Pro personalizadas",
+  "lockedBody": "Obtén instrucciones completas, planes semanales, sugerencias por macros y ajuste automático de porciones.",
+  "ingredients": "Ingredientes",
+  "allergens": "Alérgenos: {{list}}",
+  "steps": "Pasos",
+  "equipmentPortion": "Equipamiento: {{equipment}} · Porción: {{portion}}",
+  "disclaimer": "Los valores nutricionales son estimaciones solo para planificación y no constituyen consejo médico.",
+  "openMealPlan": "Abrir planificación de comidas"
+}

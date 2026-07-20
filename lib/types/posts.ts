@@ -50,6 +50,8 @@ export interface WorkoutPost {
   visibility: PostVisibility;
   photoUrl?: string;
   photos?: string[];
+  /** Demo data-URL or remote URL for an uploaded clip */
+  videoUrl?: string;
   distanceKm?: number;
   durationMin?: number;
   movingTimeMin?: number;
@@ -122,6 +124,7 @@ export interface CreatePostInput {
   visibility: PostVisibility;
   photoUrl?: string;
   photos?: string[];
+  videoUrl?: string;
   distanceKm?: number;
   durationMin?: number;
   caloriesBurned?: number;

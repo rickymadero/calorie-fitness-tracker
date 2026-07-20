@@ -1,0 +1,40 @@
+{
+  "title": "Plans",
+  "subtitle": "Repas du quotidien — Chipotle, burgers, pizza, pauses café — construits autour de vos objectifs caloriques.",
+  "adjustWeek": "Ajuster la semaine",
+  "toast": {
+    "weekRefreshed": "Les échanges de repas de la semaine ont été actualisés avec de nouvelles options restaurant.",
+    "weekProOnly": "Les ajustements hebdomadaires sont une fonctionnalité Pro.",
+    "loggedMealDemo": "{{name}} ajouté à {{slot}} (démo).",
+    "addedSuggestion": "Suggestion ajoutée : {{name}} (démo)."
+  },
+  "nutritionTitle": "Plan nutrition",
+  "dailyCalories": "Calories quotidiennes",
+  "strategy": "Stratégie",
+  "proteinBar": "Protéines {{n}}g",
+  "carbsBar": "Glucides {{n}}g",
+  "fatBar": "Lipides {{n}}g",
+  "strategyExtra": "Intégrez le fast-food en sautant les frites, en prenant la moitié de riz chez Chipotle, ou pizza + salade au lieu d'une pizza entière.",
+  "nutritionEmpty": "Terminez l'onboarding pour générer votre plan nutrition.",
+  "workoutProgram": "Programme d'entraînement",
+  "defaultPlanName": "Programme d'entraînement personnalisé",
+  "programMeta": "{{sessions}} séances / semaine · niveau {{level}} · {{access}}",
+  "gymAccess": "accès salle",
+  "homeFriendly": "adapté à domicile",
+  "openTrainingPlan": "Ouvrir le programme",
+  "recipeLibrary": "Bibliothèque de recettes",
+  "weekMealPlanTitle": "Plan repas de la semaine",
+  "weekMealPlanSubtitle": "Un mélange de basiques d'épicerie et de restaurants où vous iriez vraiment.",
+  "logThisMeal": "Enregistrer ce repas",
+  "mealIdeasTitle": "Idées de repas pour les macros restantes",
+  "vibe": {
+    "all": "Tous",
+    "flexible": "Flexible",
+    "highProtein": "Riche en protéines",
+    "craving": "Envies",
+    "lighter": "Plus léger"
+  },
+  "addToPlan": "Ajouter au plan",
+  "popularPlaces": "Lieux populaires dans votre journal alimentaire",
+  "placeCount": "{{place}} · {{count}} articles"
+}

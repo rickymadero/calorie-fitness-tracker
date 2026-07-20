@@ -1,0 +1,42 @@
+{
+  "title": "Recipe database",
+  "subtitle": "Cook-at-home recipes with ingredients and steps. Filter by meal type, macros, and prep time.",
+  "recommendedNow": "Recommended for you now",
+  "remainingMacros": "~{{kcal}} kcal and {{protein}}g protein remaining",
+  "postWorkoutFocus": " · post-workout focus",
+  "unlockProMeals": "Unlock Pro recipes",
+  "recipeCardMeta": "{{calories}} kcal · {{protein}}P · {{carbs}}C · {{fat}}F",
+  "searchPlaceholder": "Search recipes...",
+  "filter": {
+    "all": "all",
+    "breakfast": "breakfast",
+    "lunch": "lunch",
+    "dinner": "dinner",
+    "snack": "snack",
+    "highProtein": "high-protein",
+    "quick": "quick",
+    "vegetarian": "vegetarian",
+    "keto": "keto"
+  },
+  "cardMeta": "{{calories}} kcal · {{protein}}g protein · {{minutes}} min",
+  "notFound": "Recipe not found.",
+  "back": "Recipes",
+  "timing": "Prep {{prep}}m · Cook {{cook}}m · {{difficulty}}",
+  "portions": "Portions",
+  "logToTracker": "Log to calorie tracker",
+  "groceryList": "Grocery list",
+  "toast": {
+    "logProRequired": "Upgrade to Pro to log personalized recipes.",
+    "loggedDemo": "Logged {{name}} to food tracker (demo).",
+    "groceryDemo": "Ingredients added to grocery list (demo).",
+    "groceryProOnly": "Smart grocery lists are a Pro feature."
+  },
+  "lockedTitle": "Unlock the Pro recipe database",
+  "lockedBody": "Get full cook instructions, ingredient lists, portion scaling, and macro-matched recipe recommendations.",
+  "ingredients": "Ingredients",
+  "allergens": "Allergens: {{list}}",
+  "steps": "Steps",
+  "equipmentPortion": "Equipment: {{equipment}} · Portion: {{portion}}",
+  "disclaimer": "Nutrition values are estimates for planning only and not medical advice.",
+  "openMealPlan": "Open meal planning"
+}

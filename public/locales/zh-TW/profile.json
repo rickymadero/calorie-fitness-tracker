@@ -1,0 +1,37 @@
+{
+  "edit": "編輯個人檔案",
+  "publicView": "公開檢視",
+  "createPost": "發佈貼文",
+  "emptyPosts": "尚無貼文",
+  "emptyPostsHint": "與你的人脈分享第一次訓練吧。",
+  "addBio": "在設定中新增個人簡介，讓運動員了解你。",
+  "statMonth": "本月",
+  "statDistance": "距離",
+  "statStreak": "連續天數",
+  "tabWorkouts": "訓練",
+  "tabPrs": "個人紀錄",
+  "recentWorkouts": "近期訓練",
+  "newPost": "新貼文",
+  "savedTitle": "已儲存的貼文",
+  "savedEmpty": "沒有已儲存的訓練",
+  "savedEmptyHint": "點擊任一貼文上的收藏圖示，即可儲存於此。",
+  "browseFeed": "瀏覽動態",
+  "signedOut": "已登出。",
+  "menuAria": "個人檔案選單",
+  "prs": {
+    "empty": "尚無個人紀錄",
+    "emptySelf": "新增你的第一個個人紀錄",
+    "emptySelfHint": "臥推、深蹲、5K、HYROX、鐵人三項——向人脈展示你的成績。",
+    "addTitle": "新增個人紀錄",
+    "label": "名稱",
+    "result": "成績",
+    "saved": "個人紀錄已儲存。",
+    "removed": "個人紀錄已刪除。",
+    "cat": {
+      "strength": "力量",
+      "running": "跑步",
+      "endurance": "耐力與賽事",
+      "other": "其他"
+    }
+  }
+}

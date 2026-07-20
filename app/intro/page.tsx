@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -17,63 +17,20 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { PageLoader } from "@/components/ui/Spinner";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 
-const FEATURES = [
-  {
-    icon: Activity,
-    title: "Workout Feed",
-    points: [
-      "Share runs, lifts, yoga, and more",
-      "See what friends trained today",
-      "Like and comment on posts",
-      "Public or followers-only posts",
-    ],
-  },
-  {
-    icon: Flame,
-    title: "Discover Athletes",
-    points: [
-      "Find people by name or username",
-      "Follow public accounts instantly",
-      "Request to follow private profiles",
-      "Build your fitness network",
-    ],
-  },
-  {
-    icon: Dumbbell,
-    title: "Your Fitness Profile",
-    points: [
-      "Username, bio, and workout interests",
-      "Followers and following counts",
-      "Recent workout history",
-      "Monthly distance and streak stats",
-    ],
-  },
-  {
-    icon: BarChart3,
-    title: "Evolve Pro (optional)",
-    points: [
-      "Food logging and macros",
-      "Personalized training plans",
-      "AI food scanner",
-      "Advanced progress analytics",
-    ],
-  },
-  {
-    icon: Lightbulb,
-    title: "Free forever core",
-    points: [
-      "Social feed stays free",
-      "Create and share workouts anytime",
-      "Engage with likes and comments",
-      "Pro is for deeper personal coaching",
-    ],
-  },
-];
+const FEATURE_IDS = [
+  { id: "feed", icon: Activity },
+  { id: "discover", icon: Flame },
+  { id: "profile", icon: Dumbbell },
+  { id: "pro", icon: BarChart3 },
+  { id: "free", icon: Lightbulb },
+] as const;
 
 export default function IntroPage() {
   const { user, isReady, markIntroSeen } = useAuth();
   const router = useRouter();
+  const { t } = useAppTranslation(["common", "auth"]);
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -82,9 +39,22 @@ export default function IntroPage() {
     else if (!user.onboardingComplete) router.replace("/onboarding");
   }, [user, isReady, router]);
 
+  const features = useMemo(
+    () =>
+      FEATURE_IDS.map((f) => ({
+        ...f,
+        title: t(`intro.features.${f.id}.title`, { ns: "auth" }),
+        points: t(`intro.features.${f.id}.points`, {
+          ns: "auth",
+          returnObjects: true,
+        }) as string[],
+      })),
+    [t],
+  );
+
   if (!isReady || !user) return <PageLoader />;
 
-  const feature = FEATURES[index];
+  const feature = features[index];
   const Icon = feature.icon;
 
   function finish() {
@@ -97,19 +67,19 @@ export default function IntroPage() {
     <div className="min-h-dvh bg-background">
       <header className="border-b border-border px-4 py-4 md:px-8">
         <div className="mx-auto flex max-w-3xl items-center justify-between">
-          <EvolveLogo size="sm" href="#" />
+          <EvolveLogo size="sm" />
           <p className="text-sm text-muted">
-            {index + 1} / {FEATURES.length}
+            {index + 1} / {features.length}
           </p>
         </div>
       </header>
 
       <main className="mx-auto flex max-w-3xl flex-col px-4 py-10 md:px-8">
         <h1 className="font-display text-3xl font-bold tracking-tight">
-          Everything inside Evolve
+          {t("intro.title", { ns: "auth" })}
         </h1>
         <p className="mt-2 text-muted">
-          A quick tour of the tools that keep your nutrition and training on track.
+          {t("intro.subtitle", { ns: "auth" })}
         </p>
 
         <div className="relative mt-8 min-h-[380px]">
@@ -127,12 +97,17 @@ export default function IntroPage() {
                 </div>
                 <h2 className="font-display text-2xl font-semibold">{feature.title}</h2>
                 <ul className="mt-5 space-y-3">
-                  {feature.points.map((p) => (
-                    <li key={p} className="flex items-start gap-3 text-sm text-muted">
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                      {p}
-                    </li>
-                  ))}
+                  {(Array.isArray(feature.points) ? feature.points : []).map(
+                    (p) => (
+                      <li
+                        key={p}
+                        className="flex items-start gap-3 text-sm text-muted"
+                      >
+                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                        {p}
+                      </li>
+                    ),
+                  )}
                 </ul>
               </Card>
             </motion.div>
@@ -144,17 +119,17 @@ export default function IntroPage() {
             variant="outline"
             onClick={() => setIndex((i) => Math.max(0, i - 1))}
             disabled={index === 0}
-            aria-label="Previous"
+            aria-label={t("intro.previous", { ns: "auth" })}
           >
             <ChevronLeft size={18} />
-            Back
+            {t("buttons.back")}
           </Button>
           <div className="flex gap-1.5">
-            {FEATURES.map((_, i) => (
+            {features.map((_, i) => (
               <button
                 key={i}
                 type="button"
-                aria-label={`Go to feature ${i + 1}`}
+                aria-label={t("intro.goToFeature", { ns: "auth", n: i + 1 })}
                 onClick={() => setIndex(i)}
                 className={`h-2 rounded-full transition-all ${
                   i === index ? "w-6 bg-accent" : "w-2 bg-ring-track"
@@ -162,25 +137,25 @@ export default function IntroPage() {
               />
             ))}
           </div>
-          {index < FEATURES.length - 1 ? (
+          {index < features.length - 1 ? (
             <Button onClick={() => setIndex((i) => i + 1)}>
-              Next
+              {t("buttons.next")}
               <ChevronRight size={18} />
             </Button>
           ) : (
             <Button onClick={finish}>
-              Go to My Dashboard
+              {t("intro.dashboard", { ns: "auth" })}
             </Button>
           )}
         </div>
 
-        {index < FEATURES.length - 1 && (
+        {index < features.length - 1 && (
           <button
             type="button"
             onClick={finish}
             className="mt-6 text-center text-sm text-muted underline-offset-2 hover:underline"
           >
-            Skip introduction
+            {t("intro.skip", { ns: "auth" })}
           </button>
         )}
       </main>

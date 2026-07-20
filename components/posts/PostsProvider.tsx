@@ -19,6 +19,7 @@ interface PostsContextValue {
   tick: number;
   refresh: () => void;
   followingFeed: () => WorkoutPost[];
+  homeFeed: () => WorkoutPost[];
   publicFeed: () => WorkoutPost[];
   postsByAuthor: (authorId: string, limit?: number) => WorkoutPost[];
   getPost: (postId: string) => WorkoutPost | null;
@@ -28,6 +29,7 @@ interface PostsContextValue {
   toggleLike: (postId: string) => { liked: boolean; likesCount: number };
   hasSaved: (postId: string) => boolean;
   toggleSave: (postId: string) => { saved: boolean };
+  listSavedPosts: () => WorkoutPost[];
   commentsFor: (postId: string) => PostComment[];
   addComment: (
     postId: string,
@@ -36,6 +38,7 @@ interface PostsContextValue {
   ) => PostComment | null;
   deleteComment: (commentId: string) => boolean;
   authorStats: (authorId: string) => ReturnType<typeof postsStorage.authorStats>;
+  weekStats: (authorId: string) => ReturnType<typeof postsStorage.weekStats>;
 }
 
 const PostsContext = createContext<PostsContextValue | null>(null);
@@ -54,6 +57,10 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
       followingFeed: () =>
         viewerId
           ? postsStorage.listFollowingFeed(viewerId)
+          : postsStorage.listPublicFeed(null),
+      homeFeed: () =>
+        viewerId
+          ? postsStorage.listHomeFeed(viewerId)
           : postsStorage.listPublicFeed(null),
       publicFeed: () => postsStorage.listPublicFeed(viewerId),
       postsByAuthor: (authorId, limit = 20) =>
@@ -87,6 +94,8 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
         refresh();
         return res;
       },
+      listSavedPosts: () =>
+        user ? postsStorage.listSaved(user.id) : [],
       commentsFor: (postId) => postsStorage.listComments(postId),
       addComment: (postId, body, parentId) => {
         if (!user) return null;
@@ -101,6 +110,7 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
         return ok;
       },
       authorStats: (authorId) => postsStorage.authorStats(authorId),
+      weekStats: (authorId) => postsStorage.weekStats(authorId),
     };
   }, [tick, user, refresh]);
 

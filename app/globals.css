@@ -245,6 +245,15 @@ h3,
     }
   }
 
+  @keyframes evolve-story-progress {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
   @keyframes evolve-pulse-soft {
     0%,
     100% {

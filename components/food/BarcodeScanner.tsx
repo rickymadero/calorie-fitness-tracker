@@ -10,17 +10,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   Barcode,
   Camera,
-  Check,
-  Crown,
   Flashlight,
   FlashlightOff,
   History,
   Keyboard,
-  ScanLine,
   X,
   Zap,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
@@ -43,6 +39,7 @@ import {
 } from "@/lib/barcode/detector";
 import type { FoodItem } from "@/lib/types";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 
 type MealType = "breakfast" | "lunch" | "dinner" | "snack";
 type ScannerMode = "camera" | "manual" | "history";
@@ -67,8 +64,8 @@ export function BarcodeScanner({
   onClose,
   onLog,
 }: BarcodeScannerProps) {
-  const router = useRouter();
   const { toast } = useToast();
+  const { t } = useAppTranslation(["food", "common"]);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -126,14 +123,14 @@ export function BarcodeScanner({
         if (typeof navigator !== "undefined" && "vibrate" in navigator) {
           navigator.vibrate?.(30);
         }
-        toast(`Found ${found.name}`, "success");
+        toast(t("toast.found", { name: found.name }), "success");
       } else {
         setProduct(null);
         setPhase("not-found");
-        toast("Barcode not in database yet.", "info");
+        toast(t("toast.notInDb"), "info");
       }
     },
-    [toast],
+    [t, toast],
   );
 
   useEffect(() => {
@@ -143,7 +140,7 @@ export function BarcodeScanner({
   const startCamera = useCallback(async () => {
     setCameraError(null);
     stopCamera();
-    if (!isPro || !open) return;
+    if (!open) return;
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -184,11 +181,9 @@ export function BarcodeScanner({
         void tick();
       }
     } catch {
-      setCameraError(
-        "Camera access is blocked. Allow camera permission or enter a barcode manually.",
-      );
+      setCameraError(t("scanner.cameraBlocked"));
     }
-  }, [isPro, open, stopCamera]);
+  }, [open, stopCamera, t]);
 
   useEffect(() => {
     if (!open) {
@@ -205,13 +200,13 @@ export function BarcodeScanner({
   }, [open, initialMealType, stopCamera]);
 
   useEffect(() => {
-    if (open && isPro && mode === "camera" && phase === "scanning") {
+    if (open && mode === "camera" && phase === "scanning") {
       void startCamera();
     } else {
       stopCamera();
     }
     return () => stopCamera();
-  }, [open, isPro, mode, phase, startCamera, stopCamera]);
+  }, [open, mode, phase, startCamera, stopCamera]);
 
   async function toggleTorch() {
     const track = streamRef.current?.getVideoTracks()[0];
@@ -221,14 +216,14 @@ export function BarcodeScanner({
       await track.applyConstraints({ advanced: [{ torch: !torchOn }] });
       setTorchOn((v) => !v);
     } catch {
-      toast("Flashlight is not supported on this device.", "info");
+      toast(t("toast.flashlightUnsupported"), "info");
     }
   }
 
   function submitManual() {
     const code = normalizeBarcode(manualCode);
     if (code.length < 6) {
-      toast("Enter a valid barcode (6+ digits).", "error");
+      toast(t("toast.invalidBarcode"), "error");
       return;
     }
     void handleDetectedCode(code);
@@ -238,7 +233,13 @@ export function BarcodeScanner({
     if (!product) return;
     const scaled = scaleFood(product, servings);
     onLog(scaled, mealType);
-    toast(`Logged ${scaled.name} to ${mealType}.`, "success");
+    toast(
+      t("toast.logged", {
+        name: scaled.name,
+        meal: t(`meal.${mealType}`, { ns: "common" }),
+      }),
+      "success",
+    );
     onClose();
   }
 
@@ -253,68 +254,6 @@ export function BarcodeScanner({
 
   if (!open) return null;
 
-  if (!isPro) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-4 backdrop-blur-sm sm:items-center">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="relative w-full max-w-md overflow-hidden rounded-apex-lg border border-accent/30 bg-card shadow-apex-lg"
-        >
-          <div className="apex-gradient-bg relative h-40">
-            <div className="absolute inset-0 bg-black/40" />
-            <button
-              type="button"
-              onClick={onClose}
-              className="absolute right-3 top-3 rounded-xl bg-black/40 p-2 text-white"
-              aria-label="Close"
-            >
-              <X size={18} />
-            </button>
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-              <ScanLine size={36} className="mb-2 text-accent" />
-              <p className="font-display text-xl font-bold">Pro Barcode Scanner</p>
-            </div>
-          </div>
-          <div className="space-y-4 p-6">
-            <p className="text-sm text-muted">
-              Unlock unlimited barcode scans with live camera detection, serving
-              adjustments, and a growing packaged-food database — built for people
-              who log on the go.
-            </p>
-            <ul className="space-y-2 text-sm">
-              {[
-                "Live camera + automatic UPC detection",
-                "Packaged foods, snacks, drinks & protein bars",
-                "Adjust servings and log to any meal",
-                "Scan history for one-tap re-logging",
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-2">
-                  <Check size={16} className="mt-0.5 shrink-0 text-accent-dim dark:text-accent" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <Button
-              fullWidth
-              size="lg"
-              onClick={() => {
-                onClose();
-                router.push("/pricing");
-              }}
-            >
-              <Crown size={16} />
-              Upgrade to Pro
-            </Button>
-            <Button fullWidth variant="ghost" onClick={onClose}>
-              Maybe later
-            </Button>
-          </div>
-        </motion.div>
-      </div>
-    );
-  }
-
   const scaled = product ? scaleFood(product, servings) : null;
   const catalogHits = searchBarcodeCatalog(catalogQuery);
 
@@ -323,18 +262,22 @@ export function BarcodeScanner({
       <header className="flex items-center justify-between gap-3 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
         <div>
           <div className="flex items-center gap-2">
-            <p className="font-display text-lg font-semibold">Scan food</p>
-            <Badge variant="accent">Pro</Badge>
+            <p className="font-display text-lg font-semibold">{t("scanner.title")}</p>
+            {isPro ? (
+              <Badge variant="accent">{t("labels.pro", { ns: "common" })}</Badge>
+            ) : (
+              <Badge variant="accent">{t("labels.free", { ns: "common" })}</Badge>
+            )}
           </div>
           <p className="text-xs text-white/60">
-            Point at a barcode · {remainingCalories} kcal left today
+            {t("scanner.subtitle", { remaining: remainingCalories })}
           </p>
         </div>
         <button
           type="button"
           onClick={onClose}
           className="rounded-xl bg-white/10 p-2.5 hover:bg-white/15"
-          aria-label="Close scanner"
+          aria-label={t("scanner.closeAria")}
         >
           <X size={18} />
         </button>
@@ -343,10 +286,10 @@ export function BarcodeScanner({
       <div className="flex gap-2 px-4 pb-3">
         {(
           [
-            { id: "camera", label: "Camera", icon: Camera },
-            { id: "manual", label: "Enter code", icon: Keyboard },
-            { id: "history", label: "History", icon: History },
-          ] as const
+            { id: "camera" as const, label: t("scanner.tabCamera"), icon: Camera },
+            { id: "manual" as const, label: t("scanner.tabManual"), icon: Keyboard },
+            { id: "history" as const, label: t("scanner.tabHistory"), icon: History },
+          ]
         ).map((tab) => (
           <button
             key={tab.id}
@@ -403,17 +346,17 @@ export function BarcodeScanner({
                 <div className="flex items-center justify-between gap-3">
                   <p className="text-sm text-white/80">
                     {detectorReady
-                      ? "Auto-detect is on — hold steady over the barcode"
+                      ? t("scanner.autoDetectOn")
                       : cameraError
                         ? cameraError
-                        : "Camera ready — use demo codes or enter manually if needed"}
+                        : t("scanner.cameraReady")}
                   </p>
                   {torchSupported && (
                     <button
                       type="button"
                       onClick={() => void toggleTorch()}
                       className="rounded-xl bg-white/10 p-3"
-                      aria-label="Toggle flashlight"
+                      aria-label={t("scanner.torchAria")}
                     >
                       {torchOn ? <FlashlightOff size={18} /> : <Flashlight size={18} />}
                     </button>
@@ -425,13 +368,13 @@ export function BarcodeScanner({
                     fullWidth
                     onClick={() => setMode("manual")}
                   >
-                    Enter barcode manually
+                    {t("scanner.enterManually")}
                   </Button>
                 )}
                 {!supportsBarcodeDetector() && !cameraError && (
                   <div className="rounded-2xl bg-white/10 p-3">
                     <p className="mb-2 text-xs text-white/70">
-                      This browser can&apos;t auto-read barcodes. Try a demo product:
+                      {t("scanner.noAutoRead")}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {DEMO_BARCODES.map((demo) => (
@@ -456,7 +399,9 @@ export function BarcodeScanner({
                         onClick={() => void handleDetectedCode(demo.code)}
                         className="rounded-full bg-white/10 px-3 py-1.5 text-[11px] text-white/80"
                       >
-                        Demo: {demo.label.split(" · ").pop()}
+                        {t("scanner.demoPrefix", {
+                          label: demo.label.split(" · ").pop(),
+                        })}
                       </button>
                     ))}
                   </div>
@@ -473,7 +418,7 @@ export function BarcodeScanner({
               className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-[#0a0a0a] px-6"
             >
               <div className="h-12 w-12 animate-spin rounded-full border-2 border-accent border-t-transparent" />
-              <p className="font-display text-lg font-semibold">Looking up product…</p>
+              <p className="font-display text-lg font-semibold">{t("scanner.lookingUp")}</p>
               <p className="font-mono text-sm text-white/50">{scannedCode}</p>
             </motion.div>
           )}
@@ -490,15 +435,17 @@ export function BarcodeScanner({
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div className="mb-2 flex flex-wrap items-center gap-2">
-                        <Badge variant="accent">Matched</Badge>
-                        {product.verified && <Badge variant="success">Verified</Badge>}
+                        <Badge variant="accent">{t("scanner.matched")}</Badge>
+                        {product.verified && (
+                          <Badge variant="success">{t("scanner.verified")}</Badge>
+                        )}
                       </div>
                       <h2 className="font-display text-2xl font-bold">{product.name}</h2>
                       {product.brand && (
                         <p className="mt-1 text-sm text-accent">{product.brand}</p>
                       )}
                       <p className="mt-1 text-xs text-white/50">
-                        UPC {product.barcode}
+                        {t("scanner.upc", { code: product.barcode })}
                         {product.source ? ` · ${product.source}` : ""}
                       </p>
                     </div>
@@ -506,14 +453,26 @@ export function BarcodeScanner({
                   </div>
 
                   <div className="mt-5 grid grid-cols-4 gap-2 text-center">
-                    <MacroTile label="kcal" value={scaled.calories} />
-                    <MacroTile label="P" value={`${scaled.protein}g`} color="#60a5fa" />
-                    <MacroTile label="C" value={`${scaled.carbs}g`} color="#fbbf24" />
-                    <MacroTile label="F" value={`${scaled.fat}g`} color="#f472b6" />
+                    <MacroTile label={t("macros.kcal", { ns: "common" })} value={scaled.calories} />
+                    <MacroTile
+                      label={t("macros.proteinShort", { ns: "common" })}
+                      value={`${scaled.protein}g`}
+                      color="#60a5fa"
+                    />
+                    <MacroTile
+                      label={t("macros.carbsShort", { ns: "common" })}
+                      value={`${scaled.carbs}g`}
+                      color="#fbbf24"
+                    />
+                    <MacroTile
+                      label={t("macros.fatShort", { ns: "common" })}
+                      value={`${scaled.fat}g`}
+                      color="#f472b6"
+                    />
                   </div>
 
                   <div className="mt-5">
-                    <p className="mb-2 text-xs font-medium text-white/70">Servings</p>
+                    <p className="mb-2 text-xs font-medium text-white/70">{t("scanner.servings")}</p>
                     <div className="flex flex-wrap gap-2">
                       {SERVING_OPTIONS.map((s) => (
                         <button
@@ -535,20 +494,22 @@ export function BarcodeScanner({
 
                   <div className="mt-5 space-y-2">
                     <ProgressBar
-                      label="Calories vs remaining"
+                      label={t("scanner.caloriesVsRemaining")}
                       value={Math.min(scaled.calories, remainingCalories || scaled.calories)}
                       max={Math.max(remainingCalories, scaled.calories, 1)}
                       showValue={false}
                     />
                     <p className="text-xs text-white/50">
                       {scaled.calories <= remainingCalories
-                        ? `Fits today’s remaining ${remainingCalories} kcal`
-                        : `${scaled.calories - remainingCalories} kcal over remaining target`}
+                        ? t("scanner.fitsRemaining", { remaining: remainingCalories })
+                        : t("scanner.overRemaining", {
+                            over: scaled.calories - remainingCalories,
+                          })}
                     </p>
                   </div>
 
                   <div className="mt-5">
-                    <p className="mb-2 text-xs font-medium text-white/70">Log to</p>
+                    <p className="mb-2 text-xs font-medium text-white/70">{t("scanner.logTo")}</p>
                     <div className="grid grid-cols-4 gap-2">
                       {(["breakfast", "lunch", "dinner", "snack"] as MealType[]).map(
                         (m) => (
@@ -562,7 +523,7 @@ export function BarcodeScanner({
                                 : "bg-white/10"
                             }`}
                           >
-                            {m}
+                            {t(`meal.${m}`, { ns: "common" })}
                           </button>
                         ),
                       )}
@@ -572,11 +533,11 @@ export function BarcodeScanner({
 
                 <div className="flex gap-3">
                   <Button variant="secondary" className="flex-1" onClick={resetScan}>
-                    Scan again
+                    {t("scanner.scanAgain")}
                   </Button>
                   <Button className="flex-1" onClick={logProduct}>
                     <Zap size={16} />
-                    Log food
+                    {t("scanner.logFood")}
                   </Button>
                 </div>
               </div>
@@ -592,19 +553,17 @@ export function BarcodeScanner({
             >
               <div className="mx-auto max-w-lg space-y-4 pt-6">
                 <div className="rounded-apex-lg border border-white/10 bg-white/5 p-5 text-center">
-                  <p className="font-display text-xl font-semibold">No match yet</p>
+                  <p className="font-display text-xl font-semibold">{t("scanner.noMatchTitle")}</p>
                   <p className="mt-2 text-sm text-white/60">
-                    We couldn&apos;t find{" "}
-                    <span className="font-mono text-white">{scannedCode}</span> in
-                    the demo database. Try a demo product or search nearby items.
+                    {t("scanner.noMatchBody", { code: scannedCode })}
                   </p>
                 </div>
                 <Input
-                  label="Search catalog"
+                  label={t("scanner.searchCatalog")}
                   labelClassName="text-white"
                   value={catalogQuery}
                   onChange={(e) => setCatalogQuery(e.target.value)}
-                  placeholder="Quest bar, Doritos, Coke…"
+                  placeholder={t("scanner.searchPlaceholder")}
                   className="border-white/15 bg-white/5 text-white"
                 />
                 <ul className="space-y-2">
@@ -623,16 +582,18 @@ export function BarcodeScanner({
                         <span>
                           <span className="block text-sm font-medium">{item.name}</span>
                           <span className="text-xs text-white/50">
-                            {item.brand} · {item.calories} kcal
+                            {item.brand} · {item.calories} {t("macros.kcal", { ns: "common" })}
                           </span>
                         </span>
-                        <span className="text-accent text-xs">Select</span>
+                        <span className="text-accent text-xs">
+                          {t("buttons.select", { ns: "common" })}
+                        </span>
                       </button>
                     </li>
                   ))}
                 </ul>
                 <Button fullWidth variant="secondary" onClick={resetScan}>
-                  Try scanning again
+                  {t("scanner.tryAgain")}
                 </Button>
               </div>
             </motion.div>
@@ -647,27 +608,31 @@ export function BarcodeScanner({
             >
               <div className="mx-auto max-w-lg space-y-4 pt-4">
                 <div className="rounded-apex-lg border border-white/10 bg-white/5 p-5">
-                  <p className="font-display text-lg font-semibold">Enter barcode</p>
+                  <p className="font-display text-lg font-semibold">
+                    {t("scanner.enterBarcodeTitle")}
+                  </p>
                   <p className="mt-1 text-sm text-white/60">
-                    Type the UPC/EAN from the package if the camera can&apos;t read it.
+                    {t("scanner.enterBarcodeBody")}
                   </p>
                   <div className="mt-4 space-y-3">
                     <Input
-                      label="Barcode number"
+                      label={t("scanner.barcodeNumber")}
                       labelClassName="text-white"
                       value={manualCode}
                       onChange={(e) => setManualCode(e.target.value)}
                       inputMode="numeric"
-                      placeholder="e.g. 0049000055102"
+                      placeholder={t("scanner.barcodePlaceholder")}
                       className="border-white/15 bg-black/40 font-mono text-white"
                     />
                     <Button fullWidth size="lg" onClick={submitManual}>
-                      Look up product
+                      {t("scanner.lookUp")}
                     </Button>
                   </div>
                 </div>
                 <div>
-                  <p className="mb-2 text-sm font-medium text-white/80">Try demo codes</p>
+                  <p className="mb-2 text-sm font-medium text-white/80">
+                    {t("scanner.tryDemoCodes")}
+                  </p>
                   <div className="space-y-2">
                     {DEMO_BARCODES.map((demo) => (
                       <button
@@ -697,10 +662,10 @@ export function BarcodeScanner({
               className="absolute inset-0 overflow-y-auto bg-[#0a0a0a] px-4 pb-8"
             >
               <div className="mx-auto max-w-lg space-y-3 pt-4">
-                <p className="font-display text-lg font-semibold">Recent scans</p>
+                <p className="font-display text-lg font-semibold">{t("scanner.recentScans")}</p>
                 {history.length === 0 ? (
                   <div className="rounded-2xl border border-dashed border-white/15 px-4 py-10 text-center text-sm text-white/50">
-                    No scans yet. Scan a package to build your history.
+                    {t("scanner.historyEmpty")}
                   </div>
                 ) : (
                   history.map((item) => (
@@ -721,11 +686,13 @@ export function BarcodeScanner({
                         <span className="block text-sm font-medium">{item.name}</span>
                         <span className="text-xs text-white/50">
                           {item.brand ? `${item.brand} · ` : ""}
-                          {item.calories} kcal ·{" "}
+                          {item.calories} {t("macros.kcal", { ns: "common" })} ·{" "}
                           {new Date(item.scannedAt).toLocaleString()}
                         </span>
                       </span>
-                      <span className="text-xs text-accent">Open</span>
+                      <span className="text-xs text-accent">
+                        {t("buttons.open", { ns: "common" })}
+                      </span>
                     </button>
                   ))
                 )}

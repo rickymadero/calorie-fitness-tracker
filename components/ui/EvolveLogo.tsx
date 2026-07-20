@@ -4,7 +4,7 @@ import Link from "next/link";
  * Evolve logo — wordmark with a clean accent line cutting through the letters.
  */
 export function EvolveLogo({
-  href = "/",
+  href = "/feed",
   size = "md",
   light,
 }: {
@@ -37,7 +37,7 @@ export function EvolveLogo({
         </span>
         {/* Cool strike line through the wordmark */}
         <span
-          className={`pointer-events-none absolute left-[-4%] right-[-4%] ${dims.line} z-[2] overflow-hidden rounded-full`}
+          className={`pointer-events-none absolute inset-x-0 ${dims.line} z-[2] overflow-hidden rounded-full`}
           aria-hidden
         >
           <span className={`absolute inset-0 ${soft}`} />

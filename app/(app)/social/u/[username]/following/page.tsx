@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { useSocial } from "@/components/social/SocialProvider";
 import { PersonCard } from "@/components/social/PersonCard";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 
 export default function FollowingPage({
   params,
@@ -13,6 +14,7 @@ export default function FollowingPage({
 }) {
   const { username } = use(params);
   const { ready, getCardByUsername, followingOf } = useSocial();
+  const { t } = useAppTranslation(["common", "social"]);
 
   const card = useMemo(() => {
     if (!ready) return null;
@@ -31,9 +33,9 @@ export default function FollowingPage({
   if (!card) {
     return (
       <div className="py-16 text-center">
-        <p className="font-medium">User not found</p>
+        <p className="font-medium">{t("social:userNotFound")}</p>
         <Link href="/explore" className="mt-4 inline-block">
-          <Button>Explore</Button>
+          <Button>{t("common:buttons.explore")}</Button>
         </Link>
       </div>
     );
@@ -42,15 +44,15 @@ export default function FollowingPage({
   if (card.limited) {
     return (
       <div className="rounded-apex-lg border border-dashed border-border px-6 py-12 text-center">
-        <p className="font-medium">Following list is private</p>
+        <p className="font-medium">{t("social:followingPrivate")}</p>
         <p className="mt-1 text-sm text-muted">
-          Follow this account to see who they follow.
+          {t("social:followingPrivateHint")}
         </p>
         <Link
           href={`/social/u/${card.profile.username}`}
           className="mt-4 inline-block"
         >
-          <Button variant="outline">Back to profile</Button>
+          <Button variant="outline">{t("social:backToProfile")}</Button>
         </Link>
       </div>
     );
@@ -61,7 +63,7 @@ export default function FollowingPage({
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="font-display text-2xl font-bold tracking-tight">
-            Following
+            {t("social:tabs.following")}
           </h1>
           <p className="mt-1 text-sm text-muted">
             @{card.profile.username} · {list.length}
@@ -70,12 +72,12 @@ export default function FollowingPage({
         <div className="flex gap-2">
           <Link href={`/social/u/${card.profile.username}/followers`}>
             <Button size="sm" variant="outline">
-              Followers
+              {t("social:tabs.followers")}
             </Button>
           </Link>
           <Link href={`/social/u/${card.profile.username}`}>
             <Button size="sm" variant="ghost">
-              Profile
+              {t("common:nav.profile")}
             </Button>
           </Link>
         </div>
@@ -83,12 +85,12 @@ export default function FollowingPage({
 
       {list.length === 0 ? (
         <div className="mt-8 rounded-apex-lg border border-dashed border-border px-6 py-12 text-center">
-          <p className="font-medium">Not following anyone yet</p>
+          <p className="font-medium">{t("social:notFollowing")}</p>
           <p className="mt-1 text-sm text-muted">
-            Discover athletes to build a feed.
+            {t("social:followingEmptyHint")}
           </p>
           <Link href="/explore" className="mt-4 inline-block">
-            <Button>Explore people</Button>
+            <Button>{t("social:explorePeople")}</Button>
           </Link>
         </div>
       ) : (

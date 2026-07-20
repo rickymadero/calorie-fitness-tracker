@@ -1,0 +1,153 @@
+{
+  "title": "설정",
+  "profile": "프로필",
+  "account": "계정",
+  "privacy": "계정 비공개",
+  "linked": "연결된 소셜 계정",
+  "security": "보안",
+  "preferences": "환경설정",
+  "fullName": "이름",
+  "username": "사용자 이름",
+  "bio": "소개",
+  "bioPlaceholder": "다른 선수를 위한 짧은 소개…",
+  "photo": "프로필 사진",
+  "removePhoto": "사진 제거",
+  "email": "이메일 주소",
+  "passwordCurrent": "현재 비밀번호",
+  "passwordNew": "새 비밀번호",
+  "passwordConfirm": "새 비밀번호 확인",
+  "passwordHint": "비밀번호를 유지하려면 비워 두세요",
+  "measurement": "측정 단위",
+  "appearance": "모양",
+  "dark": "다크 모드",
+  "light": "라이트 모드",
+  "language": "언어",
+  "languageHint": "메뉴, 피드, 설정 등에 사용되는 앱 언어",
+  "subscription": "구독",
+  "subscriptionBody": "소셜 피드는 무료입니다. Pro는 식단 기록, 플랜, 스캐너, 분석을 잠금 해제합니다.",
+  "shownAs": "@{{username}}(으)로 표시됨",
+  "visibilityPublic": "공개",
+  "visibilityPrivate": "비공개",
+  "visibilityPublicHint": "누구나 팔로우할 수 있음",
+  "visibilityPrivateHint": "요청 승인",
+  "morePrivacy": "개인정보 설정 더보기 →",
+  "instagram": "Instagram",
+  "instagramHint": "@ 없이",
+  "showInstagram": "프로필에 Instagram 표시",
+  "twoFactor": "2단계 인증",
+  "twoFactorHint": "데모 토글 — 전체 2FA는 곧 제공됩니다",
+  "blockReport": "차단 및 신고 설정 →",
+  "emailChangeTitle": "이메일 변경 확인",
+  "passwordChangeTitle": "비밀번호 변경 확인",
+  "emailChangeBody": "이메일을 {{email}}(으)로 변경할까요? 이 주소로 로그인하게 됩니다.",
+  "passwordChangeBody": "비밀번호를 업데이트할까요? 이는 데모 변경이며 실제 인증 서버와 동기화되지 않습니다.",
+  "updatePassword": "비밀번호 업데이트",
+  "notifications": {
+    "title": "알림",
+    "intro": "이 기기에서 받고 싶은 업데이트를 선택하세요. 데모 환경설정은 기기에 저장됩니다.",
+    "save": "환경설정 저장",
+    "saved": "알림 환경설정이 저장되었습니다.",
+    "likes": "좋아요",
+    "likesHint": "누군가 내 운동에 좋아요를 누를 때",
+    "comments": "댓글",
+    "commentsHint": "게시물에 대한 답글과 멘션",
+    "follows": "팔로우 및 요청",
+    "followsHint": "새 팔로워와 팔로우 요청",
+    "messages": "다이렉트 메시지",
+    "messagesHint": "비공개 답장과 채팅",
+    "stories": "스토리",
+    "storiesHint": "스토리에 대한 반응과 답장"
+  },
+  "privacyPage": {
+    "title": "계정 비공개",
+    "visibility": "프로필 공개 범위",
+    "visibilityHint": "비공개 계정은 다른 사람이 운동을 보기 전에 팔로우 승인이 필요합니다.",
+    "whoCanMessage": "나에게 메시지를 보낼 수 있는 사람",
+    "everyone": "모두",
+    "peopleYouFollow": "내가 팔로우하는 사람",
+    "noOne": "없음",
+    "blocked": "차단된 계정",
+    "blockedEmpty": "차단한 사람이 없습니다. 프로필 메뉴에서 선수를 차단할 수 있습니다.",
+    "reports": "신고",
+    "reportsBody": "게시물이나 선수를 신고하려면 해당 프로필 또는 게시물을 열고 메뉴를 사용하세요.",
+    "nowPrivate": "계정이 비공개로 설정되었습니다.",
+    "nowPublic": "계정이 공개로 설정되었습니다.",
+    "messagesUpdated": "메시지 개인정보가 업데이트되었습니다.",
+    "unblocked": "사용자 차단이 해제되었습니다.",
+    "openProfile": "프로필 열기",
+    "approveFollows": "팔로우 승인",
+    "contactSupport": "지원팀 문의 →",
+    "reportsBodyLong": "게시물이나 선수를 신고하려면 해당 프로필 또는 게시물을 열고 메뉴를 사용하세요. 프로덕션 빌드에서는 Evolve 지원팀이 신고를 검토합니다."
+  },
+  "help": {
+    "title": "도움말 및 지원",
+    "intro": "도움이 필요하신가요? 자주 묻는 질문을 보거나 Evolve 팀에 이메일을 보내 주세요.",
+    "faq": "FAQ",
+    "aboutLink": "Evolve 정보 →",
+    "privacyLink": "개인정보 설정 →",
+    "faqItems": [
+      {
+        "q": "계정을 비공개로 만들려면?",
+        "a": "설정 → 계정 비공개, 또는 프로필 → ⋮ → 계정 비공개에서 비공개를 선택하세요."
+      },
+      {
+        "q": "저장한 운동은 어디에 있나요?",
+        "a": "프로필 → ⋮ → 저장된 게시물. 피드에서 게시물을 북마크하면 여기에 추가됩니다."
+      },
+      {
+        "q": "듀얼 카메라 스토리는 어떻게 작동하나요?",
+        "a": "피드에서 내 스토리를 탭하세요. 전면·후면 카메라가 있는 기기에서 Evolve가 한 순간에 둘 다 촬영합니다."
+      },
+      {
+        "q": "Free와 Pro에는 무엇이 포함되나요?",
+        "a": "피드, 소셜, 게시는 무료입니다. Pro는 식단 기록, 트레이닝 플랜, 스캐너, 심층 분석을 잠금 해제합니다."
+      }
+    ]
+  },
+  "about": {
+    "title": "정보",
+    "body": "Evolve는 공개적으로 훈련하는 선수를 위한 피트니스 네트워크입니다 — 운동과 듀얼 카메라 스토리를 공유하고, 당신을 밀어 주는 사람들과 함께 책임을 이어 가세요.",
+    "version": "버전 0.1.0 · 데모",
+    "contact": "문의",
+    "plans": "요금제 및 가격",
+    "tagline": "선수를 위해. 의도를 담아 만들었습니다.",
+    "helpLink": "도움말 및 지원"
+  },
+  "photoHint": "+를 눌러 사진을 추가하거나 변경하세요",
+  "instagramPlaceholder": "사용자명",
+  "health": {
+    "title": "건강 연동",
+    "subtitle": "Apple Health 또는 Garmin Connect를 연결해 걸음, 운동, 회복을 Evolve Pro에 동기화하세요.",
+    "statusOn": "연결됨",
+    "statusOff": "연결 안 됨",
+    "disconnect": "연결 해제",
+    "connectedSince": "{{date}}부터 연결됨",
+    "syncTitle": "동기화 항목",
+    "syncHint": "연결을 끊지 않고 항목을 켜고 끌 수 있습니다.",
+    "sync": {
+      "steps": "걸음 및 활동",
+      "stepsBody": "일일 걸음과 활동량.",
+      "workouts": "운동",
+      "workoutsBody": "세션과 야외 활동을 가져옵니다.",
+      "recovery": "회복",
+      "recoveryBody": "수면, 심박 및 사용 가능한 회복 지표."
+    },
+    "apple": {
+      "title": "Apple Health",
+      "body": "iPhone 건강 앱에서 동기화하세요. 한 번 연결한 뒤 Evolve가 읽을 항목을 선택하세요.",
+      "connect": "Apple Health 연결",
+      "connected": "Apple Health가 연결되었습니다.",
+      "disconnected": "Apple Health 연결이 해제되었습니다.",
+      "connectFirst": "먼저 Apple Health를 연결하세요."
+    },
+    "garmin": {
+      "title": "Garmin Connect",
+      "body": "Garmin 워치와 Connect 계정의 활동을 Evolve로 가져옵니다.",
+      "connect": "Garmin 연결",
+      "connected": "Garmin Connect가 연결되었습니다.",
+      "disconnected": "Garmin Connect 연결이 해제되었습니다.",
+      "connectFirst": "먼저 Garmin Connect를 연결하세요."
+    },
+    "webNote": "완전한 네이티브 동기화는 모바일 앱에서 제공됩니다. 이 화면은 Pro 데모 설정을 저장합니다."
+  }
+}

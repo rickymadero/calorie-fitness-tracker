@@ -1,0 +1,37 @@
+{
+  "edit": "Editar perfil",
+  "publicView": "Vista pública",
+  "createPost": "Crear publicación",
+  "emptyPosts": "Aún no hay publicaciones",
+  "emptyPostsHint": "Comparte tu primer entrenamiento con la red.",
+  "addBio": "Añade una biografía en configuración para que los atletas sepan quién eres.",
+  "statMonth": "Mes",
+  "statDistance": "Distancia",
+  "statStreak": "Racha",
+  "tabWorkouts": "Entrenamientos",
+  "tabPrs": "Récords",
+  "recentWorkouts": "Entrenamientos recientes",
+  "newPost": "Nueva publicación",
+  "savedTitle": "Publicaciones guardadas",
+  "savedEmpty": "No hay entrenamientos guardados",
+  "savedEmptyHint": "Toca el marcador de cualquier publicación para guardarla aquí.",
+  "browseFeed": "Explorar feed",
+  "signedOut": "Sesión cerrada.",
+  "menuAria": "Menú de perfil",
+  "prs": {
+    "empty": "Aún no hay récords",
+    "emptySelf": "Añade tu primer récord",
+    "emptySelfHint": "Banca, sentadilla, 5K, HYROX, Ironman — muestra a la red lo que has logrado.",
+    "addTitle": "Añadir récord personal",
+    "label": "Etiqueta",
+    "result": "Resultado",
+    "saved": "Récord guardado.",
+    "removed": "Récord eliminado.",
+    "cat": {
+      "strength": "Fuerza",
+      "running": "Carrera",
+      "endurance": "Resistencia y carreras",
+      "other": "Otro"
+    }
+  }
+}

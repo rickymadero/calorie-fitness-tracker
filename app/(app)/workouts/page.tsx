@@ -11,9 +11,12 @@ import { useTraining } from "@/components/training/TrainingProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { getExerciseById } from "@/lib/mock/exercises";
 import { ProGate } from "@/components/pro/ProGate";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
+import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
 
 export default function WorkoutsPage() {
   const { user } = useAuth();
+  const { t } = useAppTranslation(["workouts", "common"]);
   const {
     isReady,
     assignedPlan,
@@ -34,7 +37,7 @@ export default function WorkoutsPage() {
 
   if (user?.plan !== "pro") {
     return (
-      <ProGate feature="Personalized training plans">
+      <ProGate feature={t("features.trainingPlans", { ns: "common" })}>
         <div />
       </ProGate>
     );
@@ -48,27 +51,25 @@ export default function WorkoutsPage() {
     assignedPlan.days[0];
 
   return (
-    <ProGate feature="Personalized training plans">
+    <ProGate feature={t("features.trainingPlans", { ns: "common" })}>
     <div>
+      <ExploreBackHeader title={t("title")} />
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-2xl font-bold tracking-tight md:text-3xl">
-            Workouts
-          </h1>
-          <p className="mt-1 text-sm text-muted">
-            Your personalized plan — built from onboarding and ready to train.
+          <p className="text-sm text-muted">
+            {t("subtitle")}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Link href="/exercises">
             <Button variant="outline">
               <BookOpen size={16} />
-              Exercise library
+              {t("exerciseLibrary")}
             </Button>
           </Link>
           {user?.plan === "pro" && (
             <Link href="/admin">
-              <Button variant="secondary">Admin builder</Button>
+              <Button variant="secondary">{t("adminBuilder")}</Button>
             </Link>
           )}
         </div>
@@ -86,16 +87,16 @@ export default function WorkoutsPage() {
             </p>
           </div>
           <div className="text-right text-sm text-muted">
-            <p>{assignedPlan.daysPerWeek} days / week</p>
-            <p>{assignedPlan.durationWeeks} weeks</p>
+            <p>{t("meta.daysPerWeek", { n: assignedPlan.daysPerWeek })}</p>
+            <p>{t("meta.weeks", { n: assignedPlan.durationWeeks })}</p>
           </div>
         </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { label: "Goal", value: assignedPlan.mainGoal.replace(/-/g, " ") },
-            { label: "Progression", value: assignedPlan.progressionStrategy.slice(0, 48) + "…" },
-            { label: "Rest guidance", value: assignedPlan.restDayGuidance.slice(0, 48) + "…" },
-            { label: "Safety", value: assignedPlan.safetyNotes.slice(0, 48) + "…" },
+            { label: t("stat.goal"), value: assignedPlan.mainGoal.replace(/-/g, " ") },
+            { label: t("stat.progression"), value: assignedPlan.progressionStrategy.slice(0, 48) + "…" },
+            { label: t("stat.restGuidance"), value: assignedPlan.restDayGuidance.slice(0, 48) + "…" },
+            { label: t("stat.safety"), value: assignedPlan.safetyNotes.slice(0, 48) + "…" },
           ].map((item) => (
             <div key={item.label} className="rounded-2xl bg-muted-bg p-3">
               <p className="text-xs text-muted">{item.label}</p>
@@ -109,20 +110,22 @@ export default function WorkoutsPage() {
         <Card className="mt-6" elevated>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <Badge>Today</Badge>
+              <Badge>{t("labels.today", { ns: "common" })}</Badge>
               <h3 className="mt-2 font-display text-lg font-semibold">
                 {todayWorkout.name}
               </h3>
               <p className="text-sm text-muted">
-                {todayWorkout.estimatedMinutes} min ·{" "}
-                {todayWorkout.muscleGroups.join(", ")} · {todayWorkout.exercises.length}{" "}
-                movements
+                {t("todayWorkoutMeta", {
+                  minutes: todayWorkout.estimatedMinutes,
+                  muscles: todayWorkout.muscleGroups.join(", "),
+                  count: todayWorkout.exercises.length,
+                })}
               </p>
             </div>
             <Link href={`/workouts/session/${todayWorkout.id}`}>
               <Button size="lg">
                 <Play size={16} />
-                Start workout
+                {t("startWorkout")}
               </Button>
             </Link>
           </div>
@@ -155,7 +158,7 @@ export default function WorkoutsPage() {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <Card>
-          <h3 className="font-display text-lg font-semibold">Weekly schedule</h3>
+          <h3 className="font-display text-lg font-semibold">{t("weeklySchedule")}</h3>
           <ul className="mt-4 space-y-2">
             {assignedPlan.days.map((day) => (
               <li
@@ -166,14 +169,17 @@ export default function WorkoutsPage() {
                   <p className="text-sm font-medium">{day.name}</p>
                   <p className="text-xs text-muted">
                     {day.isRestDay
-                      ? "Rest day"
-                      : `${day.estimatedMinutes} min · ${day.muscleGroups.join(", ")}`}
+                      ? t("restDay")
+                      : t("dayMeta", {
+                          minutes: day.estimatedMinutes,
+                          muscles: day.muscleGroups.join(", "),
+                        })}
                   </p>
                 </div>
                 {!day.isRestDay && (
                   <Link href={`/workouts/session/${day.id}`}>
                     <Button size="sm" variant="secondary">
-                      Train
+                      {t("train")}
                     </Button>
                   </Link>
                 )}
@@ -187,12 +193,12 @@ export default function WorkoutsPage() {
             <div className="flex items-center gap-2">
               <Sparkles size={18} className="text-accent-dim dark:text-accent" />
               <h3 className="font-display text-lg font-semibold">
-                Recommended adjustments
+                {t("recommendedAdjustments")}
               </h3>
             </div>
             {pendingAdjustments.length === 0 ? (
               <p className="mt-3 text-sm text-muted">
-                Complete a guided workout to unlock smart progression suggestions.
+                {t("adjustmentsEmpty")}
               </p>
             ) : (
               <ul className="mt-4 space-y-3">
@@ -205,21 +211,24 @@ export default function WorkoutsPage() {
               </ul>
             )}
             <Link href="/workouts/adjustments" className="mt-3 inline-block text-sm text-accent-dim dark:text-accent">
-              Review all adjustments
+              {t("reviewAllAdjustments")}
             </Link>
           </Card>
 
           <Card>
-            <h3 className="font-display text-lg font-semibold">Recent sessions</h3>
+            <h3 className="font-display text-lg font-semibold">{t("recentSessions")}</h3>
             {sessions.length === 0 ? (
-              <p className="mt-3 text-sm text-muted">No workouts logged yet.</p>
+              <p className="mt-3 text-sm text-muted">{t("noWorkoutsLogged")}</p>
             ) : (
               <ul className="mt-3 space-y-2">
                 {sessions.slice(0, 4).map((s) => (
                   <li key={s.id} className="flex justify-between text-sm">
                     <span>{new Date(s.startedAt).toLocaleDateString()}</span>
                     <span className="text-muted">
-                      {s.durationMinutes || "—"} min · {s.estimatedCalories || 0} kcal
+                      {t("sessionMeta", {
+                        minutes: s.durationMinutes || "—",
+                        kcal: s.estimatedCalories || 0,
+                      })}
                     </span>
                   </li>
                 ))}
@@ -230,7 +239,7 @@ export default function WorkoutsPage() {
       </div>
 
       <Card className="mt-6">
-        <h3 className="font-display text-lg font-semibold">Coach notes</h3>
+        <h3 className="font-display text-lg font-semibold">{t("coachNotes")}</h3>
         <p className="mt-2 text-sm text-muted">{assignedPlan.instructions}</p>
         <p className="mt-3 text-sm text-muted">{assignedPlan.nutritionNotes}</p>
       </Card>

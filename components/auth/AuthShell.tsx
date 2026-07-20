@@ -8,11 +8,10 @@ import { EvolveLogo } from "@/components/ui/EvolveLogo";
 import { Button } from "@/components/ui/Button";
 import { Apple, AtSign } from "lucide-react";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { getPostAuthPath } from "@/lib/auth/routes";
 import { storage } from "@/lib/storage";
-
-const QUOTE = "One day or day one. You decide.";
 
 function GoogleIcon({ size = 18 }: { size?: number }) {
   return (
@@ -55,13 +54,15 @@ export function AuthShell({
   children: React.ReactNode;
   showQuote?: boolean;
 }) {
+  const { t } = useAppTranslation("auth");
+
   return (
     <div className="grid min-h-dvh lg:grid-cols-2">
       <aside className="relative hidden overflow-hidden apex-gradient-bg lg:flex lg:flex-col lg:justify-between lg:p-12">
         <div className="apex-mesh pointer-events-none absolute inset-0 opacity-60" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
         <div className="relative z-10">
-          <EvolveLogo light href="/" size="md" />
+          <EvolveLogo light size="md" />
         </div>
         <div className="relative z-10 max-w-lg">
           <motion.h1
@@ -69,7 +70,7 @@ export function AuthShell({
             animate={{ opacity: 1, y: 0 }}
             className="font-display text-4xl font-bold leading-tight tracking-tight text-white xl:text-5xl"
           >
-            Share the work. Grow with the community.
+            {t("heroTitle")}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -77,8 +78,7 @@ export function AuthShell({
             transition={{ delay: 0.1 }}
             className="mt-5 text-lg text-white/75"
           >
-            Evolve is a social fitness network — post workouts, follow athletes,
-            and get inspired every day. Free to join.
+            {t("heroBody")}
           </motion.p>
           {showQuote && (
             <motion.blockquote
@@ -88,13 +88,13 @@ export function AuthShell({
               className="mt-10 border-l-2 border-accent pl-5 text-white/90"
             >
               <p className="font-display text-lg italic leading-relaxed">
-                &ldquo;{QUOTE}&rdquo;
+                &ldquo;{t("quote")}&rdquo;
               </p>
             </motion.blockquote>
           )}
         </div>
         <p className="relative z-10 text-sm text-white/40">
-          Social fitness for every athlete.
+          {t("heroFooter")}
         </p>
       </aside>
 
@@ -102,16 +102,16 @@ export function AuthShell({
         <div className="apex-gradient-bg relative overflow-hidden px-6 pb-10 pt-[max(2rem,env(safe-area-inset-top))] lg:hidden">
           <div className="absolute inset-0 bg-black/50" />
           <div className="relative z-10">
-            <EvolveLogo light href="/" />
+            <EvolveLogo light />
             <h1 className="mt-8 font-display text-3xl font-bold leading-tight text-white">
-              Share the work. Grow with the community.
+              {t("heroTitle")}
             </h1>
             <p className="mt-3 text-sm text-white/75">
-              Post workouts, follow athletes, and train together — free forever.
+              {t("heroBodyMobile")}
             </p>
             {showQuote && (
               <p className="mt-6 border-l-2 border-accent pl-4 text-sm italic text-white/85">
-                &ldquo;{QUOTE}&rdquo;
+                &ldquo;{t("quote")}&rdquo;
               </p>
             )}
           </div>
@@ -133,6 +133,7 @@ export function SocialAuthButtons({
   const { toast } = useToast();
   const { login } = useAuth();
   const router = useRouter();
+  const { t } = useAppTranslation("auth");
   const [busy, setBusy] = useState<string | null>(null);
 
   async function demoSocial(provider: string, email: string) {
@@ -140,10 +141,10 @@ export function SocialAuthButtons({
     const result = await login(email, "evolve-social-demo");
     setBusy(null);
     if (!result.ok) {
-      toast(result.error || "Sign-in failed.", "error");
+      toast(result.error || t("signInFailed"), "error");
       return;
     }
-    toast(`Signed in with ${provider} (demo).`, "success");
+    toast(t("signedInWith", { provider }), "success");
     const user = storage.getUser();
     router.push(getPostAuthPath(user));
   }
@@ -158,7 +159,7 @@ export function SocialAuthButtons({
       onClick={() => demoSocial("Instagram", "instagram.demo@evolve.app")}
     >
       <AtSign size={18} />
-      Continue with Instagram
+      {t("continueInstagram")}
     </Button>
   );
 
@@ -167,19 +168,19 @@ export function SocialAuthButtons({
       id: "google",
       label: "Google",
       icon: <GoogleIcon />,
-      action: () => toast("Google sign-in coming soon."),
+      action: () => toast(t("googleComing")),
     },
     {
       id: "apple",
       label: "Apple",
       icon: <Apple size={18} />,
-      action: () => toast("Apple sign-in coming soon."),
+      action: () => toast(t("appleComing")),
     },
     {
       id: "android",
       label: "Android",
       icon: <AndroidIcon />,
-      action: () => toast("Android sign-in coming soon."),
+      action: () => toast(t("androidComing")),
     },
   ] as const;
 
@@ -188,7 +189,7 @@ export function SocialAuthButtons({
       <div className="space-y-3">
         {instagram}
         <p className="text-center text-xs text-muted">
-          Demo sign-in — real Instagram OAuth comes later. Opens your feed.
+          {t("demoSocialHint")}
         </p>
         <div className="grid grid-cols-3 gap-2">
           {others.map((p) => (
@@ -231,27 +232,31 @@ export function SocialAuthButtons({
 }
 
 export function AuthDivider({
-  label = "or continue with email",
+  label,
 }: {
   label?: string;
 }) {
+  const { t } = useAppTranslation("auth");
   return (
     <div className="relative my-6 text-center text-xs text-muted">
       <span className="absolute inset-x-0 top-1/2 h-px bg-border" />
-      <span className="relative bg-background px-3">{label}</span>
+      <span className="relative bg-background px-3">
+        {label ?? t("continueEmail")}
+      </span>
     </div>
   );
 }
 
 export function AuthFooterLinks() {
+  const { t } = useAppTranslation("auth");
   return (
     <p className="mt-8 text-center text-sm text-muted">
-      Forgot your password?{" "}
+      {t("forgotPrompt")}{" "}
       <Link
         href="/forgot-password"
         className="font-medium text-accent-dim underline-offset-2 hover:underline dark:text-accent"
       >
-        Reset it
+        {t("resetIt")}
       </Link>
     </p>
   );

@@ -1,0 +1,40 @@
+{
+  "title": "플랜",
+  "subtitle": "현실적인 식사 — Chipotle, 버거, 피자, 커피 — 칼로리 목표에 맞춰 구성.",
+  "adjustWeek": "주간 조정",
+  "toast": {
+    "weekRefreshed": "주간 식사 스왑이 새 레스토랑 옵션으로 갱신되었습니다.",
+    "weekProOnly": "주간 조정은 Pro 기능입니다.",
+    "loggedMealDemo": "{{name}}을(를) {{slot}}에 추가했습니다(데모).",
+    "addedSuggestion": "제안 추가: {{name}}(데모)."
+  },
+  "nutritionTitle": "영양 플랜",
+  "dailyCalories": "일일 칼로리",
+  "strategy": "전략",
+  "proteinBar": "단백질 {{n}}g",
+  "carbsBar": "탄수화물 {{n}}g",
+  "fatBar": "지방 {{n}}g",
+  "strategyExtra": "감자튀김 생략, Chipotle 밥 반만, 또는 피자 한 판 대신 피자+샐러드로 패스트푸드를 맞추세요.",
+  "nutritionEmpty": "온보딩을 완료하면 영양 플랜이 생성됩니다.",
+  "workoutProgram": "운동 프로그램",
+  "defaultPlanName": "맞춤 트레이닝 플랜",
+  "programMeta": "주 {{sessions}}회 · {{level}} 레벨 · {{access}}",
+  "gymAccess": "헬스장 이용",
+  "homeFriendly": "홈트레이닝 친화",
+  "openTrainingPlan": "트레이닝 플랜 열기",
+  "recipeLibrary": "레시피 라이브러리",
+  "weekMealPlanTitle": "이번 주 식단",
+  "weekMealPlanSubtitle": "식료품 기본과 실제로 갈 만한 레스토랑의 조합.",
+  "logThisMeal": "이 식사 기록",
+  "mealIdeasTitle": "남은 매크로용 식사 아이디어",
+  "vibe": {
+    "all": "전체",
+    "flexible": "유연",
+    "highProtein": "고단백",
+    "craving": "크레이빙",
+    "lighter": "가벼운"
+  },
+  "addToPlan": "플랜에 추가",
+  "popularPlaces": "식단 로그에서 인기 장소",
+  "placeCount": "{{place}} · {{count}}개"
+}

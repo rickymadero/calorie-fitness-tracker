@@ -1,0 +1,37 @@
+{
+  "edit": "プロフィールを編集",
+  "publicView": "公開表示",
+  "createPost": "投稿を作成",
+  "emptyPosts": "投稿がまだありません",
+  "emptyPostsHint": "最初のワークアウトをネットワークにシェアしましょう。",
+  "addBio": "設定で自己紹介を追加すると、アスリートにあなたを知ってもらえます。",
+  "statMonth": "今月",
+  "statDistance": "距離",
+  "statStreak": "継続日数",
+  "tabWorkouts": "ワークアウト",
+  "tabPrs": "自己ベスト",
+  "recentWorkouts": "最近のワークアウト",
+  "newPost": "新しい投稿",
+  "savedTitle": "保存済みの投稿",
+  "savedEmpty": "保存されたワークアウトはありません",
+  "savedEmptyHint": "投稿のブックマークをタップすると、ここに保存されます。",
+  "browseFeed": "フィードを見る",
+  "signedOut": "ログアウトしました。",
+  "menuAria": "プロフィールメニュー",
+  "prs": {
+    "empty": "自己ベストはまだありません",
+    "emptySelf": "最初の自己ベストを追加",
+    "emptySelfHint": "ベンチプレス、スクワット、5K、HYROX、アイアンマン — あなたの成果をネットワークに見せましょう。",
+    "addTitle": "自己ベストを追加",
+    "label": "項目名",
+    "result": "記録",
+    "saved": "自己ベストを保存しました。",
+    "removed": "自己ベストを削除しました。",
+    "cat": {
+      "strength": "筋力",
+      "running": "ランニング",
+      "endurance": "持久系・レース",
+      "other": "その他"
+    }
+  }
+}

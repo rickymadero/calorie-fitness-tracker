@@ -1,0 +1,92 @@
+{
+  "athletesHint": "Đang tìm vận động viên?",
+  "searchNetwork": "Tìm trong Mạng lưới",
+  "orSuggestions": "hoặc xem gợi ý trên Bảng tin.",
+  "upgradeCta": "Nâng cấp lên Pro →",
+  "tabs": {
+    "forYou": "Cho bạn",
+    "workouts": "Buổi tập",
+    "nutrition": "Dinh dưỡng",
+    "tools": "Công cụ",
+    "pro": "Pro"
+  },
+  "proHero": {
+    "onPro": "Bạn đang dùng Pro",
+    "title": "Evolve Pro · $9.99/tháng",
+    "body": "Miễn phí mãi mãi: ghi buổi tập cơ bản, khám phá EvoFit và thống kê cơ bản. Pro mở khóa theo dõi, kế hoạch, máy quét, phân tích và hơn thế nữa."
+  },
+  "features": {
+    "basicLogging": {
+      "title": "Ghi buổi tập cơ bản",
+      "desc": "Loại, thời lượng và quãng đường — miễn phí cho mọi người."
+    },
+    "basicStats": {
+      "title": "Thống kê cơ bản",
+      "desc": "Chỉ số nhìn nhanh — luôn miễn phí."
+    },
+    "plans": {
+      "title": "Kế hoạch tập luyện cá nhân hóa",
+      "desc": "Kế hoạch khớp với mục tiêu và lịch của bạn."
+    },
+    "macros": {
+      "title": "Theo dõi calo & macro",
+      "desc": "Calo hàng ngày, đạm, carb và chất béo."
+    },
+    "scanner": {
+      "title": "Máy quét thực phẩm AI",
+      "desc": "Quét mã vạch và ảnh để ghi nhanh."
+    },
+    "formGuides": {
+      "title": "Hướng dẫn kỹ thuật",
+      "desc": "Gợi ý kỹ thuật và demo bài tập."
+    },
+    "history": {
+      "title": "Phân tích lịch sử tập luyện",
+      "desc": "Phân tích buổi tập và nỗ lực trước đây."
+    },
+    "library": {
+      "title": "Thư viện buổi tập đã lưu",
+      "desc": "Các buổi đánh dấu ở một chỗ."
+    },
+    "goals": {
+      "title": "Đặt mục tiêu & theo dõi",
+      "desc": "Đặt mục tiêu và theo dõi tiến độ."
+    },
+    "meals": {
+      "title": "Lập kế hoạch bữa ăn",
+      "desc": "Tạo bữa ăn và danh sách ngày tập."
+    },
+    "recipes": {
+      "title": "Cơ sở dữ liệu công thức Pro",
+      "desc": "Thư viện bữa ăn thể thao đầy đủ."
+    },
+    "analytics": {
+      "title": "Phân tích & biểu đồ nâng cao",
+      "desc": "Xu hướng, biểu đồ khối lượng và insight sâu hơn."
+    },
+    "body": {
+      "title": "Theo dõi biến đổi cơ thể",
+      "desc": "Ảnh, số đo và thay đổi theo thời gian."
+    },
+    "health": {
+      "title": "Tích hợp Apple Health",
+      "desc": "Đồng bộ bước chân, buổi tập và phục hồi."
+    },
+    "support": {
+      "title": "Hỗ trợ ưu tiên",
+      "desc": "Giúp đỡ nhanh hơn khi bạn cần."
+    },
+    "adFree": {
+      "title": "Trải nghiệm không quảng cáo",
+      "desc": "Tập luyện không bị gián đoạn."
+    },
+    "forums": {
+      "title": "Mạng vận động viên",
+      "desc": "Tìm và theo dõi vận động viên trên Evolve."
+    }
+  },
+  "sections": {
+    "free": "Bao gồm miễn phí",
+    "pro": "Công cụ Pro"
+  }
+}

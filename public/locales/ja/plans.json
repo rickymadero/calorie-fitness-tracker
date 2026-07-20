@@ -1,0 +1,40 @@
+{
+  "title": "プラン",
+  "subtitle": "現実的な食事 — Chipotle、バーガー、ピザ、コーヒー — カロリー目標に合わせて構築。",
+  "adjustWeek": "週を調整",
+  "toast": {
+    "weekRefreshed": "週の食事スワップを新しいレストラン案で更新しました。",
+    "weekProOnly": "週次調整はPro機能です。",
+    "loggedMealDemo": "{{name}} を {{slot}} に追加しました（デモ）。",
+    "addedSuggestion": "提案を追加: {{name}}（デモ）。"
+  },
+  "nutritionTitle": "栄養プラン",
+  "dailyCalories": "1日のカロリー",
+  "strategy": "戦略",
+  "proteinBar": "タンパク質 {{n}}g",
+  "carbsBar": "炭水化物 {{n}}g",
+  "fatBar": "脂質 {{n}}g",
+  "strategyExtra": "フライをスキップ、Chipotleでライス半量、またはピザ丸ごとではなくピザ＋サラダでファストフードをフィット。",
+  "nutritionEmpty": "オンボーディングを完了すると栄養プランが生成されます。",
+  "workoutProgram": "トレーニングプログラム",
+  "defaultPlanName": "パーソナライズドトレーニングプラン",
+  "programMeta": "週 {{sessions}} セッション · {{level}} レベル · {{access}}",
+  "gymAccess": "ジム利用可",
+  "homeFriendly": "自宅向け",
+  "openTrainingPlan": "トレーニングプランを開く",
+  "recipeLibrary": "レシピラブラリ",
+  "weekMealPlanTitle": "今週の食事プラン",
+  "weekMealPlanSubtitle": "スーパーの定番と、実際に行きそうなレストランのミックス。",
+  "logThisMeal": "この食事を記録",
+  "mealIdeasTitle": "残りマクロ向けの食事アイデア",
+  "vibe": {
+    "all": "すべて",
+    "flexible": "フレキシブル",
+    "highProtein": "高タンパク",
+    "craving": "クランビング",
+    "lighter": "軽め"
+  },
+  "addToPlan": "プランに追加",
+  "popularPlaces": "食事ログで人気の場所",
+  "placeCount": "{{place}} · {{count}} 件"
+}

@@ -1,0 +1,37 @@
+{
+  "edit": "프로필 편집",
+  "publicView": "공개 보기",
+  "createPost": "게시물 작성",
+  "emptyPosts": "아직 게시물이 없습니다",
+  "emptyPostsHint": "네트워크에 첫 운동을 공유해 보세요.",
+  "addBio": "설정에서 소개를 추가해 선수들에게 나를 알려 주세요.",
+  "statMonth": "월",
+  "statDistance": "거리",
+  "statStreak": "연속",
+  "tabWorkouts": "운동",
+  "tabPrs": "PR",
+  "recentWorkouts": "최근 운동",
+  "newPost": "새 게시물",
+  "savedTitle": "저장된 게시물",
+  "savedEmpty": "저장된 운동이 없습니다",
+  "savedEmptyHint": "게시물의 북마크를 눌러 여기에 저장하세요.",
+  "browseFeed": "피드 둘러보기",
+  "signedOut": "로그아웃되었습니다.",
+  "menuAria": "프로필 메뉴",
+  "prs": {
+    "empty": "아직 PR이 없습니다",
+    "emptySelf": "첫 PR을 추가하세요",
+    "emptySelfHint": "벤치, 스쿼트, 5K, HYROX, 아이언맨 — 네트워크에 내가 이룬 기록을 보여 주세요.",
+    "addTitle": "개인 최고 기록 추가",
+    "label": "종목",
+    "result": "기록",
+    "saved": "PR이 저장되었습니다.",
+    "removed": "PR이 삭제되었습니다.",
+    "cat": {
+      "strength": "근력",
+      "running": "러닝",
+      "endurance": "지구력 · 레이스",
+      "other": "기타"
+    }
+  }
+}

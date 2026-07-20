@@ -1,0 +1,42 @@
+{
+  "title": "Công thức",
+  "subtitle": "Ý tưởng bữa gắn với macro của bạn. Pro mở khóa kế hoạch tuần cá nhân hóa và gợi ý theo macro.",
+  "recommendedNow": "Đề xuất cho bạn ngay",
+  "remainingMacros": "Còn ~{{kcal}} kcal và {{protein}}g protein",
+  "postWorkoutFocus": " · tập trung sau tập",
+  "unlockProMeals": "Mở khóa bữa Pro",
+  "recipeCardMeta": "{{calories}} kcal · {{protein}}P · {{carbs}}C · {{fat}}F",
+  "searchPlaceholder": "Tìm công thức...",
+  "filter": {
+    "all": "tất cả",
+    "breakfast": "bữa sáng",
+    "lunch": "bữa trưa",
+    "dinner": "bữa tối",
+    "snack": "ăn nhẹ",
+    "highProtein": "nhiều protein",
+    "quick": "nhanh",
+    "vegetarian": "chay",
+    "keto": "keto"
+  },
+  "cardMeta": "{{calories}} kcal · {{protein}}g protein · {{minutes}} phút",
+  "notFound": "Không tìm thấy công thức.",
+  "back": "Công thức",
+  "timing": "Chuẩn bị {{prep}}p · Nấu {{cook}}p · {{difficulty}}",
+  "portions": "Khẩu phần",
+  "logToTracker": "Ghi vào theo dõi calo",
+  "groceryList": "Danh sách mua sắm",
+  "toast": {
+    "logProRequired": "Nâng cấp Pro để ghi công thức cá nhân hóa.",
+    "loggedDemo": "Đã ghi {{name}} vào theo dõi ẩm thực (demo).",
+    "groceryDemo": "Đã thêm nguyên liệu vào danh sách mua sắm (demo).",
+    "groceryProOnly": "Danh sách mua sắm thông minh là tính năng Pro."
+  },
+  "lockedTitle": "Mở khóa công thức Pro cá nhân hóa",
+  "lockedBody": "Nhận hướng dẫn đầy đủ, kế hoạch bữa tuần, gợi ý theo macro và điều chỉnh khẩu phần tự động.",
+  "ingredients": "Nguyên liệu",
+  "allergens": "Dị ứng nguyên: {{list}}",
+  "steps": "Các bước",
+  "equipmentPortion": "Thiết bị: {{equipment}} · Khẩu phần: {{portion}}",
+  "disclaimer": "Giá trị dinh dưỡng chỉ là ước tính để lập kế hoạch, không phải lời khuyên y tế.",
+  "openMealPlan": "Mở kế hoạch bữa ăn"
+}

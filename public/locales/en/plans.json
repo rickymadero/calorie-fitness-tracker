@@ -1,0 +1,40 @@
+{
+  "title": "Meal planning",
+  "subtitle": "Your weekly schedule — grocery staples and real restaurant meals built around your calorie targets.",
+  "adjustWeek": "Adjust week",
+  "toast": {
+    "weekRefreshed": "Weekly meal swaps refreshed with new restaurant options.",
+    "weekProOnly": "Weekly adjustments are a Pro feature.",
+    "loggedMealDemo": "Added {{name}} to {{slot}} (demo).",
+    "addedSuggestion": "Added suggestion: {{name}} (demo)."
+  },
+  "nutritionTitle": "Nutrition plan",
+  "dailyCalories": "Daily calories",
+  "strategy": "Strategy",
+  "proteinBar": "Protein {{n}}g",
+  "carbsBar": "Carbs {{n}}g",
+  "fatBar": "Fat {{n}}g",
+  "strategyExtra": "Fit fast food in by skipping fries, half rice at Chipotle, or pizza + salad instead of a whole pie.",
+  "nutritionEmpty": "Complete onboarding to generate your nutrition plan.",
+  "workoutProgram": "Workout program",
+  "defaultPlanName": "Personalized training plan",
+  "programMeta": "{{sessions}} sessions / week · {{level}} level · {{access}}",
+  "gymAccess": "gym access",
+  "homeFriendly": "home-friendly",
+  "openTrainingPlan": "Open training plan",
+  "recipeLibrary": "Recipe library",
+  "weekMealPlanTitle": "This week's meal plan",
+  "weekMealPlanSubtitle": "Mix of grocery staples and restaurants you'd actually go to.",
+  "logThisMeal": "Log this meal",
+  "mealIdeasTitle": "Meal ideas for remaining macros",
+  "vibe": {
+    "all": "All",
+    "flexible": "Flexible",
+    "highProtein": "High protein",
+    "craving": "Cravings",
+    "lighter": "Lighter"
+  },
+  "addToPlan": "Add to plan",
+  "popularPlaces": "Popular places in your food log",
+  "placeCount": "{{place}} · {{count}} items"
+}

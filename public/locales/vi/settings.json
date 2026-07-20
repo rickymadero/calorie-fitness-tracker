@@ -1,0 +1,153 @@
+{
+  "title": "Cài đặt",
+  "profile": "Hồ sơ",
+  "account": "Tài khoản",
+  "privacy": "Quyền riêng tư tài khoản",
+  "linked": "Tài khoản xã hội đã liên kết",
+  "security": "Bảo mật",
+  "preferences": "Tùy chọn",
+  "fullName": "Họ và tên",
+  "username": "Tên người dùng",
+  "bio": "Tiểu sử",
+  "bioPlaceholder": "Giới thiệu ngắn cho vận động viên khác…",
+  "photo": "Ảnh hồ sơ",
+  "removePhoto": "Gỡ ảnh",
+  "email": "Địa chỉ email",
+  "passwordCurrent": "Mật khẩu hiện tại",
+  "passwordNew": "Mật khẩu mới",
+  "passwordConfirm": "Xác nhận mật khẩu mới",
+  "passwordHint": "Để trống để giữ mật khẩu hiện tại",
+  "measurement": "Hệ đo lường",
+  "appearance": "Giao diện",
+  "dark": "Chế độ tối",
+  "light": "Chế độ sáng",
+  "language": "Ngôn ngữ",
+  "languageHint": "Ngôn ngữ ứng dụng cho menu, bảng tin, cài đặt và hơn thế nữa",
+  "subscription": "Gói đăng ký",
+  "subscriptionBody": "Bảng tin xã hội miễn phí. Pro mở khóa ghi nhật ký thực phẩm, kế hoạch, máy quét và phân tích.",
+  "shownAs": "Hiển thị là @{{username}}",
+  "visibilityPublic": "Công khai",
+  "visibilityPrivate": "Riêng tư",
+  "visibilityPublicHint": "Ai cũng có thể theo dõi",
+  "visibilityPrivateHint": "Phê duyệt yêu cầu",
+  "morePrivacy": "Thêm kiểm soát quyền riêng tư →",
+  "instagram": "Instagram",
+  "instagramHint": "Không có @",
+  "showInstagram": "Hiện Instagram trên hồ sơ",
+  "twoFactor": "Xác thực hai yếu tố",
+  "twoFactorHint": "Công tắc demo — 2FA đầy đủ sẽ có sau",
+  "blockReport": "Cài đặt chặn & báo cáo →",
+  "emailChangeTitle": "Xác nhận đổi email",
+  "passwordChangeTitle": "Xác nhận đổi mật khẩu",
+  "emailChangeBody": "Đổi email thành {{email}}? Bạn sẽ dùng địa chỉ này để đăng nhập.",
+  "passwordChangeBody": "Cập nhật mật khẩu? Đây là thay đổi demo và không đồng bộ với máy chủ xác thực thật.",
+  "updatePassword": "Cập nhật mật khẩu",
+  "notifications": {
+    "title": "Thông báo",
+    "intro": "Chọn cập nhật bạn muốn trên thiết bị này. Tùy chọn demo được lưu cục bộ.",
+    "save": "Lưu tùy chọn",
+    "saved": "Đã lưu tùy chọn thông báo.",
+    "likes": "Lượt thích",
+    "likesHint": "Khi ai đó thích buổi tập của bạn",
+    "comments": "Bình luận",
+    "commentsHint": "Trả lời và đề cập trên bài đăng của bạn",
+    "follows": "Theo dõi & yêu cầu",
+    "followsHint": "Người theo dõi mới và yêu cầu theo dõi",
+    "messages": "Tin nhắn trực tiếp",
+    "messagesHint": "Trả lời riêng và trò chuyện",
+    "stories": "Tin story",
+    "storiesHint": "Phản ứng và trả lời story của bạn"
+  },
+  "privacyPage": {
+    "title": "Quyền riêng tư tài khoản",
+    "visibility": "Hiển thị hồ sơ",
+    "visibilityHint": "Tài khoản riêng tư cần phê duyệt theo dõi trước khi người khác xem buổi tập của bạn.",
+    "whoCanMessage": "Ai có thể nhắn tin cho bạn",
+    "everyone": "Mọi người",
+    "peopleYouFollow": "Người bạn theo dõi",
+    "noOne": "Không ai",
+    "blocked": "Tài khoản bị chặn",
+    "blockedEmpty": "Bạn chưa chặn ai. Bạn có thể chặn vận động viên từ menu hồ sơ của họ.",
+    "reports": "Báo cáo",
+    "reportsBody": "Để báo cáo bài đăng hoặc vận động viên, mở hồ sơ hoặc bài đăng của họ và dùng menu.",
+    "nowPrivate": "Tài khoản hiện là riêng tư.",
+    "nowPublic": "Tài khoản hiện là công khai.",
+    "messagesUpdated": "Đã cập nhật quyền riêng tư tin nhắn.",
+    "unblocked": "Đã bỏ chặn người dùng.",
+    "openProfile": "Mở hồ sơ",
+    "approveFollows": "Phê duyệt theo dõi",
+    "contactSupport": "Liên hệ hỗ trợ →",
+    "reportsBodyLong": "Để báo cáo bài đăng hoặc vận động viên, mở hồ sơ hoặc bài đăng của họ và dùng menu. Báo cáo được đội hỗ trợ Evolve xem xét trong bản production."
+  },
+  "help": {
+    "title": "Trợ giúp & Hỗ trợ",
+    "intro": "Cần hỗ trợ? Xem câu hỏi thường gặp hoặc gửi email cho đội Evolve.",
+    "faq": "Câu hỏi thường gặp",
+    "aboutLink": "Giới thiệu Evolve →",
+    "privacyLink": "Kiểm soát quyền riêng tư →",
+    "faqItems": [
+      {
+        "q": "Làm sao để đặt tài khoản ở chế độ riêng tư?",
+        "a": "Mở Cài đặt → Quyền riêng tư tài khoản, hoặc Hồ sơ → ⋮ → Quyền riêng tư tài khoản, rồi chọn Riêng tư."
+      },
+      {
+        "q": "Buổi tập đã lưu ở đâu?",
+        "a": "Hồ sơ → ⋮ → Bài đã lưu. Đánh dấu bất kỳ bài nào từ bảng tin để thêm vào đó."
+      },
+      {
+        "q": "Story hai camera hoạt động thế nào?",
+        "a": "Từ Bảng tin, chạm Story của bạn. Trên thiết bị có camera trước và sau, Evolve chụp cả hai trong một khoảnh khắc."
+      },
+      {
+        "q": "Free và Pro gồm những gì?",
+        "a": "Bảng tin, mạng xã hội và đăng bài đều miễn phí. Pro mở khóa ghi thực phẩm, kế hoạch tập, máy quét và phân tích sâu hơn."
+      }
+    ]
+  },
+  "about": {
+    "title": "Giới thiệu",
+    "body": "Evolve là mạng lưới thể hình cho vận động viên tập công khai — chia sẻ buổi tập, story hai camera và giữ trách nhiệm với những người thúc đẩy bạn.",
+    "version": "Phiên bản 0.1.0 · Demo",
+    "contact": "Liên hệ",
+    "plans": "Gói & giá",
+    "tagline": "Dành cho vận động viên. Xây dựng có chủ đích.",
+    "helpLink": "Trợ giúp & Hỗ trợ"
+  },
+  "photoHint": "Chạm + để thêm hoặc đổi ảnh",
+  "instagramPlaceholder": "tennguoidung",
+  "health": {
+    "title": "Tích hợp sức khỏe",
+    "subtitle": "Kết nối Apple Health hoặc Garmin Connect để đồng bộ bước chân, buổi tập và phục hồi vào Evolve Pro.",
+    "statusOn": "Đã kết nối",
+    "statusOff": "Chưa kết nối",
+    "disconnect": "Ngắt kết nối",
+    "connectedSince": "Đã kết nối từ {{date}}",
+    "syncTitle": "Đồng bộ những gì",
+    "syncHint": "Bật/tắt danh mục mà không cần ngắt kết nối.",
+    "sync": {
+      "steps": "Bước chân & hoạt động",
+      "stepsBody": "Bước hàng ngày và tổng vận động.",
+      "workouts": "Buổi tập",
+      "workoutsBody": "Nhập phiên tập và hoạt động ngoài trời.",
+      "recovery": "Phục hồi",
+      "recoveryBody": "Giấc ngủ, nhịp tim và chỉ số phục hồi khi có."
+    },
+    "apple": {
+      "title": "Apple Health",
+      "body": "Đồng bộ từ app Sức khỏe trên iPhone. Kết nối một lần rồi chọn Evolve được đọc gì.",
+      "connect": "Kết nối Apple Health",
+      "connected": "Đã kết nối Apple Health.",
+      "disconnected": "Đã ngắt Apple Health.",
+      "connectFirst": "Hãy kết nối Apple Health trước."
+    },
+    "garmin": {
+      "title": "Garmin Connect",
+      "body": "Đưa hoạt động từ đồng hồ Garmin và tài khoản Connect vào Evolve.",
+      "connect": "Kết nối Garmin",
+      "connected": "Đã kết nối Garmin Connect.",
+      "disconnected": "Đã ngắt Garmin Connect.",
+      "connectFirst": "Hãy kết nối Garmin Connect trước."
+    },
+    "webNote": "Đồng bộ gốc đầy đủ sẽ có trên app di động. Màn hình này lưu tùy chọn Pro demo."
+  }
+}

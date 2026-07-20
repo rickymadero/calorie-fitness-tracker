@@ -7,6 +7,8 @@ import { ExerciseCardLink } from "@/components/training/ExerciseDemo";
 import { EXERCISES } from "@/lib/mock/exercises";
 import type { MuscleGroup } from "@/lib/types/training";
 import { ProGate } from "@/components/pro/ProGate";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
+import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
 
 const MUSCLES: Array<MuscleGroup | "all"> = [
   "all",
@@ -23,6 +25,7 @@ const MUSCLES: Array<MuscleGroup | "all"> = [
 ];
 
 export default function ExercisesPage() {
+  const { t } = useAppTranslation(["workouts", "common"]);
   const [query, setQuery] = useState("");
   const [muscle, setMuscle] = useState<(typeof MUSCLES)[number]>("all");
 
@@ -36,19 +39,17 @@ export default function ExercisesPage() {
       const qOk =
         !q ||
         e.name.toLowerCase().includes(q) ||
-        e.tags.some((t) => t.includes(q));
+        e.tags.some((tag) => tag.includes(q));
       return mOk && qOk;
     });
   }, [query, muscle]);
 
   return (
-    <ProGate feature="Exercise demos & library extras">
+    <ProGate feature={t("features.exerciseLibrary", { ns: "common" })}>
     <div>
-      <h1 className="font-display text-2xl font-bold tracking-tight md:text-3xl">
-        Exercise library
-      </h1>
-      <p className="mt-1 text-sm text-muted">
-        Learn every movement with technique coaching. Full video demos are a Pro feature.
+      <ExploreBackHeader title={t("exercises.title")} />
+      <p className="text-sm text-muted">
+        {t("exercises.subtitle")}
       </p>
 
       <Card className="mt-6">
@@ -60,7 +61,7 @@ export default function ExercisesPage() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search exercises..."
+            placeholder={t("exercises.searchPlaceholder")}
             className="h-12 w-full rounded-2xl border border-border bg-background pl-11 pr-4 outline-none focus:border-accent"
           />
         </div>
@@ -76,7 +77,7 @@ export default function ExercisesPage() {
                   : "bg-muted-bg text-muted"
               }`}
             >
-              {m}
+              {m === "all" ? t("exercises.muscleAll") : m}
             </button>
           ))}
         </div>

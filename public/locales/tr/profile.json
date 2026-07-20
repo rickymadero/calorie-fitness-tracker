@@ -1,0 +1,37 @@
+{
+  "edit": "Profili düzenle",
+  "publicView": "Genel görünüm",
+  "createPost": "Gönderi oluştur",
+  "emptyPosts": "Henüz gönderi yok",
+  "emptyPostsHint": "Ağ ile ilk antrenmanını paylaş.",
+  "addBio": "Sporcuların seni tanıması için ayarlardan bir biyografi ekle.",
+  "statMonth": "Ay",
+  "statDistance": "Mesafe",
+  "statStreak": "Seri",
+  "tabWorkouts": "Antrenmanlar",
+  "tabPrs": "Kişisel Rekorlar",
+  "recentWorkouts": "Son antrenmanlar",
+  "newPost": "Yeni gönderi",
+  "savedTitle": "Kaydedilen Gönderiler",
+  "savedEmpty": "Kaydedilmiş antrenman yok",
+  "savedEmptyHint": "Buraya kaydetmek için herhangi bir gönderideki yer imine dokun.",
+  "browseFeed": "Akışa göz at",
+  "signedOut": "Çıkış yapıldı.",
+  "menuAria": "Profil menüsü",
+  "prs": {
+    "empty": "Henüz kişisel rekor yok",
+    "emptySelf": "İlk kişisel rekorunu ekle",
+    "emptySelfHint": "Bench, squat, 5K, HYROX, Ironman — ağa neler başardığını göster.",
+    "addTitle": "Kişisel rekor ekle",
+    "label": "Etiket",
+    "result": "Sonuç",
+    "saved": "Kişisel rekor kaydedildi.",
+    "removed": "Kişisel rekor kaldırıldı.",
+    "cat": {
+      "strength": "Kuvvet",
+      "running": "Koşu",
+      "endurance": "Dayanıklılık ve yarışlar",
+      "other": "Diğer"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Tarifler",
+  "subtitle": "Makrolarına bağlı öğün fikirleri. Pro, kişiselleştirilmiş haftalık planlar ve makroya dayalı önerileri açar.",
+  "recommendedNow": "Şimdi senin için önerilenler",
+  "remainingMacros": "~{{kcal}} kcal ve {{protein}}g protein kaldı",
+  "postWorkoutFocus": " · antrenman sonrası odaklı",
+  "unlockProMeals": "Pro öğünlerini aç",
+  "recipeCardMeta": "{{calories}} kcal · {{protein}}P · {{carbs}}C · {{fat}}F",
+  "searchPlaceholder": "Tarif ara...",
+  "filter": {
+    "all": "tümü",
+    "breakfast": "kahvaltı",
+    "lunch": "öğle",
+    "dinner": "akşam",
+    "snack": "atıştırmalık",
+    "highProtein": "yüksek protein",
+    "quick": "hızlı",
+    "vegetarian": "vejetaryen",
+    "keto": "keto"
+  },
+  "cardMeta": "{{calories}} kcal · {{protein}}g protein · {{minutes}} dk",
+  "notFound": "Tarif bulunamadı.",
+  "back": "Tarifler",
+  "timing": "Hazırlık {{prep}}dk · Pişirme {{cook}}dk · {{difficulty}}",
+  "portions": "Porsiyonlar",
+  "logToTracker": "Kalori takibine kaydet",
+  "groceryList": "Alışveriş listesi",
+  "toast": {
+    "logProRequired": "Kişiselleştirilmiş tarifleri kaydetmek için Pro’ya yüksel.",
+    "loggedDemo": "{{name}} yiyecek takibine kaydedildi (demo).",
+    "groceryDemo": "Malzemeler alışveriş listesine eklendi (demo).",
+    "groceryProOnly": "Akıllı alışveriş listeleri bir Pro özelliğidir."
+  },
+  "lockedTitle": "Kişiselleştirilmiş Pro tariflerinin kilidini aç",
+  "lockedBody": "Tam talimatlar, haftalık öğün planları, makroya dayalı öneriler ve otomatik porsiyon ayarları al.",
+  "ingredients": "Malzemeler",
+  "allergens": "Alerjenler: {{list}}",
+  "steps": "Adımlar",
+  "equipmentPortion": "Ekipman: {{equipment}} · Porsiyon: {{portion}}",
+  "disclaimer": "Besin değerleri yalnızca planlama için tahmindir ve tıbbi tavsiye değildir.",
+  "openMealPlan": "Öğün planlamasını aç"
+}

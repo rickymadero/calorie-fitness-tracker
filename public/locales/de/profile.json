@@ -1,0 +1,37 @@
+{
+  "edit": "Profil bearbeiten",
+  "publicView": "Öffentliche Ansicht",
+  "createPost": "Beitrag erstellen",
+  "emptyPosts": "Noch keine Beiträge",
+  "emptyPostsHint": "Teile dein erstes Training mit dem Netzwerk.",
+  "addBio": "Füge in den Einstellungen eine Bio hinzu, damit Athleten wissen, wer du bist.",
+  "statMonth": "Monat",
+  "statDistance": "Distanz",
+  "statStreak": "Serie",
+  "tabWorkouts": "Trainings",
+  "tabPrs": "Bestleistungen",
+  "recentWorkouts": "Letzte Trainings",
+  "newPost": "Neuer Beitrag",
+  "savedTitle": "Gespeicherte Beiträge",
+  "savedEmpty": "Keine gespeicherten Trainings",
+  "savedEmptyHint": "Tippe auf das Lesezeichen bei einem Beitrag, um ihn hier zu speichern.",
+  "browseFeed": "Feed durchsuchen",
+  "signedOut": "Abgemeldet.",
+  "menuAria": "Profilmenü",
+  "prs": {
+    "empty": "Noch keine Bestleistungen",
+    "emptySelf": "Füge deine erste Bestleistung hinzu",
+    "emptySelfHint": "Bankdrücken, Kniebeuge, 5 km, HYROX, Ironman — zeig dem Netzwerk, was du geschafft hast.",
+    "addTitle": "Persönliche Bestleistung hinzufügen",
+    "label": "Bezeichnung",
+    "result": "Ergebnis",
+    "saved": "Bestleistung gespeichert.",
+    "removed": "Bestleistung entfernt.",
+    "cat": {
+      "strength": "Kraft",
+      "running": "Laufen",
+      "endurance": "Ausdauer & Wettkämpfe",
+      "other": "Sonstiges"
+    }
+  }
+}

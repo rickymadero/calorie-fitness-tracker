@@ -1,0 +1,61 @@
+{
+  "title": "İlerleme",
+  "subtitle": "Kilo, ölçüler, fotoğraflar ve uyumu zamanla takip et.",
+  "measurements": "Ölçüler",
+  "photo": "Fotoğraf",
+  "logWeight": "Kilo kaydet",
+  "weightTrend": "Kilo trendi",
+  "changeThisMonth": "Bu ay {{sign}}{{amount}} {{unit}}",
+  "currentGoal": "Güncel: {{current}} {{unit}} · Hedef: {{goal}} {{unit}}",
+  "bodyMeasurements": "Vücut ölçüleri",
+  "measure": {
+    "chest": "Göğüs",
+    "waist": "Bel",
+    "hips": "Kalça",
+    "arms": "Kollar"
+  },
+  "consistency": "Tutarlılık",
+  "calorieAdherence": "Kalori uyumu",
+  "workoutConsistency": "Antrenman tutarlılığı",
+  "habitCompletion": "Alışkanlık tamamlanma",
+  "progressPhotos": "İlerleme fotoğrafları",
+  "photosEmptyTitle": "Henüz fotoğraf yok",
+  "photosEmptyDescription": "Zaman içindeki değişimi karşılaştırmak için ilerleme fotoğrafları yükle.",
+  "addPhoto": "Fotoğraf ekle",
+  "monthlyOverview": "Aylık genel bakış",
+  "monthlyOverviewBody": "Grafik yer tutucuları bir grafik kütüphanesi veya analitik API için hazır. Mevcut mock sağlıklı düşen kilo trendi ve sağlam antrenman uyumu gösteriyor.",
+  "avgDailyCalories": "Ort. günlük kalori",
+  "workoutsCompleted": "Tamamlanan antrenmanlar",
+  "bestStreak": "En iyi seri",
+  "bestStreakValue": "{{n}} gün",
+  "modal": {
+    "logWeightTitle": "Kilo kaydet",
+    "weightLabel": "Kilo ({{unit}})",
+    "updateMeasurements": "Ölçüleri güncelle",
+    "addPhotoTitle": "İlerleme fotoğrafı ekle",
+    "addPhotoBody": "Fotoğraf yükleme daha sonra depolamaya bağlanacak. Bu demo bir yer tutucu ekler."
+  },
+  "addPlaceholderPhoto": "Yer tutucu fotoğraf ekle",
+  "toast": {
+    "invalidWeight": "Geçerli bir kilo gir.",
+    "weightLogged": "Kilo kaydedildi.",
+    "measurementsUpdated": "Ölçüler güncellendi.",
+    "photoAdded": "İlerleme fotoğrafı eklendi."
+  },
+  "chartToday": "Bugün",
+  "basic": {
+    "title": "Temel istatistikler",
+    "subtitle": "Kayıtlı antrenmanlarından bu haftanın mesafe, süre ve kalorisi — herkese ücretsiz.",
+    "freeBadge": "Ücretsiz",
+    "distance": "Mesafe",
+    "time": "Süre",
+    "calories": "Kalori",
+    "weeklyActivity": "Bu hafta",
+    "workoutsCount": "{{n}} antrenman",
+    "empty": "Bu hafta antrenman yok",
+    "emptyHint": "Haftalık grafiği doldurmak için bir seans kaydedin.",
+    "logWorkout": "Antrenman kaydet",
+    "unlockTitle": "Gelişmiş Progress’i aç",
+    "unlockBody": "Kilo trendleri, ölçü, ilerleme fotoğrafları ve aylık analitik Evolve Pro’dadır. Yukarıdaki temel istatistikler sonsuza kadar ücretsiz kalır."
+  }
+}

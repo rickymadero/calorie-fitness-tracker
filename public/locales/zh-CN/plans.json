@@ -1,0 +1,40 @@
+{
+  "title": "计划",
+  "subtitle": "真实场景餐食——Chipotle、汉堡、披萨、咖啡——围绕你的卡路里目标编排。",
+  "adjustWeek": "调整本周",
+  "toast": {
+    "weekRefreshed": "本周餐食替换已刷新，包含新的餐厅选项。",
+    "weekProOnly": "每周调整是 Pro 功能。",
+    "loggedMealDemo": "已将 {{name}} 添加到 {{slot}}（演示）。",
+    "addedSuggestion": "已添加建议：{{name}}（演示）。"
+  },
+  "nutritionTitle": "营养计划",
+  "dailyCalories": "每日卡路里",
+  "strategy": "策略",
+  "proteinBar": "蛋白质 {{n}}g",
+  "carbsBar": "碳水化合物 {{n}}g",
+  "fatBar": "脂肪 {{n}}g",
+  "strategyExtra": "想吃快餐也能安排：不点薯条、Chipotle 米饭减半，或披萨配沙拉代替整份披萨。",
+  "nutritionEmpty": "完成引导流程后即可生成你的营养计划。",
+  "workoutProgram": "训练计划",
+  "defaultPlanName": "个性化训练计划",
+  "programMeta": "每周 {{sessions}} 次 · {{level}} 水平 · {{access}}",
+  "gymAccess": "可去健身房",
+  "homeFriendly": "居家友好",
+  "openTrainingPlan": "打开训练计划",
+  "recipeLibrary": "食谱库",
+  "weekMealPlanTitle": "本周餐食计划",
+  "weekMealPlanSubtitle": "超市常备与你常去的餐厅合理搭配。",
+  "logThisMeal": "记录此餐",
+  "mealIdeasTitle": "剩余宏量营养素的餐食灵感",
+  "vibe": {
+    "all": "全部",
+    "flexible": "灵活",
+    "highProtein": "高蛋白",
+    "craving": "解馋",
+    "lighter": "更清淡"
+  },
+  "addToPlan": "加入计划",
+  "popularPlaces": "饮食记录中的热门地点",
+  "placeCount": "{{place}} · {{count}} 项"
+}

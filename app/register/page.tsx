@@ -12,11 +12,13 @@ import {
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 
 export default function RegisterPage() {
   const { updateRegisterDraft, completeRegistration, clearRegisterDraft } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+  const { t } = useAppTranslation(["common", "auth"]);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,15 +29,15 @@ export default function RegisterPage() {
     e.preventDefault();
     setError("");
     if (!fullName.trim()) {
-      setError("Enter your name.");
+      setError(t("errors.requiredName"));
       return;
     }
     if (!email.includes("@")) {
-      setError("Enter a valid email address.");
+      setError(t("errors.invalidEmail"));
       return;
     }
     if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
+      setError(t("errors.passwordShort"));
       return;
     }
     setLoading(true);
@@ -44,7 +46,7 @@ export default function RegisterPage() {
     completeRegistration();
     clearRegisterDraft();
     setLoading(false);
-    toast("Account created. Let's set you up.", "success");
+    toast(t("success.accountCreated"), "success");
     router.push("/onboarding");
   }
 
@@ -52,22 +54,22 @@ export default function RegisterPage() {
     <MinimalAuthShell>
       <form onSubmit={onSubmit} className="flex flex-col gap-4">
         <AuthField
-          label="Full name"
+          label={t("fullName", { ns: "auth" })}
           autoComplete="name"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
-          placeholder="Alex Rivera"
+          placeholder={t("namePlaceholder", { ns: "auth" })}
         />
         <AuthField
-          label="Email"
+          label={t("email", { ns: "auth" })}
           type="email"
           autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@email.com"
+          placeholder={t("emailPlaceholder", { ns: "auth" })}
         />
         <AuthField
-          label="Password"
+          label={t("password", { ns: "auth" })}
           type="password"
           autoComplete="new-password"
           value={password}
@@ -76,17 +78,21 @@ export default function RegisterPage() {
         />
         {error && <p className="text-sm text-red-400">{error}</p>}
         <Button type="submit" fullWidth size="lg" loading={loading} className="mt-2">
-          Create account
+          {t("createAccount", { ns: "auth" })}
         </Button>
         <p className="text-center text-xs text-white/35">
-          By continuing you agree to our Terms &amp; Privacy Policy.
+          {t("termsHint", { ns: "auth" })}
         </p>
       </form>
 
-      <AuthDivider />
-      <InstagramContinueButton label="Sign up with Instagram" />
+      <AuthDivider label={t("labels.or")} />
+      <InstagramContinueButton label={t("signUpInstagram", { ns: "auth" })} />
 
-      <AuthSwitchLink prompt="Already have an account?" actionLabel="Log in" href="/login" />
+      <AuthSwitchLink
+        prompt={t("hasAccount", { ns: "auth" })}
+        actionLabel={t("logIn", { ns: "auth" })}
+        href="/login"
+      />
     </MinimalAuthShell>
   );
 }

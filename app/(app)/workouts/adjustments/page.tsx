@@ -5,27 +5,27 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { PageLoader } from "@/components/ui/Spinner";
 import { useTraining } from "@/components/training/TrainingProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
+import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
 
 export default function AdjustmentsPage() {
   const { adjustments, setAdjustmentStatus, isReady } = useTraining();
+  const { t } = useAppTranslation(["workouts", "common"]);
 
   if (!isReady) return <PageLoader />;
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold tracking-tight md:text-3xl">
-        Plan adjustments
-      </h1>
-      <p className="mt-1 text-sm text-muted">
-        Recommendations based on your workout feedback, recovery, and performance.
-        Approve for your coach/admin pipeline — auto-apply comes later.
+      <ExploreBackHeader title={t("adjustments.title")} href="/workouts" />
+      <p className="text-sm text-muted">
+        {t("adjustments.subtitle")}
       </p>
 
       <div className="mt-6 space-y-3">
         {adjustments.length === 0 ? (
           <Card>
             <p className="text-sm text-muted">
-              No recommendations yet. Finish a guided workout to generate them.
+              {t("adjustments.empty")}
             </p>
           </Card>
         ) : (
@@ -61,14 +61,14 @@ export default function AdjustmentsPage() {
                       size="sm"
                       onClick={() => setAdjustmentStatus(adj.id, "approved")}
                     >
-                      Approve
+                      {t("buttons.approve", { ns: "common" })}
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => setAdjustmentStatus(adj.id, "dismissed")}
                     >
-                      Dismiss
+                      {t("buttons.dismiss", { ns: "common" })}
                     </Button>
                   </div>
                 )}

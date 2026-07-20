@@ -11,11 +11,13 @@ import {
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { PageLoader } from "@/components/ui/Spinner";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { getPostAuthPath } from "@/lib/auth/routes";
 
 export default function LandingPage() {
   const { user, isReady } = useAuth();
   const router = useRouter();
+  const { t } = useAppTranslation("auth");
 
   useEffect(() => {
     if (!isReady || !user) return;
@@ -26,14 +28,12 @@ export default function LandingPage() {
 
   return (
     <MinimalAuthShell>
-      <p className="text-center text-sm text-white/45">
-        Social fitness. Post workouts, follow athletes, grow together.
-      </p>
+      <p className="text-center text-sm text-white/45">{t("tagline")}</p>
 
       <div className="mt-8 flex flex-col gap-3">
         <Link href="/register">
           <Button fullWidth size="lg">
-            Create account
+            {t("createAccount")}
           </Button>
         </Link>
         <Link href="/login">
@@ -43,7 +43,7 @@ export default function LandingPage() {
             variant="outline"
             className="!border-white/15 !text-white hover:!border-white/30 hover:!bg-white/[0.06]"
           >
-            Log in
+            {t("logIn")}
           </Button>
         </Link>
       </div>

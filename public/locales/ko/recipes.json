@@ -1,0 +1,42 @@
+{
+  "title": "레시피",
+  "subtitle": "매크로와 연결된 식사 아이디어. Pro로 맞춤 주간 플랜과 매크로 기반 추천을 잠금 해제하세요.",
+  "recommendedNow": "지금 추천",
+  "remainingMacros": "남은 ~{{kcal}} kcal · 단백질 {{protein}}g",
+  "postWorkoutFocus": " · 운동 후 집중",
+  "unlockProMeals": "Pro 식사 잠금 해제",
+  "recipeCardMeta": "{{calories}} kcal · {{protein}}P · {{carbs}}C · {{fat}}F",
+  "searchPlaceholder": "레시피 검색...",
+  "filter": {
+    "all": "전체",
+    "breakfast": "아침",
+    "lunch": "점심",
+    "dinner": "저녁",
+    "snack": "간식",
+    "highProtein": "고단백",
+    "quick": "간단",
+    "vegetarian": "채식",
+    "keto": "키토"
+  },
+  "cardMeta": "{{calories}} kcal · 단백질 {{protein}}g · {{minutes}}분",
+  "notFound": "레시피를 찾을 수 없습니다.",
+  "back": "레시피",
+  "timing": "준비 {{prep}}분 · 조리 {{cook}}분 · {{difficulty}}",
+  "portions": "분량",
+  "logToTracker": "칼로리 트래커에 기록",
+  "groceryList": "장보기 목록",
+  "toast": {
+    "logProRequired": "맞춤 레시피 기록은 Pro로 업그레이드하세요.",
+    "loggedDemo": "{{name}}을(를) 식단 트래커에 기록했습니다(데모).",
+    "groceryDemo": "재료가 장보기 목록에 추가되었습니다(데모).",
+    "groceryProOnly": "스마트 장보기 목록은 Pro 기능입니다."
+  },
+  "lockedTitle": "맞춤 Pro 레시피 잠금 해제",
+  "lockedBody": "전체 안내, 주간 식단, 매크로 기반 제안, 자동 분량 조정을 이용하세요.",
+  "ingredients": "재료",
+  "allergens": "알레르기: {{list}}",
+  "steps": "단계",
+  "equipmentPortion": "장비: {{equipment}} · 분량: {{portion}}",
+  "disclaimer": "영양 수치는 계획용 추정치이며 의료 조언이 아닙니다.",
+  "openMealPlan": "식단 계획 열기"
+}

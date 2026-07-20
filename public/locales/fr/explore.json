@@ -1,0 +1,92 @@
+{
+  "athletesHint": "Vous cherchez des athlètes ?",
+  "searchNetwork": "Rechercher dans le Réseau",
+  "orSuggestions": "ou consultez les suggestions dans le Fil.",
+  "upgradeCta": "Passer à Pro →",
+  "tabs": {
+    "forYou": "Pour toi",
+    "workouts": "Séances",
+    "nutrition": "Alimentation",
+    "tools": "Outils",
+    "pro": "Pro"
+  },
+  "proHero": {
+    "onPro": "Vous êtes en Pro",
+    "title": "Evolve Pro · 9,99 $/mois",
+    "body": "Gratuit pour toujours : suivi de base des séances, exploration d'EvoFit et statistiques de base. Pro débloque le suivi, les plans, les scanners, les analyses et plus encore."
+  },
+  "features": {
+    "basicLogging": {
+      "title": "Suivi de base des séances",
+      "desc": "Type, durée et distance — gratuit pour tous."
+    },
+    "basicStats": {
+      "title": "Statistiques de base",
+      "desc": "Indicateurs simples en un coup d'œil — toujours gratuit."
+    },
+    "plans": {
+      "title": "Plans d'entraînement personnalisés",
+      "desc": "Des plans adaptés à vos objectifs et à votre emploi du temps."
+    },
+    "macros": {
+      "title": "Suivi des calories et macros",
+      "desc": "Calories, protéines, glucides et lipides quotidiens."
+    },
+    "scanner": {
+      "title": "Scanner alimentaire IA",
+      "desc": "Scan de code-barres et de photo pour un suivi rapide."
+    },
+    "formGuides": {
+      "title": "Guides de technique",
+      "desc": "Conseils de technique et démonstrations d'exercices."
+    },
+    "history": {
+      "title": "Analyse de l'historique d'entraînement",
+      "desc": "Décortiquez vos séances passées et vos efforts."
+    },
+    "library": {
+      "title": "Bibliothèque de séances enregistrées",
+      "desc": "Vos séances mises en favoris au même endroit."
+    },
+    "goals": {
+      "title": "Définition et suivi des objectifs",
+      "desc": "Fixez des objectifs et suivez votre progression."
+    },
+    "meals": {
+      "title": "Planification des repas",
+      "desc": "Créez des repas et des listes pour vos jours d'entraînement."
+    },
+    "recipes": {
+      "title": "Base de recettes Pro",
+      "desc": "Bibliothèque complète de repas pour athlètes."
+    },
+    "analytics": {
+      "title": "Analyses et graphiques avancés",
+      "desc": "Tendances, graphiques de volume et analyses plus poussées."
+    },
+    "body": {
+      "title": "Suivi de la transformation physique",
+      "desc": "Photos, mesures et évolution dans le temps."
+    },
+    "health": {
+      "title": "Intégration Apple Health",
+      "desc": "Synchronisez pas, séances et récupération."
+    },
+    "support": {
+      "title": "Assistance prioritaire",
+      "desc": "Une aide plus rapide quand vous en avez besoin."
+    },
+    "adFree": {
+      "title": "Expérience sans publicité",
+      "desc": "Entraînez-vous sans interruption."
+    },
+    "forums": {
+      "title": "Réseau d'athlètes",
+      "desc": "Trouvez et suivez des athlètes sur Evolve."
+    }
+  },
+  "sections": {
+    "free": "Inclus gratuitement",
+    "pro": "Outils Pro"
+  }
+}

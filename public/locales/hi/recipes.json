@@ -1,0 +1,42 @@
+{
+  "title": "रेसिपी",
+  "subtitle": "आपके मैक्रोज़ से जुड़े मील आइडिया। Pro व्यक्तिगत साप्ताहिक प्लान और मैक्रो-आधारित सुझाव अनलॉक करता है।",
+  "recommendedNow": "अभी आपके लिए अनुशंसित",
+  "remainingMacros": "~{{kcal}} kcal और {{protein}}g प्रोटीन शेष",
+  "postWorkoutFocus": " · पोस्ट-वर्कआउट फोकस",
+  "unlockProMeals": "Pro मील्स अनलॉक करें",
+  "recipeCardMeta": "{{calories}} kcal · {{protein}}P · {{carbs}}C · {{fat}}F",
+  "searchPlaceholder": "रेसिपी खोजें...",
+  "filter": {
+    "all": "सभी",
+    "breakfast": "नाश्ता",
+    "lunch": "लंच",
+    "dinner": "डिनर",
+    "snack": "स्नैक",
+    "highProtein": "हाई-प्रोटीन",
+    "quick": "त्वरित",
+    "vegetarian": "शाकाहारी",
+    "keto": "कीटो"
+  },
+  "cardMeta": "{{calories}} kcal · {{protein}}g प्रोटीन · {{minutes}} मिनट",
+  "notFound": "रेसिपी नहीं मिली।",
+  "back": "रेसिपी",
+  "timing": "तैयारी {{prep}}मि · पकाना {{cook}}मि · {{difficulty}}",
+  "portions": "पोर्शन",
+  "logToTracker": "कैलोरी ट्रैकर में लॉग करें",
+  "groceryList": "किराना सूची",
+  "toast": {
+    "logProRequired": "व्यक्तिगत रेसिपी लॉग करने के लिए Pro में अपग्रेड करें।",
+    "loggedDemo": "{{name}} को फूड ट्रैकर में लॉग किया (डेमो)।",
+    "groceryDemo": "सामग्री किराना सूची में जोड़ी गई (डेमो)।",
+    "groceryProOnly": "स्मार्ट किराना सूचियाँ Pro फीचर हैं।"
+  },
+  "lockedTitle": "व्यक्तिगत Pro रेसिपी अनलॉक करें",
+  "lockedBody": "पूर्ण निर्देश, साप्ताहिक मील प्लान, मैक्रो-आधारित सुझाव और स्वचालित पोर्शन समायोजन पाएँ।",
+  "ingredients": "सामग्री",
+  "allergens": "एलर्जेन: {{list}}",
+  "steps": "चरण",
+  "equipmentPortion": "उपकरण: {{equipment}} · पोर्शन: {{portion}}",
+  "disclaimer": "पोषण मान केवल योजना के लिए अनुमान हैं और चिकित्सा सलाह नहीं हैं।",
+  "openMealPlan": "मील प्लानिंग खोलें"
+}

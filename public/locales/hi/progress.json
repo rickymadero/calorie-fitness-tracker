@@ -1,0 +1,61 @@
+{
+  "title": "प्रगति",
+  "subtitle": "वज़न, माप, फ़ोटो और अनुपालन को समय के साथ ट्रैक करें।",
+  "measurements": "माप",
+  "photo": "फ़ोटो",
+  "logWeight": "वज़न लॉग करें",
+  "weightTrend": "वज़न ट्रेंड",
+  "changeThisMonth": "इस महीने {{sign}}{{amount}} {{unit}}",
+  "currentGoal": "वर्तमान: {{current}} {{unit}} · लक्ष्य: {{goal}} {{unit}}",
+  "bodyMeasurements": "शारीरिक माप",
+  "measure": {
+    "chest": "छाती",
+    "waist": "कमर",
+    "hips": "कूल्हे",
+    "arms": "बाँहें"
+  },
+  "consistency": "नियमितता",
+  "calorieAdherence": "कैलोरी अनुपालन",
+  "workoutConsistency": "वर्कआउट नियमितता",
+  "habitCompletion": "आदत पूर्णता",
+  "progressPhotos": "प्रगति फ़ोटो",
+  "photosEmptyTitle": "अभी कोई फ़ोटो नहीं",
+  "photosEmptyDescription": "समय के साथ बदलाव तुलना के लिए प्रगति फ़ोटो अपलोड करें।",
+  "addPhoto": "फ़ोटो जोड़ें",
+  "monthlyOverview": "मासिक अवलोकन",
+  "monthlyOverviewBody": "चार्ट प्लेसहोल्डर चार्टिंग लाइब्रेरी या एनालिटिक्स API के लिए तैयार हैं। वर्तमान मॉक स्वस्थ वज़न गिरावट और मज़बूत वर्कआउट अनुपालन दिखाता है।",
+  "avgDailyCalories": "औसत दैनिक कैलोरी",
+  "workoutsCompleted": "पूर्ण वर्कआउट",
+  "bestStreak": "सर्वश्रेष्ठ स्ट्रीक",
+  "bestStreakValue": "{{n}} दिन",
+  "modal": {
+    "logWeightTitle": "वज़न लॉग करें",
+    "weightLabel": "वज़न ({{unit}})",
+    "updateMeasurements": "माप अपडेट करें",
+    "addPhotoTitle": "प्रगति फ़ोटो जोड़ें",
+    "addPhotoBody": "फ़ोटो अपलोड बाद में स्टोरेज से जुड़ेगा। यह डेमो प्लेसहोल्डर जोड़ता है।"
+  },
+  "addPlaceholderPhoto": "प्लेसहोल्डर फ़ोटो जोड़ें",
+  "toast": {
+    "invalidWeight": "मान्य वज़न दर्ज करें।",
+    "weightLogged": "वज़न लॉग हुआ।",
+    "measurementsUpdated": "माप अपडेट हुए।",
+    "photoAdded": "प्रगति फ़ोटो जोड़ी गई।"
+  },
+  "chartToday": "आज",
+  "basic": {
+    "title": "बेसिक आँकड़े",
+    "subtitle": "इस सप्ताह आपके लॉग किए वर्कआउट से दूरी, समय और कैलोरी — सभी के लिए मुफ़्त।",
+    "freeBadge": "मुफ़्त",
+    "distance": "दूरी",
+    "time": "समय",
+    "calories": "कैलोरी",
+    "weeklyActivity": "इस सप्ताह",
+    "workoutsCount": "{{n}} वर्कआउट",
+    "empty": "इस सप्ताह कोई वर्कआउट नहीं",
+    "emptyHint": "साप्ताहिक चार्ट भरने के लिए एक सेशन लॉग करें।",
+    "logWorkout": "वर्कआउट लॉग करें",
+    "unlockTitle": "एडवांस्ड Progress अनलॉक करें",
+    "unlockBody": "वज़न ट्रेंड, माप, प्रगति फ़ोटो और मासिक विश्लेषण Evolve Pro का हिस्सा हैं। ऊपर के बेसिक आँकड़े हमेशा मुफ़्त रहेंगे।"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "athletesHint": "¿Buscas atletas?",
+  "searchNetwork": "Buscar en Red",
+  "orSuggestions": "o mira las sugerencias en Feed.",
+  "upgradeCta": "Mejorar a Pro →",
+  "tabs": {
+    "forYou": "Para ti",
+    "workouts": "Entreno",
+    "nutrition": "Nutrición",
+    "tools": "Útiles",
+    "pro": "Pro"
+  },
+  "proHero": {
+    "onPro": "Ya tienes Pro",
+    "title": "Evolve Pro · $9.99/mes",
+    "body": "Gratis para siempre: registro básico de entrenamientos, explorar EvoFit y estadísticas básicas. Pro desbloquea seguimiento, planes, escáneres, análisis y más."
+  },
+  "features": {
+    "basicLogging": {
+      "title": "Registro básico de entrenamientos",
+      "desc": "Tipo, duración y distancia — gratis para todos."
+    },
+    "basicStats": {
+      "title": "Estadísticas básicas",
+      "desc": "Métricas simples de un vistazo — siempre gratis."
+    },
+    "plans": {
+      "title": "Planes de entrenamiento personalizados",
+      "desc": "Planes ajustados a tus objetivos y horario."
+    },
+    "macros": {
+      "title": "Contador de calorías y macros",
+      "desc": "Calorías, proteínas, carbohidratos y grasas diarias."
+    },
+    "scanner": {
+      "title": "Escáner de alimentos con IA",
+      "desc": "Escaneo de código de barras y foto para un registro rápido."
+    },
+    "formGuides": {
+      "title": "Guías de técnica",
+      "desc": "Consejos de técnica y demostraciones de ejercicios."
+    },
+    "history": {
+      "title": "Análisis del historial de entrenamiento",
+      "desc": "Desglosa sesiones pasadas y el esfuerzo realizado."
+    },
+    "library": {
+      "title": "Biblioteca de entrenamientos guardados",
+      "desc": "Tus sesiones marcadas en un solo lugar."
+    },
+    "goals": {
+      "title": "Definición y seguimiento de objetivos",
+      "desc": "Establece metas y sigue tu progreso."
+    },
+    "meals": {
+      "title": "Planificación de comidas",
+      "desc": "Crea comidas y listas para los días de entrenamiento."
+    },
+    "recipes": {
+      "title": "Base de datos de recetas Pro",
+      "desc": "Biblioteca completa de comidas para atletas."
+    },
+    "analytics": {
+      "title": "Análisis avanzados y gráficos",
+      "desc": "Tendencias, gráficos de volumen y estadísticas más profundas."
+    },
+    "body": {
+      "title": "Seguimiento de la transformación corporal",
+      "desc": "Fotos, medidas y cambios a lo largo del tiempo."
+    },
+    "health": {
+      "title": "Integración con Apple Health",
+      "desc": "Sincroniza pasos, entrenamientos y recuperación."
+    },
+    "support": {
+      "title": "Soporte prioritario",
+      "desc": "Ayuda más rápida cuando la necesitas."
+    },
+    "adFree": {
+      "title": "Experiencia sin anuncios",
+      "desc": "Entrena sin interrupciones."
+    },
+    "forums": {
+      "title": "Red de atletas",
+      "desc": "Encuentra y sigue atletas en Evolve."
+    }
+  },
+  "sections": {
+    "free": "Incluido gratis",
+    "pro": "Herramientas Pro"
+  }
+}

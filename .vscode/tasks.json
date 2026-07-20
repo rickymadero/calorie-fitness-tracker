@@ -3,13 +3,17 @@
   "tasks": [
     {
       "label": "Evolve: Start Dev Server",
-      "type": "npm",
-      "script": "dev",
+      "type": "shell",
+      "command": "if lsof -nP -iTCP:3000 -sTCP:LISTEN >/dev/null 2>&1; then echo '✓ Ready — reusing existing Next.js on http://127.0.0.1:3000'; exit 0; fi; npm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "isBackground": true,
       "presentation": {
         "reveal": "always",
         "panel": "dedicated",
-        "group": "evolve"
+        "group": "evolve",
+        "showReuseMessage": false
       },
       "problemMatcher": {
         "owner": "nextjs",
@@ -26,7 +30,7 @@
     {
       "label": "Evolve: Show Mobile Preview",
       "type": "shell",
-      "command": "echo ${input:evolveOpenMobilePreview}",
+      "command": "echo ${input:evolveOpenMobilePreview}; \"${workspaceFolder}/.vscode/open-mobile-preview.sh\" \"http://127.0.0.1:3000/dev/preview\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "silent",

@@ -9,6 +9,7 @@ import { StepProgress } from "@/components/ui/StepProgress";
 import { PageLoader } from "@/components/ui/Spinner";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { useSocial } from "@/components/social/SocialProvider";
 import { socialStorage } from "@/lib/storage/social";
 import type { WorkoutInterest } from "@/lib/types/social";
@@ -28,19 +29,20 @@ const WORKOUTS: WorkoutInterest[] = [
 ];
 
 const GOALS = [
-  "Build muscle",
-  "Improve endurance",
-  "Lose weight",
-  "Overall health",
-  "Increase strength",
-  "Run consistently",
-];
+  { key: "buildMuscle", value: "Build muscle" },
+  { key: "endurance", value: "Improve endurance" },
+  { key: "loseWeight", value: "Lose weight" },
+  { key: "health", value: "Overall health" },
+  { key: "strength", value: "Increase strength" },
+  { key: "run", value: "Run consistently" },
+] as const;
 
 export default function OnboardingPage() {
   const { user, isReady, updateUser, updateOnboarding, completeOnboarding } =
     useAuth();
   const { ensureMyProfile, updateMyProfile } = useSocial();
   const { toast } = useToast();
+  const { t } = useAppTranslation(["common", "auth"]);
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [displayName, setDisplayName] = useState("");
@@ -92,11 +94,11 @@ export default function OnboardingPage() {
       .replace(/[^a-z0-9_]/g, "")
       .slice(0, 24);
     if (clean.length < 3) {
-      setUsernameError("Username needs at least 3 characters.");
+      setUsernameError(t("errors.usernameMin"));
       return;
     }
     if (socialStorage.isUsernameTaken(clean, user!.id)) {
-      setUsernameError("That username is taken.");
+      setUsernameError(t("errors.usernameTaken"));
       return;
     }
     setUsername(clean);
@@ -132,14 +134,27 @@ export default function OnboardingPage() {
       visibility: "public",
     });
     completeOnboarding();
-    toast("Welcome to Evolve Social.", "success");
+    toast(t("onboarding.welcome", { ns: "auth" }), "success");
     router.push("/intro");
   }
+
+  const unitOptions = [
+    {
+      id: "metric" as const,
+      label: t("labels.metric"),
+      hint: t("onboarding.metricHint", { ns: "auth" }),
+    },
+    {
+      id: "imperial" as const,
+      label: t("labels.imperial"),
+      hint: t("onboarding.imperialHint", { ns: "auth" }),
+    },
+  ];
 
   return (
     <div className="min-h-dvh bg-background">
       <div className="mx-auto flex min-h-dvh max-w-lg flex-col px-6 py-8">
-        <EvolveLogo href="/" size="sm" />
+        <EvolveLogo size="sm" />
         <div className="mt-8">
           <StepProgress current={step + 1} total={3} />
         </div>
@@ -147,20 +162,19 @@ export default function OnboardingPage() {
         {step === 0 && (
           <div className="mt-8 space-y-4">
             <h1 className="font-display text-2xl font-bold tracking-tight">
-              Create your social profile
+              {t("onboarding.profileTitle", { ns: "auth" })}
             </h1>
             <p className="text-sm text-muted">
-              This is how athletes find you. Free forever — no calorie math
-              required.
+              {t("onboarding.profileBody", { ns: "auth" })}
             </p>
             <Input
-              label="Display name"
+              label={t("onboarding.displayName", { ns: "auth" })}
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
             />
             <div>
               <Input
-                label="Username"
+                label={t("onboarding.username", { ns: "auth" })}
                 value={username}
                 onChange={(e) => {
                   setUsername(e.target.value);
@@ -175,18 +189,18 @@ export default function OnboardingPage() {
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium">
-                Bio (optional)
+                {t("onboarding.bio", { ns: "auth" })}
               </label>
               <textarea
                 value={bio}
                 onChange={(e) => setBio(e.target.value.slice(0, 160))}
                 rows={3}
                 className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-accent"
-                placeholder="Runner · early mornings · espresso"
+                placeholder={t("onboarding.bioPlaceholder", { ns: "auth" })}
               />
             </div>
             <Button fullWidth size="lg" onClick={nextFromIdentity}>
-              Continue
+              {t("buttons.continue")}
             </Button>
           </div>
         )}
@@ -194,10 +208,10 @@ export default function OnboardingPage() {
         {step === 1 && (
           <div className="mt-8 space-y-4">
             <h1 className="font-display text-2xl font-bold tracking-tight">
-              What do you train?
+              {t("onboarding.trainTitle", { ns: "auth" })}
             </h1>
             <p className="text-sm text-muted">
-              Pick up to 5 — we use this for Discover suggestions.
+              {t("onboarding.trainBody", { ns: "auth" })}
             </p>
             <div className="flex flex-wrap gap-2">
               {WORKOUTS.map((w) => (
@@ -215,29 +229,31 @@ export default function OnboardingPage() {
                 </button>
               ))}
             </div>
-            <p className="text-sm font-medium">Goals (optional)</p>
+            <p className="text-sm font-medium">
+              {t("onboarding.goals", { ns: "auth" })}
+            </p>
             <div className="flex flex-wrap gap-2">
               {GOALS.map((g) => (
                 <button
-                  key={g}
+                  key={g.key}
                   type="button"
-                  onClick={() => toggleGoal(g)}
+                  onClick={() => toggleGoal(g.value)}
                   className={`rounded-full border px-3 py-1.5 text-xs font-medium ${
-                    goals.includes(g)
+                    goals.includes(g.value)
                       ? "border-accent bg-accent-soft"
                       : "border-border text-muted"
                   }`}
                 >
-                  {g}
+                  {t(`goals.${g.key}`, { ns: "auth" })}
                 </button>
               ))}
             </div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => setStep(0)}>
-                Back
+                {t("buttons.back")}
               </Button>
               <Button fullWidth onClick={() => setStep(2)}>
-                Continue
+                {t("buttons.continue")}
               </Button>
             </div>
           </div>
@@ -246,18 +262,13 @@ export default function OnboardingPage() {
         {step === 2 && (
           <div className="mt-8 space-y-4">
             <h1 className="font-display text-2xl font-bold tracking-tight">
-              Units
+              {t("onboarding.unitsTitle", { ns: "auth" })}
             </h1>
             <p className="text-sm text-muted">
-              Change anytime in Profile. Pro nutrition tools use this later.
+              {t("onboarding.unitsBody", { ns: "auth" })}
             </p>
             <div className="grid grid-cols-2 gap-3">
-              {(
-                [
-                  { id: "metric", label: "Metric", hint: "km · kg" },
-                  { id: "imperial", label: "Imperial", hint: "mi · lb" },
-                ] as const
-              ).map((u) => (
+              {unitOptions.map((u) => (
                 <button
                   key={u.id}
                   type="button"
@@ -275,10 +286,10 @@ export default function OnboardingPage() {
             </div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => setStep(1)}>
-                Back
+                {t("buttons.back")}
               </Button>
               <Button fullWidth size="lg" onClick={finish}>
-                Enter Evolve
+                {t("onboarding.enter", { ns: "auth" })}
               </Button>
             </div>
           </div>

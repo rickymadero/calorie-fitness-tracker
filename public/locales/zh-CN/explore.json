@@ -1,0 +1,92 @@
+{
+  "athletesHint": "想找运动员吗？",
+  "searchNetwork": "在人脉中搜索",
+  "orSuggestions": "或查看动态页的推荐。",
+  "upgradeCta": "升级到 Pro →",
+  "tabs": {
+    "forYou": "为你推荐",
+    "workouts": "训练",
+    "nutrition": "营养",
+    "tools": "工具",
+    "pro": "Pro"
+  },
+  "proHero": {
+    "onPro": "你已是 Pro 用户",
+    "title": "Evolve Pro · $9.99/月",
+    "body": "永久免费：基础训练记录、EvoFit 发现内容和基础统计数据。Pro 解锁追踪、计划、扫描器、数据分析等更多功能。"
+  },
+  "features": {
+    "basicLogging": {
+      "title": "基础训练记录",
+      "desc": "类型、时长和距离——所有人免费使用。"
+    },
+    "basicStats": {
+      "title": "基础统计数据",
+      "desc": "简单的一览指标——永久免费。"
+    },
+    "plans": {
+      "title": "个性化训练计划",
+      "desc": "根据你的目标和时间安排定制的计划。"
+    },
+    "macros": {
+      "title": "卡路里与营养素追踪",
+      "desc": "每日卡路里、蛋白质、碳水和脂肪。"
+    },
+    "scanner": {
+      "title": "AI 食物扫描器",
+      "desc": "扫描条形码或拍照，快速记录饮食。"
+    },
+    "formGuides": {
+      "title": "动作指南",
+      "desc": "技术要点与动作演示。"
+    },
+    "history": {
+      "title": "训练历史分析",
+      "desc": "回顾以往的训练与强度。"
+    },
+    "library": {
+      "title": "已保存训练库",
+      "desc": "你收藏的训练集中在一处。"
+    },
+    "goals": {
+      "title": "目标设定与追踪",
+      "desc": "设定目标并跟踪完成情况。"
+    },
+    "meals": {
+      "title": "膳食计划",
+      "desc": "规划训练日的餐食与购物清单。"
+    },
+    "recipes": {
+      "title": "Pro 食谱库",
+      "desc": "完整的运动营养食谱库。"
+    },
+    "analytics": {
+      "title": "高级数据分析与图表",
+      "desc": "趋势、训练量图表以及更深入的洞察。"
+    },
+    "body": {
+      "title": "身体变化追踪",
+      "desc": "照片、体测数据及长期变化记录。"
+    },
+    "health": {
+      "title": "Apple Health 集成",
+      "desc": "同步步数、训练与恢复数据。"
+    },
+    "support": {
+      "title": "优先支持",
+      "desc": "需要帮助时更快获得响应。"
+    },
+    "adFree": {
+      "title": "无广告体验",
+      "desc": "训练不被打断。"
+    },
+    "forums": {
+      "title": "运动员网络",
+      "desc": "在 Evolve 上发现并关注运动员。"
+    }
+  },
+  "sections": {
+    "free": "免费包含",
+    "pro": "Pro 工具"
+  }
+}

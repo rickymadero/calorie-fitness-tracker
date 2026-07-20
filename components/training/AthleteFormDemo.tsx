@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Pause, Play, RotateCcw, Volume2, VolumeX } from "lucide-react";
 import type { AthleteDemoMedia } from "@/lib/training/exerciseMedia";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 
 interface AthleteFormDemoProps {
   media: AthleteDemoMedia;
@@ -20,6 +21,7 @@ export function AthleteFormDemo({
   className = "",
   interactive = true,
 }: AthleteFormDemoProps) {
+  const { t } = useAppTranslation(["workouts", "common"]);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(true);
   const [muted, setMuted] = useState(true);
@@ -68,17 +70,17 @@ export function AthleteFormDemo({
         playsInline
         autoPlay={interactive}
         preload="metadata"
-        aria-label={`${title} athlete form demonstration`}
+        aria-label={t("demo.ariaVideo", { title })}
       />
 
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/20" />
 
       <div className="absolute left-3 top-3 z-10 flex items-center gap-2">
         <span className="rounded-full border border-accent/40 bg-black/60 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-accent backdrop-blur">
-          Live athlete form
+          {t("demo.liveAthleteForm")}
         </span>
         <span className="hidden rounded-full bg-black/50 px-2 py-1 text-[10px] text-white/70 backdrop-blur sm:inline">
-          Loop
+          {t("demo.loop")}
         </span>
       </div>
 
@@ -86,7 +88,7 @@ export function AthleteFormDemo({
         <div className="min-w-0">
           <p className="truncate text-sm font-semibold text-white">{title}</p>
           <p className="truncate text-[10px] text-accent/85">
-            {media.label} · real-time movement
+            {t("demo.realtimeMovement", { label: media.label })}
           </p>
         </div>
         {interactive && (
@@ -95,7 +97,7 @@ export function AthleteFormDemo({
               type="button"
               onClick={togglePlay}
               className="rounded-lg bg-white/10 p-2 text-white hover:bg-white/15"
-              aria-label={playing ? "Pause demo" : "Play demo"}
+              aria-label={playing ? t("demo.ariaPause") : t("demo.ariaPlay")}
             >
               {playing ? <Pause size={14} /> : <Play size={14} />}
             </button>
@@ -103,7 +105,7 @@ export function AthleteFormDemo({
               type="button"
               onClick={replay}
               className="rounded-lg bg-white/10 p-2 text-white hover:bg-white/15"
-              aria-label="Replay demo"
+              aria-label={t("demo.ariaReplay")}
             >
               <RotateCcw size={14} />
             </button>
@@ -116,7 +118,7 @@ export function AthleteFormDemo({
                 if (el) el.muted = next;
               }}
               className="rounded-lg bg-white/10 p-2 text-white hover:bg-white/15"
-              aria-label={muted ? "Unmute" : "Mute"}
+              aria-label={muted ? t("demo.ariaUnmute") : t("demo.ariaMute")}
             >
               {muted ? <VolumeX size={14} /> : <Volume2 size={14} />}
             </button>

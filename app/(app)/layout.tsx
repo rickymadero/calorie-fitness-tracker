@@ -42,8 +42,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           Phone viewport (= iframe 390px) IS the canvas.
           Never nest another max-w-[390px] here — that + padding + sticky -mx caused overflow.
         */}
-        <main className="min-w-0 w-full flex-1 overflow-x-hidden px-4 pb-[var(--mobile-nav-clearance)] pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-5 sm:pt-6 lg:px-8 lg:pb-8 lg:pt-8">
-          <div className="mx-auto w-full min-w-0 max-w-full lg:max-w-6xl">
+        <main className="min-w-0 w-full flex-1 overflow-x-hidden px-3 pb-[var(--mobile-nav-clearance)] pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-5 sm:pt-6 lg:px-8 lg:pb-8 lg:pt-8">
+          <div className="mx-auto w-full min-w-0 max-w-full overflow-x-hidden lg:max-w-6xl">
             <PageTransition>{children}</PageTransition>
           </div>
         </main>

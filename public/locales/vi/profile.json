@@ -1,0 +1,37 @@
+{
+  "edit": "Chỉnh sửa hồ sơ",
+  "publicView": "Xem công khai",
+  "createPost": "Tạo bài đăng",
+  "emptyPosts": "Chưa có bài đăng",
+  "emptyPostsHint": "Chia sẻ buổi tập đầu tiên với mạng lưới.",
+  "addBio": "Thêm tiểu sử trong cài đặt để vận động viên biết bạn là ai.",
+  "statMonth": "Tháng",
+  "statDistance": "Quãng đường",
+  "statStreak": "Chuỗi ngày",
+  "tabWorkouts": "Buổi tập",
+  "tabPrs": "PR",
+  "recentWorkouts": "Buổi tập gần đây",
+  "newPost": "Bài đăng mới",
+  "savedTitle": "Bài đã lưu",
+  "savedEmpty": "Chưa lưu buổi tập nào",
+  "savedEmptyHint": "Chạm vào dấu trang trên bất kỳ bài nào để lưu tại đây.",
+  "browseFeed": "Xem bảng tin",
+  "signedOut": "Đã đăng xuất.",
+  "menuAria": "Menu hồ sơ",
+  "prs": {
+    "empty": "Chưa có PR",
+    "emptySelf": "Thêm PR đầu tiên",
+    "emptySelfHint": "Bench, squat, 5K, HYROX, Ironman — khoe với mạng lưới thành tích của bạn.",
+    "addTitle": "Thêm kỷ lục cá nhân",
+    "label": "Nhãn",
+    "result": "Kết quả",
+    "saved": "Đã lưu PR.",
+    "removed": "Đã xóa PR.",
+    "cat": {
+      "strength": "Sức mạnh",
+      "running": "Chạy bộ",
+      "endurance": "Sức bền & đua",
+      "other": "Khác"
+    }
+  }
+}

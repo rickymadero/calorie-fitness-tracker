@@ -1,0 +1,153 @@
+{
+  "title": "Ayarlar",
+  "profile": "Profil",
+  "account": "Hesap",
+  "privacy": "Hesap gizliliği",
+  "linked": "Bağlı sosyal hesap",
+  "security": "Güvenlik",
+  "preferences": "Tercihler",
+  "fullName": "Ad Soyad",
+  "username": "Kullanıcı adı",
+  "bio": "Biyografi",
+  "bioPlaceholder": "Diğer sporcular için kısa bir tanıtım…",
+  "photo": "Profil fotoğrafı",
+  "removePhoto": "Fotoğrafı kaldır",
+  "email": "E-posta adresi",
+  "passwordCurrent": "Mevcut şifre",
+  "passwordNew": "Yeni şifre",
+  "passwordConfirm": "Yeni şifreyi onayla",
+  "passwordHint": "Şifreni değiştirmemek için boş bırak",
+  "measurement": "Ölçüm sistemi",
+  "appearance": "Görünüm",
+  "dark": "Karanlık mod",
+  "light": "Aydınlık mod",
+  "language": "Dil",
+  "languageHint": "Menüler, akış, ayarlar ve daha fazlası için uygulama dili",
+  "subscription": "Abonelik",
+  "subscriptionBody": "Sosyal akış ücretsizdir. Pro, beslenme kaydını, planları, tarayıcıları ve analitiği açar.",
+  "shownAs": "@{{username}} olarak görünüyor",
+  "visibilityPublic": "Herkese açık",
+  "visibilityPrivate": "Özel",
+  "visibilityPublicHint": "Herkes takip edebilir",
+  "visibilityPrivateHint": "İstekleri onayla",
+  "morePrivacy": "Daha fazla gizlilik ayarı →",
+  "instagram": "Instagram",
+  "instagramHint": "@ olmadan",
+  "showInstagram": "Profilde Instagram'ı göster",
+  "twoFactor": "İki adımlı doğrulama",
+  "twoFactorHint": "Demo anahtarı — tam 2FA daha sonra gelecek",
+  "blockReport": "Engelleme ve bildirme ayarları →",
+  "emailChangeTitle": "E-posta değişikliğini onayla",
+  "passwordChangeTitle": "Şifre değişikliğini onayla",
+  "emailChangeBody": "E-postanı {{email}} olarak değiştirmek istiyor musun? Giriş yapmak için bu adresi kullanacaksın.",
+  "passwordChangeBody": "Şifreni güncellemek istiyor musun? Bu bir demo değişikliğidir ve gerçek bir kimlik doğrulama sunucusuna senkronize edilmez.",
+  "updatePassword": "Şifreyi güncelle",
+  "notifications": {
+    "title": "Bildirimler",
+    "intro": "Bu cihazda hangi güncellemeleri istediğini seç. Demo tercihleri yerel olarak saklanır.",
+    "save": "Tercihleri kaydet",
+    "saved": "Bildirim tercihleri kaydedildi.",
+    "likes": "Beğeniler",
+    "likesHint": "Biri antrenmanını beğendiğinde",
+    "comments": "Yorumlar",
+    "commentsHint": "Gönderilerindeki yanıtlar ve etiketlemeler",
+    "follows": "Takipler ve istekler",
+    "followsHint": "Yeni takipçiler ve takip istekleri",
+    "messages": "Direkt mesajlar",
+    "messagesHint": "Özel yanıtlar ve sohbetler",
+    "stories": "Hikayeler",
+    "storiesHint": "Hikayelerine tepkiler ve yanıtlar"
+  },
+  "privacyPage": {
+    "title": "Hesap Gizliliği",
+    "visibility": "Profil görünürlüğü",
+    "visibilityHint": "Özel hesaplarda, başkalarının antrenmanlarını görmesinden önce takip onayı gerekir.",
+    "whoCanMessage": "Kim sana mesaj gönderebilir",
+    "everyone": "Herkes",
+    "peopleYouFollow": "Takip ettiğin kişiler",
+    "noOne": "Hiç kimse",
+    "blocked": "Engellenen hesaplar",
+    "blockedEmpty": "Henüz kimseyi engellemedin. Sporcuları profil menülerinden engelleyebilirsin.",
+    "reports": "Raporlar",
+    "reportsBody": "Bir gönderiyi veya sporcuyu bildirmek için profilini veya gönderisini açıp menüyü kullan.",
+    "nowPrivate": "Hesap artık özel.",
+    "nowPublic": "Hesap artık herkese açık.",
+    "messagesUpdated": "Mesaj gizliliği güncellendi.",
+    "unblocked": "Kullanıcının engeli kaldırıldı.",
+    "openProfile": "Profili aç",
+    "approveFollows": "Takipleri onayla",
+    "contactSupport": "Destek ile iletişim →",
+    "reportsBodyLong": "Bir gönderiyi veya sporcuyu bildirmek için profilini veya gönderisini açıp menüyü kullan. Raporlar üretim sürümlerinde Evolve destek tarafından incelenir."
+  },
+  "help": {
+    "title": "Yardım ve Destek",
+    "intro": "Yardıma mı ihtiyacın var? Sık sorulan soruları incele veya Evolve ekibine e-posta gönder.",
+    "faq": "SSS",
+    "aboutLink": "Evolve hakkında →",
+    "privacyLink": "Gizlilik ayarları →",
+    "faqItems": [
+      {
+        "q": "Hesabımı nasıl özel yaparım?",
+        "a": "Ayarlar → Hesap gizliliği'ni aç veya Profil → ⋮ → Hesap Gizliliği, sonra Özel'i seç."
+      },
+      {
+        "q": "Kaydedilen antrenmanlarım nerede?",
+        "a": "Profil → ⋮ → Kaydedilen Gönderiler. Akıştaki herhangi bir gönderiyi buraya eklemek için yer imine ekle."
+      },
+      {
+        "q": "Çift kameralı hikayeler nasıl çalışır?",
+        "a": "Akış'tan Senin hikayen'e dokun. Ön ve arka kameraya sahip cihazlarda Evolve her ikisini de tek bir anda yakalar."
+      },
+      {
+        "q": "Free ile Pro arasındaki fark nedir?",
+        "a": "Akış, sosyal özellikler ve paylaşım ücretsizdir. Pro; beslenme kaydını, antrenman planlarını, tarayıcıları ve daha derin analitiği açar."
+      }
+    ]
+  },
+  "about": {
+    "title": "Hakkında",
+    "body": "Evolve, herkesin önünde antrenman yapan sporcular için bir fitness ağıdır — antrenmanlarını, çift kameralı hikayelerini paylaş ve seni ileri taşıyan insanlara karşı sorumlu ol.",
+    "version": "Sürüm 0.1.0 · Demo",
+    "contact": "İletişim",
+    "plans": "Planlar ve fiyatlandırma",
+    "tagline": "Sporcular için yapıldı. Amaçla inşa edildi.",
+    "helpLink": "Yardım ve destek"
+  },
+  "photoHint": "Fotoğraf eklemek veya değiştirmek için + simgesine dokun",
+  "instagramPlaceholder": "kullaniciadi",
+  "health": {
+    "title": "Sağlık entegrasyonları",
+    "subtitle": "Adımlar, antrenmanlar ve toparlanmayı Evolve Pro'ya senkronize etmek için Apple Health veya Garmin Connect bağlayın.",
+    "statusOn": "Bağlı",
+    "statusOff": "Bağlı değil",
+    "disconnect": "Bağlantıyı kes",
+    "connectedSince": "{{date}} tarihinden beri bağlı",
+    "syncTitle": "Ne senkronize edilsin",
+    "syncHint": "Bağlantıyı kesmeden kategorileri açıp kapatın.",
+    "sync": {
+      "steps": "Adımlar ve aktivite",
+      "stepsBody": "Günlük adımlar ve hareket toplamları.",
+      "workouts": "Antrenmanlar",
+      "workoutsBody": "Seansları ve açık hava aktivitelerini içe aktarın.",
+      "recovery": "Toparlanma",
+      "recoveryBody": "Uyku, kalp atışı ve varsa toparlanma metrikleri."
+    },
+    "apple": {
+      "title": "Apple Health",
+      "body": "iPhone Sağlık uygulamasından senkronize edin. Bir kez bağlanın, Evolve'un okuyabileceklerini seçin.",
+      "connect": "Apple Health bağla",
+      "connected": "Apple Health bağlandı.",
+      "disconnected": "Apple Health bağlantısı kesildi.",
+      "connectFirst": "Önce Apple Health'i bağlayın."
+    },
+    "garmin": {
+      "title": "Garmin Connect",
+      "body": "Garmin saatinizdeki ve Connect hesabınızdaki aktiviteleri Evolve'a alın.",
+      "connect": "Garmin bağla",
+      "connected": "Garmin Connect bağlandı.",
+      "disconnected": "Garmin Connect bağlantısı kesildi.",
+      "connectFirst": "Önce Garmin Connect'i bağlayın."
+    },
+    "webNote": "Tam yerel senkron mobil uygulamayla gelecek. Bu ekran Pro demo tercihlerinizi kaydeder."
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "athletesHint": "Sporcu mu arıyorsun?",
+  "searchNetwork": "Ağ'da ara",
+  "orSuggestions": "veya Akış'taki önerilere bak.",
+  "upgradeCta": "Pro'ya yükselt →",
+  "tabs": {
+    "forYou": "Senin için",
+    "workouts": "Antrenman",
+    "nutrition": "Beslenme",
+    "tools": "Araçlar",
+    "pro": "Pro"
+  },
+  "proHero": {
+    "onPro": "Pro üyesin",
+    "title": "Evolve Pro · Ayda 9,99$",
+    "body": "Sonsuza kadar ücretsiz: temel antrenman kaydı, EvoFit'i keşfetme ve temel istatistikler. Pro; takip, planlar, tarayıcılar, analitik ve daha fazlasını açar."
+  },
+  "features": {
+    "basicLogging": {
+      "title": "Temel antrenman kaydı",
+      "desc": "Tür, süre ve mesafe — herkes için ücretsiz."
+    },
+    "basicStats": {
+      "title": "Temel istatistikler",
+      "desc": "Basit, göz atma ölçütleri — her zaman ücretsiz."
+    },
+    "plans": {
+      "title": "Kişiselleştirilmiş Antrenman Planları",
+      "desc": "Hedeflerine ve programına uygun planlar."
+    },
+    "macros": {
+      "title": "Kalori ve Makro Takipçisi",
+      "desc": "Günlük kalori, protein, karbonhidrat ve yağ."
+    },
+    "scanner": {
+      "title": "AI Yemek Tarayıcı",
+      "desc": "Hızlı kayıt için barkod ve fotoğraf taraması."
+    },
+    "formGuides": {
+      "title": "Form Kılavuzları",
+      "desc": "Teknik ipuçları ve egzersiz gösterimleri."
+    },
+    "history": {
+      "title": "Antrenman Geçmişi Analizi",
+      "desc": "Geçmiş seansları ve çabayı ayrıntılı incele."
+    },
+    "library": {
+      "title": "Kaydedilen Antrenmanlar Kitaplığı",
+      "desc": "Yer imlerine eklediğin seanslar bir arada."
+    },
+    "goals": {
+      "title": "Hedef Belirleme ve Takip",
+      "desc": "Hedefler belirle ve takibini izle."
+    },
+    "meals": {
+      "title": "Öğün Planlama",
+      "desc": "Antrenman günü öğünleri ve listeleri oluştur."
+    },
+    "recipes": {
+      "title": "Pro Tarif Veritabanı",
+      "desc": "Eksiksiz sporcu öğün kitaplığı."
+    },
+    "analytics": {
+      "title": "Gelişmiş Analitik ve Grafikler",
+      "desc": "Trendler, hacim grafikleri ve daha derin içgörüler."
+    },
+    "body": {
+      "title": "Vücut Dönüşüm Takipçisi",
+      "desc": "Fotoğraflar, ölçümler ve zamanla değişim."
+    },
+    "health": {
+      "title": "Apple Health Entegrasyonu",
+      "desc": "Adımları, antrenmanları ve toparlanmayı senkronize et."
+    },
+    "support": {
+      "title": "Öncelikli Destek",
+      "desc": "İhtiyacın olduğunda daha hızlı yardım."
+    },
+    "adFree": {
+      "title": "Reklamsız Deneyim",
+      "desc": "Kesintisiz antrenman yap."
+    },
+    "forums": {
+      "title": "Sporcu ağı",
+      "desc": "Evolve'da sporcuları bul ve takip et."
+    }
+  },
+  "sections": {
+    "free": "Ücretsiz dahil",
+    "pro": "Pro araçlar"
+  }
+}

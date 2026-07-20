@@ -1,0 +1,61 @@
+{
+  "title": "Progress",
+  "subtitle": "Track weight, measurements, photos, and adherence over time.",
+  "measurements": "Measurements",
+  "photo": "Photo",
+  "logWeight": "Log weight",
+  "weightTrend": "Weight trend",
+  "changeThisMonth": "{{sign}}{{amount}} {{unit}} this month",
+  "currentGoal": "Current: {{current}} {{unit}} · Goal: {{goal}} {{unit}}",
+  "bodyMeasurements": "Body measurements",
+  "measure": {
+    "chest": "Chest",
+    "waist": "Waist",
+    "hips": "Hips",
+    "arms": "Arms"
+  },
+  "consistency": "Consistency",
+  "calorieAdherence": "Calorie adherence",
+  "workoutConsistency": "Workout consistency",
+  "habitCompletion": "Habit completion",
+  "progressPhotos": "Progress photos",
+  "photosEmptyTitle": "No photos yet",
+  "photosEmptyDescription": "Upload progress photos to compare changes over time.",
+  "addPhoto": "Add photo",
+  "monthlyOverview": "Monthly overview",
+  "monthlyOverviewBody": "Chart placeholders are ready for a charting library or analytics API. Current mock shows healthy downward weight trend with solid workout adherence.",
+  "avgDailyCalories": "Avg daily calories",
+  "workoutsCompleted": "Workouts completed",
+  "bestStreak": "Best streak",
+  "bestStreakValue": "{{n}} days",
+  "modal": {
+    "logWeightTitle": "Log weight",
+    "weightLabel": "Weight ({{unit}})",
+    "updateMeasurements": "Update measurements",
+    "addPhotoTitle": "Add progress photo",
+    "addPhotoBody": "Photo upload will connect to storage later. This demo adds a placeholder."
+  },
+  "addPlaceholderPhoto": "Add placeholder photo",
+  "toast": {
+    "invalidWeight": "Enter a valid weight.",
+    "weightLogged": "Weight logged.",
+    "measurementsUpdated": "Measurements updated.",
+    "photoAdded": "Progress photo added."
+  },
+  "chartToday": "Today",
+  "basic": {
+    "title": "Basic stats",
+    "subtitle": "This week’s distance, time, and calories from your logged workouts — free for everyone.",
+    "freeBadge": "Free",
+    "distance": "Distance",
+    "time": "Time",
+    "calories": "Calories",
+    "weeklyActivity": "This week",
+    "workoutsCount": "{{n}} workouts",
+    "empty": "No workouts this week",
+    "emptyHint": "Log a session to see your weekly chart fill in.",
+    "logWorkout": "Log a workout",
+    "unlockTitle": "Unlock advanced Progress",
+    "unlockBody": "Weight trends, body measurements, progress photos, and monthly analytics are part of Evolve Pro. Basic stats above stay free forever."
+  }
+}

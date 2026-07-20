@@ -1,0 +1,61 @@
+{
+  "title": "Fortschritt",
+  "subtitle": "Verfolge Gewicht, Maße, Fotos und Einhaltung über die Zeit.",
+  "measurements": "Maße",
+  "photo": "Foto",
+  "logWeight": "Gewicht eintragen",
+  "weightTrend": "Gewichtstrend",
+  "changeThisMonth": "{{sign}}{{amount}} {{unit}} diesen Monat",
+  "currentGoal": "Aktuell: {{current}} {{unit}} · Ziel: {{goal}} {{unit}}",
+  "bodyMeasurements": "Körpermaße",
+  "measure": {
+    "chest": "Brust",
+    "waist": "Taille",
+    "hips": "Hüfte",
+    "arms": "Arme"
+  },
+  "consistency": "Konstanz",
+  "calorieAdherence": "Kalorien-Einhaltung",
+  "workoutConsistency": "Workout-Konstanz",
+  "habitCompletion": "Gewohnheiten erledigt",
+  "progressPhotos": "Fortschrittsfotos",
+  "photosEmptyTitle": "Noch keine Fotos",
+  "photosEmptyDescription": "Lade Fortschrittsfotos hoch, um Veränderungen über die Zeit zu vergleichen.",
+  "addPhoto": "Foto hinzufügen",
+  "monthlyOverview": "Monatsübersicht",
+  "monthlyOverviewBody": "Chart-Platzhalter sind bereit für eine Chart-Bibliothek oder Analytics-API. Der aktuelle Mock zeigt einen gesunden Abwärtstrend beim Gewicht mit solider Workout-Einhaltung.",
+  "avgDailyCalories": "Ø tägliche Kalorien",
+  "workoutsCompleted": "Absolvierte Workouts",
+  "bestStreak": "Beste Serie",
+  "bestStreakValue": "{{n}} Tage",
+  "modal": {
+    "logWeightTitle": "Gewicht eintragen",
+    "weightLabel": "Gewicht ({{unit}})",
+    "updateMeasurements": "Maße aktualisieren",
+    "addPhotoTitle": "Fortschrittsfoto hinzufügen",
+    "addPhotoBody": "Foto-Upload wird später mit Storage verbunden. Diese Demo fügt einen Platzhalter hinzu."
+  },
+  "addPlaceholderPhoto": "Platzhalter-Foto hinzufügen",
+  "toast": {
+    "invalidWeight": "Gib ein gültiges Gewicht ein.",
+    "weightLogged": "Gewicht eingetragen.",
+    "measurementsUpdated": "Maße aktualisiert.",
+    "photoAdded": "Fortschrittsfoto hinzugefügt."
+  },
+  "chartToday": "Heute",
+  "basic": {
+    "title": "Basis-Statistiken",
+    "subtitle": "Distanz, Zeit und Kalorien dieser Woche aus deinen Workouts — kostenlos für alle.",
+    "freeBadge": "Kostenlos",
+    "distance": "Distanz",
+    "time": "Zeit",
+    "calories": "Kalorien",
+    "weeklyActivity": "Diese Woche",
+    "workoutsCount": "{{n}} Workouts",
+    "empty": "Keine Workouts diese Woche",
+    "emptyHint": "Logge eine Einheit, um dein Wochen-Diagramm zu füllen.",
+    "logWorkout": "Workout loggen",
+    "unlockTitle": "Erweiterten Progress freischalten",
+    "unlockBody": "Gewichtstrends, Maße, Fortschrittsfotos und Monatsanalysen gehören zu Evolve Pro. Die Basis-Statistiken oben bleiben für immer kostenlos."
+  }
+}

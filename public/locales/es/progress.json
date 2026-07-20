@@ -1,0 +1,61 @@
+{
+  "title": "Progreso",
+  "subtitle": "Registra peso, medidas, fotos y adherencia a lo largo del tiempo.",
+  "measurements": "Medidas",
+  "photo": "Foto",
+  "logWeight": "Registrar peso",
+  "weightTrend": "Tendencia de peso",
+  "changeThisMonth": "{{sign}}{{amount}} {{unit}} este mes",
+  "currentGoal": "Actual: {{current}} {{unit}} · Objetivo: {{goal}} {{unit}}",
+  "bodyMeasurements": "Medidas corporales",
+  "measure": {
+    "chest": "Pecho",
+    "waist": "Cintura",
+    "hips": "Cadera",
+    "arms": "Brazos"
+  },
+  "consistency": "Constancia",
+  "calorieAdherence": "Adherencia calórica",
+  "workoutConsistency": "Constancia de entrenamientos",
+  "habitCompletion": "Cumplimiento de hábitos",
+  "progressPhotos": "Fotos de progreso",
+  "photosEmptyTitle": "Aún no hay fotos",
+  "photosEmptyDescription": "Sube fotos de progreso para comparar cambios con el tiempo.",
+  "addPhoto": "Añadir foto",
+  "monthlyOverview": "Resumen mensual",
+  "monthlyOverviewBody": "Los marcadores de gráficos están listos para una librería de charts o una API de analíticas. El mock actual muestra una tendencia de peso descendente saludable con buena adherencia al entrenamiento.",
+  "avgDailyCalories": "Calorías diarias medias",
+  "workoutsCompleted": "Entrenamientos completados",
+  "bestStreak": "Mejor racha",
+  "bestStreakValue": "{{n}} días",
+  "modal": {
+    "logWeightTitle": "Registrar peso",
+    "weightLabel": "Peso ({{unit}})",
+    "updateMeasurements": "Actualizar medidas",
+    "addPhotoTitle": "Añadir foto de progreso",
+    "addPhotoBody": "La subida de fotos se conectará al almacenamiento más adelante. Esta demo añade un marcador de posición."
+  },
+  "addPlaceholderPhoto": "Añadir foto de marcador",
+  "toast": {
+    "invalidWeight": "Introduce un peso válido.",
+    "weightLogged": "Peso registrado.",
+    "measurementsUpdated": "Medidas actualizadas.",
+    "photoAdded": "Foto de progreso añadida."
+  },
+  "chartToday": "Hoy",
+  "basic": {
+    "title": "Estadísticas básicas",
+    "subtitle": "Distancia, tiempo y calorías de esta semana a partir de tus entrenamientos — gratis para todos.",
+    "freeBadge": "Gratis",
+    "distance": "Distancia",
+    "time": "Tiempo",
+    "calories": "Calorías",
+    "weeklyActivity": "Esta semana",
+    "workoutsCount": "{{n}} entrenamientos",
+    "empty": "Sin entrenamientos esta semana",
+    "emptyHint": "Registra una sesión para ver tu gráfica semanal.",
+    "logWorkout": "Registrar entrenamiento",
+    "unlockTitle": "Desbloquea Progress avanzado",
+    "unlockBody": "Tendencias de peso, medidas, fotos de progreso y analíticas mensuales forman parte de Evolve Pro. Las estadísticas básicas de arriba son gratis para siempre."
+  }
+}

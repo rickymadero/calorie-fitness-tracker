@@ -1,0 +1,61 @@
+{
+  "title": "Tiến độ",
+  "subtitle": "Theo dõi cân nặng, số đo, ảnh và mức tuân thủ theo thời gian.",
+  "measurements": "Số đo",
+  "photo": "Ảnh",
+  "logWeight": "Ghi cân nặng",
+  "weightTrend": "Xu hướng cân nặng",
+  "changeThisMonth": "{{sign}}{{amount}} {{unit}} tháng này",
+  "currentGoal": "Hiện tại: {{current}} {{unit}} · Mục tiêu: {{goal}} {{unit}}",
+  "bodyMeasurements": "Số đo cơ thể",
+  "measure": {
+    "chest": "Ngực",
+    "waist": "Eo",
+    "hips": "Hông",
+    "arms": "Tay"
+  },
+  "consistency": "Sự đều đặn",
+  "calorieAdherence": "Tuân thủ calo",
+  "workoutConsistency": "Đều đặn tập luyện",
+  "habitCompletion": "Hoàn thành thói quen",
+  "progressPhotos": "Ảnh tiến độ",
+  "photosEmptyTitle": "Chưa có ảnh",
+  "photosEmptyDescription": "Tải ảnh tiến độ để so sánh thay đổi theo thời gian.",
+  "addPhoto": "Thêm ảnh",
+  "monthlyOverview": "Tổng quan tháng",
+  "monthlyOverviewBody": "Placeholder biểu đồ sẵn sàng cho thư viện chart hoặc API phân tích. Mock hiện tại cho thấy xu hướng cân giảm lành mạnh và tuân thủ tập luyện tốt.",
+  "avgDailyCalories": "Calo TB/ngày",
+  "workoutsCompleted": "Buổi tập đã hoàn thành",
+  "bestStreak": "Chuỗi tốt nhất",
+  "bestStreakValue": "{{n}} ngày",
+  "modal": {
+    "logWeightTitle": "Ghi cân nặng",
+    "weightLabel": "Cân nặng ({{unit}})",
+    "updateMeasurements": "Cập nhật số đo",
+    "addPhotoTitle": "Thêm ảnh tiến độ",
+    "addPhotoBody": "Tải ảnh sẽ kết nối kho lưu trữ sau. Demo này thêm một placeholder."
+  },
+  "addPlaceholderPhoto": "Thêm ảnh placeholder",
+  "toast": {
+    "invalidWeight": "Nhập cân nặng hợp lệ.",
+    "weightLogged": "Đã ghi cân nặng.",
+    "measurementsUpdated": "Đã cập nhật số đo.",
+    "photoAdded": "Đã thêm ảnh tiến độ."
+  },
+  "chartToday": "Hôm nay",
+  "basic": {
+    "title": "Thống kê cơ bản",
+    "subtitle": "Quãng đường, thời gian và calo tuần này từ buổi tập đã ghi — miễn phí cho mọi người.",
+    "freeBadge": "Miễn phí",
+    "distance": "Quãng đường",
+    "time": "Thời gian",
+    "calories": "Calo",
+    "weeklyActivity": "Tuần này",
+    "workoutsCount": "{{n}} buổi tập",
+    "empty": "Không có buổi tập tuần này",
+    "emptyHint": "Ghi một buổi tập để biểu đồ tuần được điền.",
+    "logWorkout": "Ghi buổi tập",
+    "unlockTitle": "Mở khóa Progress nâng cao",
+    "unlockBody": "Xu hướng cân nặng, số đo, ảnh tiến triển và phân tích tháng thuộc Evolve Pro. Thống kê cơ bản ở trên luôn miễn phí."
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Recettes",
+  "subtitle": "Idées de repas liées à vos macros. Pro débloque des plans hebdomadaires personnalisés et des recommandations basées sur les macros.",
+  "recommendedNow": "Recommandé pour vous maintenant",
+  "remainingMacros": "~{{kcal}} kcal et {{protein}}g de protéines restantes",
+  "postWorkoutFocus": " · focus post-entraînement",
+  "unlockProMeals": "Débloquer les repas Pro",
+  "recipeCardMeta": "{{calories}} kcal · {{protein}}P · {{carbs}}C · {{fat}}F",
+  "searchPlaceholder": "Rechercher des recettes...",
+  "filter": {
+    "all": "toutes",
+    "breakfast": "petit-déjeuner",
+    "lunch": "déjeuner",
+    "dinner": "dîner",
+    "snack": "snack",
+    "highProtein": "riche en protéines",
+    "quick": "rapide",
+    "vegetarian": "végétarien",
+    "keto": "keto"
+  },
+  "cardMeta": "{{calories}} kcal · {{protein}}g protéines · {{minutes}} min",
+  "notFound": "Recette introuvable.",
+  "back": "Recettes",
+  "timing": "Prep {{prep}}m · Cuisson {{cook}}m · {{difficulty}}",
+  "portions": "Portions",
+  "logToTracker": "Ajouter au suivi calorique",
+  "groceryList": "Liste de courses",
+  "toast": {
+    "logProRequired": "Passez à Pro pour enregistrer des recettes personnalisées.",
+    "loggedDemo": "{{name}} enregistré dans le suivi alimentaire (démo).",
+    "groceryDemo": "Ingrédients ajoutés à la liste de courses (démo).",
+    "groceryProOnly": "Les listes de courses intelligentes sont une fonctionnalité Pro."
+  },
+  "lockedTitle": "Débloquez les recettes Pro personnalisées",
+  "lockedBody": "Obtenez les instructions complètes, des plans repas hebdomadaires, des suggestions basées sur les macros et des ajustements de portions automatiques.",
+  "ingredients": "Ingrédients",
+  "allergens": "Allergènes : {{list}}",
+  "steps": "Étapes",
+  "equipmentPortion": "Matériel : {{equipment}} · Portion : {{portion}}",
+  "disclaimer": "Les valeurs nutritionnelles sont des estimations à des fins de planification uniquement et ne constituent pas un avis médical.",
+  "openMealPlan": "Ouvrir la planification des repas"
+}

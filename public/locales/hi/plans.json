@@ -1,0 +1,40 @@
+{
+  "title": "प्लान",
+  "subtitle": "वास्तविक भोजन — Chipotle, बर्गर, पिज़्ज़ा, कॉफ़ी — आपके कैलोरी लक्ष्यों के आसपास।",
+  "adjustWeek": "सप्ताह समायोजित करें",
+  "toast": {
+    "weekRefreshed": "साप्ताहिक मील स्वैप नए रेस्तराँ विकल्पों के साथ अपडेट हुए।",
+    "weekProOnly": "साप्ताहिक समायोजन Pro फीचर है।",
+    "loggedMealDemo": "{{name}} को {{slot}} में जोड़ा (डेमो)।",
+    "addedSuggestion": "सुझाव जोड़ा: {{name}} (डेमो)।"
+  },
+  "nutritionTitle": "पोषण प्लान",
+  "dailyCalories": "दैनिक कैलोरी",
+  "strategy": "रणनीति",
+  "proteinBar": "प्रोटीन {{n}}g",
+  "carbsBar": "कार्ब्स {{n}}g",
+  "fatBar": "फैट {{n}}g",
+  "strategyExtra": "फ्राइज़ छोड़कर, Chipotle में आधा चावल, या पूरे पिज़्ज़ा की जगह पिज़्ज़ा + सलाद से फास्ट फूड फिट करें।",
+  "nutritionEmpty": "पोषण प्लान बनाने के लिए ऑनबोर्डिंग पूरा करें।",
+  "workoutProgram": "वर्कआउट प्रोग्राम",
+  "defaultPlanName": "व्यक्तिगत ट्रेनिंग प्लान",
+  "programMeta": "सप्ताह में {{sessions}} सेशन · {{level}} स्तर · {{access}}",
+  "gymAccess": "जिम एक्सेस",
+  "homeFriendly": "होम-फ्रेंडली",
+  "openTrainingPlan": "ट्रेनिंग प्लान खोलें",
+  "recipeLibrary": "रेसिपी लाइब्रेरी",
+  "weekMealPlanTitle": "इस सप्ताह का मील प्लान",
+  "weekMealPlanSubtitle": "किराना स्टेपल्स और उन रेस्तराँ का मिश्रण जहाँ आप वास्तव में जाते।",
+  "logThisMeal": "यह भोजन लॉग करें",
+  "mealIdeasTitle": "शेष मैक्रोज़ के लिए मील आइडिया",
+  "vibe": {
+    "all": "सभी",
+    "flexible": "लचीला",
+    "highProtein": "हाई प्रोटीन",
+    "craving": "क्रेविंग्स",
+    "lighter": "हल्का"
+  },
+  "addToPlan": "प्लान में जोड़ें",
+  "popularPlaces": "आपके फूड लॉग में लोकप्रिय जगहें",
+  "placeCount": "{{place}} · {{count}} आइटम"
+}

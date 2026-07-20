@@ -1,0 +1,153 @@
+{
+  "title": "Configurações",
+  "profile": "Perfil",
+  "account": "Conta",
+  "privacy": "Privacidade da conta",
+  "linked": "Conta social vinculada",
+  "security": "Segurança",
+  "preferences": "Preferências",
+  "fullName": "Nome completo",
+  "username": "Nome de usuário",
+  "bio": "Biografia",
+  "bioPlaceholder": "Breve apresentação para outros atletas…",
+  "photo": "Foto de perfil",
+  "removePhoto": "Remover foto",
+  "email": "Endereço de e-mail",
+  "passwordCurrent": "Senha atual",
+  "passwordNew": "Nova senha",
+  "passwordConfirm": "Confirmar nova senha",
+  "passwordHint": "Deixe em branco para manter sua senha",
+  "measurement": "Sistema de medidas",
+  "appearance": "Aparência",
+  "dark": "Modo escuro",
+  "light": "Modo claro",
+  "language": "Idioma",
+  "languageHint": "Idioma do app para menus, feed, configurações e mais",
+  "subscription": "Assinatura",
+  "subscriptionBody": "O feed social é gratuito. O Pro desbloqueia registro de refeições, planos, scanners e análises.",
+  "shownAs": "Exibido como @{{username}}",
+  "visibilityPublic": "Público",
+  "visibilityPrivate": "Privado",
+  "visibilityPublicHint": "Qualquer pessoa pode te seguir",
+  "visibilityPrivateHint": "Aprovar solicitações",
+  "morePrivacy": "Mais controles de privacidade →",
+  "instagram": "Instagram",
+  "instagramHint": "Sem @",
+  "showInstagram": "Mostrar Instagram no perfil",
+  "twoFactor": "Autenticação de dois fatores",
+  "twoFactorHint": "Alternância de demonstração — o 2FA completo chega em breve",
+  "blockReport": "Configurações de bloqueio e denúncia →",
+  "emailChangeTitle": "Confirmar alteração de e-mail",
+  "passwordChangeTitle": "Confirmar alteração de senha",
+  "emailChangeBody": "Alterar seu e-mail para {{email}}? Você usará esse endereço para entrar.",
+  "passwordChangeBody": "Atualizar sua senha? Esta é uma alteração de demonstração e não é sincronizada com um servidor de autenticação real.",
+  "updatePassword": "Atualizar senha",
+  "notifications": {
+    "title": "Notificações",
+    "intro": "Escolha quais novidades você quer receber neste dispositivo. As preferências de demonstração são armazenadas localmente.",
+    "save": "Salvar preferências",
+    "saved": "Preferências de notificação salvas.",
+    "likes": "Curtidas",
+    "likesHint": "Quando alguém curte seu treino",
+    "comments": "Comentários",
+    "commentsHint": "Respostas e menções nas suas publicações",
+    "follows": "Seguidores e solicitações",
+    "followsHint": "Novos seguidores e solicitações para seguir",
+    "messages": "Mensagens diretas",
+    "messagesHint": "Respostas privadas e conversas",
+    "stories": "Stories / Histórias",
+    "storiesHint": "Reações e respostas aos seus stories"
+  },
+  "privacyPage": {
+    "title": "Privacidade da conta",
+    "visibility": "Visibilidade do perfil",
+    "visibilityHint": "Contas privadas exigem aprovação de seguidor antes que outras pessoas vejam seus treinos.",
+    "whoCanMessage": "Quem pode te enviar mensagens",
+    "everyone": "Todos",
+    "peopleYouFollow": "Pessoas que você segue",
+    "noOne": "Ninguém",
+    "blocked": "Contas bloqueadas",
+    "blockedEmpty": "Você não bloqueou ninguém. Você pode bloquear atletas pelo menu do perfil deles.",
+    "reports": "Denúncias",
+    "reportsBody": "Para denunciar uma publicação ou atleta, abra o perfil ou a publicação e use o menu.",
+    "nowPrivate": "A conta agora é privada.",
+    "nowPublic": "A conta agora é pública.",
+    "messagesUpdated": "Privacidade de mensagens atualizada.",
+    "unblocked": "Usuário desbloqueado.",
+    "openProfile": "Abrir perfil",
+    "approveFollows": "Aprovar seguidores",
+    "contactSupport": "Falar com o suporte →",
+    "reportsBodyLong": "Para denunciar uma publicação ou atleta, abra o perfil ou a publicação e use o menu. As denúncias são analisadas pelo suporte do Evolve nas versões de produção."
+  },
+  "help": {
+    "title": "Ajuda e suporte",
+    "intro": "Precisa de ajuda? Veja as perguntas frequentes ou envie um e-mail para a equipe do Evolve.",
+    "faq": "Perguntas frequentes",
+    "aboutLink": "Sobre o Evolve →",
+    "privacyLink": "Controles de privacidade →",
+    "faqItems": [
+      {
+        "q": "Como deixo minha conta privada?",
+        "a": "Abra Configurações → Privacidade da conta, ou Perfil → ⋮ → Privacidade da conta, e escolha Privado."
+      },
+      {
+        "q": "Onde estão meus treinos salvos?",
+        "a": "Perfil → ⋮ → Publicações salvas. Marque qualquer publicação do feed para adicioná-la lá."
+      },
+      {
+        "q": "Como funcionam os stories com câmera dupla?",
+        "a": "No Feed, toque em Seu story. Em aparelhos com câmeras frontal e traseira, o Evolve captura as duas no mesmo momento."
+      },
+      {
+        "q": "O que está incluso no Free vs Pro?",
+        "a": "Feed, social e publicações são gratuitos. O Pro desbloqueia registro de alimentos, planos de treino, scanners e análises mais profundas."
+      }
+    ]
+  },
+  "about": {
+    "title": "Sobre",
+    "body": "O Evolve é uma rede de fitness para atletas que treinam em público — compartilhe treinos, stories com câmera dupla e mantenha-se responsável com as pessoas que te incentivam.",
+    "version": "Versão 0.1.0 · Demonstração",
+    "contact": "Contato",
+    "plans": "Planos e preços",
+    "tagline": "Feito para atletas. Construído com propósito.",
+    "helpLink": "Ajuda e suporte"
+  },
+  "photoHint": "Toque no + para adicionar ou alterar sua foto",
+  "instagramPlaceholder": "usuario",
+  "health": {
+    "title": "Integrações de saúde",
+    "subtitle": "Conecte Apple Health ou Garmin Connect para sincronizar passos, treinos e recuperação no Evolve Pro.",
+    "statusOn": "Conectado",
+    "statusOff": "Não conectado",
+    "disconnect": "Desconectar",
+    "connectedSince": "Conectado desde {{date}}",
+    "syncTitle": "O que sincronizar",
+    "syncHint": "Ative ou desative categorias sem desconectar.",
+    "sync": {
+      "steps": "Passos e atividade",
+      "stepsBody": "Passos diários e totais de movimento.",
+      "workouts": "Treinos",
+      "workoutsBody": "Importe sessões e atividades ao ar livre.",
+      "recovery": "Recuperação",
+      "recoveryBody": "Sono, frequência cardíaca e métricas de recuperação quando disponíveis."
+    },
+    "apple": {
+      "title": "Apple Health",
+      "body": "Sincronize pelo app Saúde no iPhone. Conecte uma vez e escolha o que o Evolve pode ler.",
+      "connect": "Conectar Apple Health",
+      "connected": "Apple Health conectado.",
+      "disconnected": "Apple Health desconectado.",
+      "connectFirst": "Conecte o Apple Health primeiro."
+    },
+    "garmin": {
+      "title": "Garmin Connect",
+      "body": "Traga atividades do seu relógio Garmin e conta Connect para o Evolve.",
+      "connect": "Conectar Garmin",
+      "connected": "Garmin Connect conectado.",
+      "disconnected": "Garmin Connect desconectado.",
+      "connectFirst": "Conecte o Garmin Connect primeiro."
+    },
+    "webNote": "A sincronização nativa completa chega com o app móvel. Esta tela salva suas preferências Pro de demo."
+  }
+}

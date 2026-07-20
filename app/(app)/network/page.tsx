@@ -1,8 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useDeferredValue } from "react";
 import Link from "next/link";
-import { Check, X, UserPlus, Users, Clock } from "lucide-react";
+import {
+  Check,
+  X,
+  UserPlus,
+  Users,
+  Clock,
+  MessageCircle,
+  Search,
+} from "lucide-react";
 import { useSocial } from "@/components/social/SocialProvider";
 import {
   PersonCard,
@@ -10,13 +18,15 @@ import {
   SocialAvatar,
 } from "@/components/social/PersonCard";
 import { Button } from "@/components/ui/Button";
-import { PageHeader } from "@/components/ui/PageHeader";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { EvolveLogo } from "@/components/ui/EvolveLogo";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 
-type Tab = "followers" | "following" | "requests";
+type Tab = "search" | "followers" | "following" | "requests";
 
 export default function NetworkPage() {
   const { user } = useAuth();
@@ -30,9 +40,14 @@ export default function NetworkPage() {
     getCard,
     acceptRequest,
     rejectRequest,
+    searchPeople,
+    suggestedPeople,
   } = useSocial();
   const { toast } = useToast();
-  const [tab, setTab] = useState<Tab>("following");
+  const { t } = useAppTranslation(["common", "social"]);
+  const [tab, setTab] = useState<Tab>("search");
+  const [query, setQuery] = useState("");
+  const deferred = useDeferredValue(query.trim());
 
   const profile = myProfile ?? (ready ? ensureMyProfile() : null);
 
@@ -51,43 +66,98 @@ export default function NetworkPage() {
     return pendingRequestsToMe();
   }, [ready, pendingRequestsToMe]);
 
+  const people = useMemo(() => {
+    if (!ready) return [];
+    if (deferred) return searchPeople(deferred);
+    return suggestedPeople();
+  }, [ready, deferred, searchPeople, suggestedPeople]);
+
   if (!ready || !profile) {
     return <div className="evolve-shimmer h-40 rounded-apex-lg bg-muted-bg" />;
   }
 
   return (
-    <div>
+    <div className="min-w-0 w-full max-w-full">
       <PageHeader
-        title="Network"
-        subtitle="Followers, following, and follow requests."
         sticky
+        titleContent={<EvolveLogo size="md" />}
+        actions={
+          <Link
+            href="/messages"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted hover:bg-muted-bg hover:text-foreground"
+            aria-label={t("nav.messages")}
+          >
+            <MessageCircle size={22} />
+          </Link>
+        }
       />
 
-      <div className="mt-4">
+      <div className="mt-2 min-w-0 max-w-full">
         <SegmentedControl
           scroll
           segments={[
-            { id: "following", label: `Following · ${following.length}` },
-            { id: "followers", label: `Followers · ${followers.length}` },
-            { id: "requests", label: `Requests · ${requests.length}` },
+            { id: "search", label: t("tabs.search", { ns: "social" }) },
+            {
+              id: "following",
+              label: `${t("tabs.following", { ns: "social" })} · ${following.length}`,
+            },
+            {
+              id: "followers",
+              label: `${t("tabs.followers", { ns: "social" })} · ${followers.length}`,
+            },
+            {
+              id: "requests",
+              label: `${t("tabs.requests", { ns: "social" })} · ${requests.length}`,
+            },
           ]}
           value={tab}
           onChange={setTab}
         />
       </div>
 
+      {tab === "search" && (
+        <div className="relative mt-4">
+          <Search
+            size={18}
+            className="pointer-events-none absolute left-4 top-1/2 z-10 -translate-y-1/2 text-muted"
+          />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t("searchPlaceholder", { ns: "social" })}
+            className="h-12 w-full rounded-2xl border border-border bg-background py-3 pl-11 pr-4 text-base outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+          />
+        </div>
+      )}
+
       <div className="mt-5 space-y-3">
+        {tab === "search" &&
+          (people.length === 0 ? (
+            <EmptyState
+              icon={<UserPlus size={28} />}
+              title={
+                deferred
+                  ? t("noAthletes", { ns: "social" })
+                  : t("noSuggestions", { ns: "social" })
+              }
+              description={
+                deferred
+                  ? t("searchEmptyHint", { ns: "social" })
+                  : t("suggestionsEmptyHint", { ns: "social" })
+              }
+            />
+          ) : (
+            people.map((c) => (
+              <PersonCard key={c.profile.userId} card={c} />
+            ))
+          ))}
+
         {tab === "following" &&
           (following.length === 0 ? (
             <EmptyState
               icon={<UserPlus size={28} />}
-              title="Not following anyone yet"
-              description="Discover athletes on Explore."
-              action={
-                <Link href="/explore">
-                  <Button variant="outline">Explore</Button>
-                </Link>
-              }
+              title={t("notFollowing", { ns: "social" })}
+              description={t("notFollowingHint", { ns: "social" })}
             />
           ) : (
             following.map((c) => (
@@ -99,11 +169,13 @@ export default function NetworkPage() {
           (followers.length === 0 ? (
             <EmptyState
               icon={<Users size={28} />}
-              title="No followers yet"
-              description="Share workouts to grow your network."
+              title={t("noFollowers", { ns: "social" })}
+              description={t("noFollowersHint", { ns: "social" })}
               action={
                 <Link href="/posts/new">
-                  <Button variant="outline">Share a workout</Button>
+                  <Button variant="outline">
+                    {t("shareWorkout", { ns: "social" })}
+                  </Button>
                 </Link>
               }
             />
@@ -124,8 +196,8 @@ export default function NetworkPage() {
           (requests.length === 0 ? (
             <EmptyState
               icon={<Clock size={28} />}
-              title="No pending requests"
-              description="When someone requests to follow your private profile, they appear here."
+              title={t("noRequests", { ns: "social" })}
+              description={t("requestsEmptyHint", { ns: "social" })}
             />
           ) : (
             requests.map((req) => {
@@ -154,22 +226,22 @@ export default function NetworkPage() {
                       size="sm"
                       onClick={() => {
                         acceptRequest(req.id);
-                        toast("Accepted.", "success");
+                        toast(t("accepted", { ns: "social" }), "success");
                       }}
                     >
                       <Check size={14} />
-                      Accept
+                      {t("accept", { ns: "social" })}
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => {
                         rejectRequest(req.id);
-                        toast("Declined.", "info");
+                        toast(t("declined", { ns: "social" }), "info");
                       }}
                     >
                       <X size={14} />
-                      Decline
+                      {t("decline", { ns: "social" })}
                     </Button>
                   </div>
                 </div>

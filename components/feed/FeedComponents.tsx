@@ -19,10 +19,12 @@ import { usePosts } from "@/components/posts/PostsProvider";
 import { useSocial } from "@/components/social/SocialProvider";
 import { SocialAvatar, FollowButton } from "@/components/social/PersonCard";
 import { Badge } from "@/components/ui/Badge";
+import { CountryFlag } from "@/components/ui/CountryFlag";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { RouteMapPreview } from "@/components/feed/RouteMapPreview";
 import { ShareActivitySheet } from "@/components/feed/ShareActivitySheet";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
 import {
   formatDurationClock,
@@ -58,21 +60,21 @@ export function LikeButton({
   const { hasLiked, toggleLike } = usePosts();
   const liked = hasLiked(postId);
   const reduce = useReducedMotion();
+  // Spring transitions only allow 2 keyframes — never use [1, 1.x, 1] arrays.
+  const [pulse, setPulse] = useState(false);
 
   return (
     <motion.button
       type="button"
       whileTap={reduce ? undefined : tapScale}
-      animate={
-        liked && !reduce
-          ? { scale: [1, 1.18, 1] }
-          : { scale: 1 }
-      }
+      animate={{ scale: pulse && !reduce ? 1.18 : 1 }}
       transition={{ type: "spring", stiffness: 500, damping: 18 }}
+      onAnimationComplete={() => setPulse(false)}
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        toggleLike(postId);
+        const res = toggleLike(postId);
+        if (res.liked && !reduce) setPulse(true);
       }}
       className={`inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 text-sm font-medium transition-colors ${
         liked ? "text-accent" : "text-muted hover:text-foreground"
@@ -103,21 +105,34 @@ function StatCell({ label, value }: { label: string; value: string }) {
 }
 
 function OutdoorStats({ post }: { post: WorkoutPost }) {
+  const { t } = useAppTranslation("feed");
   const pace = formatPace(post.paceMinPerKm);
   const cells: { label: string; value: string }[] = [];
-  if (post.distanceKm != null) {
-    cells.push({ label: "Distance", value: `${post.distanceKm.toFixed(2)} km` });
+  if (post.distanceKm != null && Number.isFinite(post.distanceKm)) {
+    cells.push({
+      label: t("stats.distance"),
+      value: `${post.distanceKm.toFixed(2)} km`,
+    });
   }
   if (post.durationMin != null) {
-    cells.push({ label: "Time", value: formatDurationClock(post.durationMin) });
+    cells.push({
+      label: t("stats.time"),
+      value: formatDurationClock(post.durationMin),
+    });
   }
-  if (pace) cells.push({ label: "Avg pace", value: pace });
+  if (pace) cells.push({ label: t("stats.avgPace"), value: pace });
   if (post.caloriesBurned != null) {
-    cells.push({ label: "Calories", value: `${post.caloriesBurned}` });
+    cells.push({ label: t("stats.calories"), value: `${post.caloriesBurned}` });
   } else if (post.elevationGainM != null) {
-    cells.push({ label: "Elev gain", value: `${post.elevationGainM} m` });
+    cells.push({
+      label: t("stats.elevGain"),
+      value: `${post.elevationGainM} m`,
+    });
   } else if (post.avgSpeedKmh != null) {
-    cells.push({ label: "Avg speed", value: `${post.avgSpeedKmh.toFixed(1)} km/h` });
+    cells.push({
+      label: t("stats.avgSpeed"),
+      value: `${post.avgSpeedKmh.toFixed(1)} km/h`,
+    });
   }
   return (
     <div
@@ -136,6 +151,7 @@ function OutdoorStats({ post }: { post: WorkoutPost }) {
 }
 
 function GymBody({ post }: { post: WorkoutPost }) {
+  const { t } = useAppTranslation("feed");
   return (
     <div className="mt-3 space-y-3">
       {post.muscleGroups && post.muscleGroups.length > 0 && (
@@ -162,21 +178,30 @@ function GymBody({ post }: { post: WorkoutPost }) {
         }}
       >
         {post.durationMin != null && (
-          <StatCell label="Duration" value={`${post.durationMin} min`} />
+          <StatCell
+            label={t("stats.duration")}
+            value={`${post.durationMin} min`}
+          />
         )}
         {post.exerciseCount != null && (
-          <StatCell label="Exercises" value={String(post.exerciseCount)} />
+          <StatCell
+            label={t("stats.exercises")}
+            value={String(post.exerciseCount)}
+          />
         )}
         {post.totalSets != null && (
-          <StatCell label="Sets" value={String(post.totalSets)} />
+          <StatCell label={t("stats.sets")} value={String(post.totalSets)} />
         )}
         {post.totalVolumeKg != null ? (
           <StatCell
-            label="Volume"
+            label={t("stats.volume")}
             value={`${post.totalVolumeKg.toLocaleString()} kg`}
           />
         ) : post.caloriesBurned != null ? (
-          <StatCell label="Calories" value={String(post.caloriesBurned)} />
+          <StatCell
+            label={t("stats.calories")}
+            value={String(post.caloriesBurned)}
+          />
         ) : null}
       </div>
       {post.exercises && post.exercises.length > 0 && (
@@ -188,7 +213,7 @@ function GymBody({ post }: { post: WorkoutPost }) {
             >
               <span className="min-w-0 truncate font-medium">{ex.name}</span>
               <span className="shrink-0 text-xs text-muted">
-                {ex.sets} sets
+                {t("setsLabel", { n: ex.sets })}
                 {ex.reps != null ? ` · ${ex.reps} reps` : ""}
                 {ex.weightKg != null ? ` · ${ex.weightKg} kg` : ""}
               </span>
@@ -196,7 +221,7 @@ function GymBody({ post }: { post: WorkoutPost }) {
           ))}
           {post.exercises.length > 4 && (
             <li className="text-xs text-muted">
-              +{post.exercises.length - 4} more exercises
+              {t("moreExercises", { n: post.exercises.length - 4 })}
             </li>
           )}
         </ul>
@@ -247,11 +272,12 @@ export function PostCard({
   const { getCard } = useSocial();
   const { hasSaved, toggleSave } = usePosts();
   const { toast } = useToast();
+  const { t } = useAppTranslation(["common", "feed", "posts"]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
 
   const author = getCard(post.authorId);
-  const name = author?.profile.displayName ?? "Athlete";
+  const name = author?.profile.displayName ?? t("labels.athlete");
   const username = author?.profile.username ?? "athlete";
   const isSelf = user?.id === post.authorId;
   const isOutdoor = [
@@ -268,22 +294,23 @@ export function PostCard({
 
   return (
     <motion.article
-      layout
-      className="evolve-card-lift w-full min-w-0 max-w-full overflow-hidden rounded-apex-lg border border-border bg-card shadow-apex"
+      layout={false}
+      className="evolve-card-lift box-border w-full min-w-0 max-w-full overflow-hidden rounded-apex-lg border border-border bg-card shadow-apex"
     >
       <div className="p-3 pb-0 sm:p-4 sm:pb-0">
-        <div className="flex items-center gap-2.5">
+        <div className="flex min-w-0 items-center gap-2">
           <Link href={`/social/u/${username}`} className="shrink-0">
-            <SocialAvatar name={name} size="sm" />
+            <SocialAvatar name={name} size="sm" src={author?.profile.avatarUrl || undefined} />
           </Link>
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-1.5">
+          <div className="min-w-0 flex-1 overflow-hidden">
+            <div className="flex min-w-0 items-center gap-1">
               <Link
                 href={`/social/u/${username}`}
                 className="truncate font-display text-sm font-semibold hover:text-accent-dim dark:hover:text-accent"
               >
                 {name}
               </Link>
+              <CountryFlag code={author?.profile.countryCode} size="sm" />
               <span className="shrink-0 text-muted">
                 <VisibilityIcon v={post.visibility} />
               </span>
@@ -292,11 +319,16 @@ export function PostCard({
               @{username} · {formatWhen(post.occurredAt)}
             </p>
           </div>
+          {!isSelf && author ? (
+            <div className="shrink-0 max-w-[40%]">
+              <FollowButton card={author} compact />
+            </div>
+          ) : null}
           <div className="relative shrink-0">
             <button
               type="button"
-              className="evolve-press inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted hover:bg-muted-bg hover:text-foreground"
-              aria-label="Options"
+              className="evolve-press inline-flex h-9 w-9 items-center justify-center rounded-xl text-muted hover:bg-muted-bg hover:text-foreground"
+              aria-label={t("optionsAria", { ns: "posts" })}
               onClick={() => setMenuOpen((v) => !v)}
             >
               <MoreHorizontal size={18} />
@@ -308,7 +340,7 @@ export function PostCard({
                   className="block px-4 py-2.5 text-sm hover:bg-muted-bg"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Open activity
+                  {t("openActivity", { ns: "feed" })}
                 </Link>
                 <button
                   type="button"
@@ -318,20 +350,15 @@ export function PostCard({
                     setShareOpen(true);
                   }}
                 >
-                  Share activity…
+                  {t("shareActivity", { ns: "feed" })}
                 </button>
               </div>
             )}
           </div>
         </div>
-        {!isSelf && author && (
-          <div className="mt-2 flex justify-end">
-            <FollowButton card={author} />
-          </div>
-        )}
 
         <Link href={`/posts/${post.id}`} className="mt-3 block">
-          <Badge className={`capitalize ${ACTIVITY_COLORS[post.type].badge}`}>
+          <Badge className={`capitalize ${ACTIVITY_COLORS[post.type]?.badge ?? ""}`}>
             {post.type}
           </Badge>
           <h3 className="mt-1.5 font-display text-lg font-bold leading-snug tracking-tight">
@@ -372,11 +399,14 @@ export function PostCard({
         ) : post.durationMin != null ? (
           <div className="evolve-stats-vivid mt-3 grid grid-cols-2 gap-2 rounded-2xl px-2 py-3">
             <StatCell
-              label="Duration"
+              label={t("stats.duration", { ns: "feed" })}
               value={formatDurationClock(post.durationMin)}
             />
             {post.caloriesBurned != null && (
-              <StatCell label="Calories" value={String(post.caloriesBurned)} />
+              <StatCell
+                label={t("stats.calories", { ns: "feed" })}
+                value={String(post.caloriesBurned)}
+              />
             )}
           </div>
         ) : null}
@@ -400,6 +430,16 @@ export function PostCard({
           />
         )}
 
+        {post.videoUrl && (
+          <video
+            src={post.videoUrl}
+            controls
+            playsInline
+            preload="metadata"
+            className="mt-3 max-h-80 w-full rounded-2xl bg-black object-contain"
+          />
+        )}
+
         <CommentPreview postId={post.id} />
       </div>
 
@@ -418,7 +458,7 @@ export function PostCard({
           <button
             type="button"
             className="evolve-press inline-flex min-h-11 min-w-11 items-center justify-center text-muted hover:text-foreground"
-            aria-label="Share"
+            aria-label={t("buttons.share")}
             onClick={() => setShareOpen(true)}
           >
             <Share2 size={18} />
@@ -428,12 +468,14 @@ export function PostCard({
             className={`inline-flex min-h-11 min-w-11 items-center justify-center transition-transform active:scale-90 ${
               saved ? "text-accent" : "text-muted hover:text-foreground"
             }`}
-            aria-label="Save"
+            aria-label={t("save", { ns: "posts" })}
             aria-pressed={saved}
             onClick={() => {
               const res = toggleSave(post.id);
               toast(
-                res.saved ? "Saved to your list." : "Removed from saved.",
+                res.saved
+                  ? t("savedToast", { ns: "feed" })
+                  : t("unsavedToast", { ns: "feed" }),
                 "info",
               );
             }}
@@ -482,13 +524,17 @@ export function FeedList({
 
   return (
     <motion.div
-      className="grid gap-5"
+      className="grid min-w-0 max-w-full gap-4"
       variants={reduce ? undefined : feedStagger}
       initial={reduce ? false : "initial"}
       animate="animate"
     >
       {posts.map((post) => (
-        <motion.div key={post.id} variants={reduce ? undefined : feedItem}>
+        <motion.div
+          key={post.id}
+          variants={reduce ? undefined : feedItem}
+          className="min-w-0 max-w-full"
+        >
           <PostCard post={post} />
         </motion.div>
       ))}
@@ -510,28 +556,3 @@ export function FeedSkeleton() {
   );
 }
 
-export function ComposeBar() {
-  const reduce = useReducedMotion();
-  return (
-    <motion.div
-      whileHover={reduce ? undefined : { y: -2 }}
-      whileTap={reduce ? undefined : { scale: 0.985 }}
-      transition={{ type: "spring", stiffness: 400, damping: 28 }}
-    >
-      <Link
-        href="/posts/new"
-        className="evolve-card-lift flex min-h-14 items-center gap-3 rounded-apex-lg border border-border bg-card p-4 shadow-apex"
-      >
-        <div className="evolve-pulse-soft flex h-10 w-10 items-center justify-center rounded-full bg-accent-soft text-lg font-bold text-accent-dim dark:text-accent">
-          +
-        </div>
-        <div>
-          <p className="text-sm font-medium">Share a workout</p>
-          <p className="text-xs text-muted">
-            Run, gym, ride — publish a visual activity summary
-          </p>
-        </div>
-      </Link>
-    </motion.div>
-  );
-}

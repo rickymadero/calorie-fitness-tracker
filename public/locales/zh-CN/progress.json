@@ -1,0 +1,61 @@
+{
+  "title": "进度",
+  "subtitle": "长期追踪体重、围度、照片与执行情况。",
+  "measurements": "围度",
+  "photo": "照片",
+  "logWeight": "记录体重",
+  "weightTrend": "体重趋势",
+  "changeThisMonth": "本月 {{sign}}{{amount}} {{unit}}",
+  "currentGoal": "当前：{{current}} {{unit}} · 目标：{{goal}} {{unit}}",
+  "bodyMeasurements": "身体围度",
+  "measure": {
+    "chest": "胸围",
+    "waist": "腰围",
+    "hips": "臀围",
+    "arms": "臂围"
+  },
+  "consistency": "一致性",
+  "calorieAdherence": "卡路里达标率",
+  "workoutConsistency": "训练完成度",
+  "habitCompletion": "习惯完成度",
+  "progressPhotos": "进度照片",
+  "photosEmptyTitle": "尚无照片",
+  "photosEmptyDescription": "上传进度照片，对比随时间发生的变化。",
+  "addPhoto": "添加照片",
+  "monthlyOverview": "月度概览",
+  "monthlyOverviewBody": "图表占位已就绪，可对接图表库或分析 API。当前模拟数据呈现健康的体重下降趋势与良好的训练坚持度。",
+  "avgDailyCalories": "日均卡路里",
+  "workoutsCompleted": "已完成训练",
+  "bestStreak": "最佳连续天数",
+  "bestStreakValue": "{{n}} 天",
+  "modal": {
+    "logWeightTitle": "记录体重",
+    "weightLabel": "体重（{{unit}}）",
+    "updateMeasurements": "更新围度",
+    "addPhotoTitle": "添加进度照片",
+    "addPhotoBody": "照片上传稍后会接入存储。此演示会添加占位图。"
+  },
+  "addPlaceholderPhoto": "添加占位照片",
+  "toast": {
+    "invalidWeight": "请输入有效体重。",
+    "weightLogged": "体重已记录。",
+    "measurementsUpdated": "围度已更新。",
+    "photoAdded": "进度照片已添加。"
+  },
+  "chartToday": "今天",
+  "basic": {
+    "title": "基础数据",
+    "subtitle": "本周已记录训练的距离、时长与卡路里 — 对所有人免费。",
+    "freeBadge": "免费",
+    "distance": "距离",
+    "time": "时长",
+    "calories": "卡路里",
+    "weeklyActivity": "本周",
+    "workoutsCount": "{{n}} 次训练",
+    "empty": "本周暂无训练",
+    "emptyHint": "记录一次训练即可看到周图表。",
+    "logWorkout": "记录训练",
+    "unlockTitle": "解锁高级 Progress",
+    "unlockBody": "体重趋势、围度、对比照与月度分析属于 Evolve Pro。上方基础数据永久免费。"
+  }
+}

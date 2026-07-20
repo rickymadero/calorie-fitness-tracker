@@ -133,6 +133,20 @@ export interface SessionState {
   registerDraft: RegisterDraft | null;
 }
 
+export type FoodCategory =
+  | "protein"
+  | "carb"
+  | "fat"
+  | "fruit"
+  | "vegetable"
+  | "condiment"
+  | "snack"
+  | "drink"
+  | "prepared"
+  | "grocery"
+  | "fast-food"
+  | "restaurant";
+
 export interface FoodItem {
   id: string;
   name: string;
@@ -141,8 +155,13 @@ export interface FoodItem {
   protein: number;
   carbs: number;
   fat: number;
+  fiber?: number;
+  sodium?: number;
+  /** Human-readable serving label, e.g. "100g", "1 cup" */
   serving: string;
-  category?: "grocery" | "fast-food" | "restaurant" | "snack" | "drink";
+  /** Grams represented by one serving — used to scale custom quantities */
+  servingGrams?: number;
+  category?: FoodCategory;
 }
 
 export interface LoggedMeal {
@@ -150,6 +169,8 @@ export interface LoggedMeal {
   mealType: "breakfast" | "lunch" | "dinner" | "snack";
   food: FoodItem;
   loggedAt: string;
+  /** Multiplier of the food's base serving (1 = one serving) */
+  servings?: number;
 }
 
 export interface Exercise {

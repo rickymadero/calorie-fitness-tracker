@@ -1,0 +1,153 @@
+{
+  "title": "Настройки",
+  "profile": "Профиль",
+  "account": "Аккаунт",
+  "privacy": "Приватность аккаунта",
+  "linked": "Привязанный социальный аккаунт",
+  "security": "Безопасность",
+  "preferences": "Предпочтения",
+  "fullName": "Полное имя",
+  "username": "Имя пользователя",
+  "bio": "О себе",
+  "bioPlaceholder": "Короткое описание для других спортсменов…",
+  "photo": "Фото профиля",
+  "removePhoto": "Удалить фото",
+  "email": "Адрес электронной почты",
+  "passwordCurrent": "Текущий пароль",
+  "passwordNew": "Новый пароль",
+  "passwordConfirm": "Подтвердите новый пароль",
+  "passwordHint": "Оставьте пустым, чтобы сохранить текущий пароль",
+  "measurement": "Система измерения",
+  "appearance": "Внешний вид",
+  "dark": "Тёмная тема",
+  "light": "Светлая тема",
+  "language": "Язык",
+  "languageHint": "Язык приложения для меню, ленты, настроек и других разделов",
+  "subscription": "Подписка",
+  "subscriptionBody": "Социальная лента бесплатна. Pro открывает учёт питания, планы, сканеры и аналитику.",
+  "shownAs": "Отображается как @{{username}}",
+  "visibilityPublic": "Публичный",
+  "visibilityPrivate": "Приватный",
+  "visibilityPublicHint": "Подписаться может любой",
+  "visibilityPrivateHint": "Одобрение запросов",
+  "morePrivacy": "Больше настроек приватности →",
+  "instagram": "Instagram",
+  "instagramHint": "Без @",
+  "showInstagram": "Показывать Instagram в профиле",
+  "twoFactor": "Двухфакторная аутентификация",
+  "twoFactorHint": "Демо-переключатель — полная 2FA появится позже",
+  "blockReport": "Настройки блокировки и жалоб →",
+  "emailChangeTitle": "Подтвердите изменение email",
+  "passwordChangeTitle": "Подтвердите изменение пароля",
+  "emailChangeBody": "Изменить email на {{email}}? Вы будете использовать этот адрес для входа.",
+  "passwordChangeBody": "Обновить пароль? Это демо-изменение и не синхронизируется с реальным сервером авторизации.",
+  "updatePassword": "Обновить пароль",
+  "notifications": {
+    "title": "Уведомления",
+    "intro": "Выберите, какие обновления вы хотите получать на этом устройстве. Демо-настройки сохраняются локально.",
+    "save": "Сохранить настройки",
+    "saved": "Настройки уведомлений сохранены.",
+    "likes": "Лайки",
+    "likesHint": "Когда кто-то ставит лайк вашей тренировке",
+    "comments": "Комментарии",
+    "commentsHint": "Ответы и упоминания в ваших постах",
+    "follows": "Подписки и запросы",
+    "followsHint": "Новые подписчики и запросы на подписку",
+    "messages": "Личные сообщения",
+    "messagesHint": "Личные ответы и переписки",
+    "stories": "Истории",
+    "storiesHint": "Реакции и ответы на ваши истории"
+  },
+  "privacyPage": {
+    "title": "Приватность аккаунта",
+    "visibility": "Видимость профиля",
+    "visibilityHint": "Приватные аккаунты требуют подтверждения подписки, прежде чем другие увидят ваши тренировки.",
+    "whoCanMessage": "Кто может писать вам сообщения",
+    "everyone": "Все",
+    "peopleYouFollow": "Люди, на которых вы подписаны",
+    "noOne": "Никто",
+    "blocked": "Заблокированные аккаунты",
+    "blockedEmpty": "Вы никого не заблокировали. Заблокировать спортсмена можно из меню его профиля.",
+    "reports": "Жалобы",
+    "reportsBody": "Чтобы пожаловаться на пост или спортсмена, откройте его профиль или пост и используйте меню.",
+    "nowPrivate": "Аккаунт теперь приватный.",
+    "nowPublic": "Аккаунт теперь публичный.",
+    "messagesUpdated": "Настройки приватности сообщений обновлены.",
+    "unblocked": "Пользователь разблокирован.",
+    "openProfile": "Открыть профиль",
+    "approveFollows": "Одобрять подписки",
+    "contactSupport": "Связаться с поддержкой →",
+    "reportsBodyLong": "Чтобы пожаловаться на пост или атлета, откройте профиль или пост и используйте меню. Жалобы рассматривает поддержка Evolve в продакшен-сборках."
+  },
+  "help": {
+    "title": "Помощь и поддержка",
+    "intro": "Нужна помощь? Просмотрите частые вопросы или напишите команде Evolve.",
+    "faq": "Часто задаваемые вопросы",
+    "aboutLink": "О приложении Evolve →",
+    "privacyLink": "Настройки приватности →",
+    "faqItems": [
+      {
+        "q": "How do I make my account private?",
+        "a": "Open Settings → Account privacy, or Profile → ⋮ → Account Privacy, then choose Private."
+      },
+      {
+        "q": "Where are my saved workouts?",
+        "a": "Profile → ⋮ → Saved Posts. Bookmark any post from the feed to add it there."
+      },
+      {
+        "q": "How do dual camera stories work?",
+        "a": "From Feed, tap Your story. On devices with front and rear cameras, Evolve captures both in one moment."
+      },
+      {
+        "q": "What's included in Free vs Pro?",
+        "a": "Feed, social, and posting are free. Pro unlocks food logging, training plans, scanners, and deeper analytics."
+      }
+    ]
+  },
+  "about": {
+    "title": "О приложении",
+    "body": "Evolve — это фитнес-сеть для спортсменов, которые тренируются публично: делитесь тренировками, историями с двух камер и оставайтесь ответственными перед людьми, которые вас мотивируют.",
+    "version": "Версия 0.1.0 · Демо",
+    "contact": "Контакты",
+    "plans": "Планы и цены",
+    "tagline": "Создано для спортсменов. Сделано с намерением.",
+    "helpLink": "Справка и поддержка"
+  },
+  "photoHint": "Нажми +, чтобы добавить или изменить фото",
+  "instagramPlaceholder": "username",
+  "health": {
+    "title": "Интеграции здоровья",
+    "subtitle": "Подключите Apple Health или Garmin Connect, чтобы синхронизировать шаги, тренировки и восстановление в Evolve Pro.",
+    "statusOn": "Подключено",
+    "statusOff": "Не подключено",
+    "disconnect": "Отключить",
+    "connectedSince": "Подключено с {{date}}",
+    "syncTitle": "Что синхронизировать",
+    "syncHint": "Включайте и выключайте категории без отключения.",
+    "sync": {
+      "steps": "Шаги и активность",
+      "stepsBody": "Дневные шаги и объём движения.",
+      "workouts": "Тренировки",
+      "workoutsBody": "Импорт сессий и активностей на улице.",
+      "recovery": "Восстановление",
+      "recoveryBody": "Сон, пульс и метрики восстановления, если доступны."
+    },
+    "apple": {
+      "title": "Apple Health",
+      "body": "Синхронизация из приложения «Здоровье» на iPhone. Подключитесь один раз и выберите, что может читать Evolve.",
+      "connect": "Подключить Apple Health",
+      "connected": "Apple Health подключён.",
+      "disconnected": "Apple Health отключён.",
+      "connectFirst": "Сначала подключите Apple Health."
+    },
+    "garmin": {
+      "title": "Garmin Connect",
+      "body": "Импорт активностей с часов Garmin и аккаунта Connect в Evolve.",
+      "connect": "Подключить Garmin",
+      "connected": "Garmin Connect подключён.",
+      "disconnected": "Garmin Connect отключён.",
+      "connectFirst": "Сначала подключите Garmin Connect."
+    },
+    "webNote": "Полная нативная синхронизация появится в мобильном приложении. Этот экран сохраняет Pro-настройки демо."
+  }
+}

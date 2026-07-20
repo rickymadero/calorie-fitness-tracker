@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Evolve
 
-## Getting Started
+Mobile-first social fitness app: share workouts, follow athletes, track nutrition, and train — with a black / white / electric green identity and 15 languages.
 
-First, run the development server:
+**Status:** `v1.0.0-alpha` — production UI ready for Vercel. Data currently runs on browser `localStorage` (demo); Supabase can be wired next.
+
+## Tech stack
+
+| Layer | Choice |
+| --- | --- |
+| Framework | Next.js 16 (App Router) |
+| UI | React 19, Tailwind CSS v4, Framer Motion |
+| Icons | Lucide |
+| Maps | Leaflet + Carto tiles (no API key) |
+| i18n | i18next / react-i18next (15 locales) |
+| Backend (planned) | Supabase |
+
+## Features
+
+### Free
+- Feed, Explore, Network, Profile
+- Create posts, likes, comments, stories
+- EvoFit: food search (500+ items), workouts, tools
+- 15 languages + RTL (Arabic)
+- Dark / light theme (Evolve palette)
+
+### Pro (badged in UI)
+- Premium Explore catalog items
+- Upgrade CTA on `/pricing`
+- Freemium badges mark locked capabilities clearly
+
+## Color scheme
+
+- **Black** — primary surfaces (`#0a0a0a` / near-black cards)
+- **White** — typography and light-mode surfaces
+- **Electric green** — accent (`accent` / Evolve green)
+
+## Languages
+
+EN, ES, FR, DE, IT, PT-BR, RU, ZH-CN, ZH-TW, JA, KO, HI, AR (RTL), TR, VI.
+
+Switch language in **Settings**. Preference persists in `localStorage` across refresh and logout.
+
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://127.0.0.1:3000](http://127.0.0.1:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Script | Purpose |
+| --- | --- |
+| `npm run dev` | Local server (127.0.0.1:3000) |
+| `npm run dev:lan` | LAN access for phone testing |
+| `npm run build` | Production build |
+| `npm start` | Serve production build |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Mobile preview (dev only)
 
-## Learn More
+In Cursor: **⌘⇧B → Evolve: Mobile Preview** → `/dev/preview` (phone frame). This route is **disabled in production**.
 
-To learn more about Next.js, take a look at the following resources:
+## Environment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+No secrets are required for the demo app. When you add Supabase:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Copy `.env.example` (create if needed) to `.env.local`
+2. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+3. Never commit `.env.local` or service-role keys
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Push this repo to GitHub
+2. Import the project in [Vercel](https://vercel.com/new)
+3. Framework preset: **Next.js** (defaults are fine)
+4. Add env vars when Supabase is connected
+5. Deploy — production URL serves the App Router build
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Optional: set a custom domain in the Vercel project settings.
+
+## Project layout (high level)
+
+```
+app/(app)/          Authenticated shell (Feed, Explore, EvoFit, Profile, …)
+app/login|register  Auth screens
+components/         UI, feed, social, stories, providers
+lib/                Storage, mock seed data, i18n helpers, share cards
+public/locales/     Translation JSON (15 languages)
+```
+
+## Notes
+
+- Auth and social graph are **client-side demo** persistence until Supabase is integrated.
+- Maps use public Carto tiles; no Google Maps key needed.
+- `/dev/preview` is for development QA only.

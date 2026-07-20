@@ -1,0 +1,61 @@
+{
+  "title": "進捗",
+  "subtitle": "体重、計測、写真、継続を長期でトラッキング。",
+  "measurements": "計測",
+  "photo": "写真",
+  "logWeight": "体重を記録",
+  "weightTrend": "体重トレンド",
+  "changeThisMonth": "今月 {{sign}}{{amount}} {{unit}}",
+  "currentGoal": "現在: {{current}} {{unit}} · 目標: {{goal}} {{unit}}",
+  "bodyMeasurements": "体の計測",
+  "measure": {
+    "chest": "胸囲",
+    "waist": "ウエスト",
+    "hips": "ヒップ",
+    "arms": "腕"
+  },
+  "consistency": "継続力",
+  "calorieAdherence": "カロリー達成率",
+  "workoutConsistency": "ワークアウト継続",
+  "habitCompletion": "習慣完了率",
+  "progressPhotos": "進捗写真",
+  "photosEmptyTitle": "まだ写真がありません",
+  "photosEmptyDescription": "進捗写真をアップロードして変化を比較しましょう。",
+  "addPhoto": "写真を追加",
+  "monthlyOverview": "月次オーバービュー",
+  "monthlyOverviewBody": "チャート用プレースホルダーはチャートライブラリや分析API向けに準備済み。現在のモックは健全な体重減少トレンドと高いワークアウト達成を示します。",
+  "avgDailyCalories": "1日平均カロリー",
+  "workoutsCompleted": "完了ワークアウト",
+  "bestStreak": "最長連続",
+  "bestStreakValue": "{{n}} 日",
+  "modal": {
+    "logWeightTitle": "体重を記録",
+    "weightLabel": "体重（{{unit}}）",
+    "updateMeasurements": "計測を更新",
+    "addPhotoTitle": "進捗写真を追加",
+    "addPhotoBody": "写真アップロードは後でストレージに接続します。このデモではプレースホルダーを追加します。"
+  },
+  "addPlaceholderPhoto": "プレースホルダー写真を追加",
+  "toast": {
+    "invalidWeight": "有効な体重を入力してください。",
+    "weightLogged": "体重を記録しました。",
+    "measurementsUpdated": "計測を更新しました。",
+    "photoAdded": "進捗写真を追加しました。"
+  },
+  "chartToday": "今日",
+  "basic": {
+    "title": "基本統計",
+    "subtitle": "記録したワークアウトから今週の距離・時間・カロリーを表示 — 全員無料。",
+    "freeBadge": "無料",
+    "distance": "距離",
+    "time": "時間",
+    "calories": "カロリー",
+    "weeklyActivity": "今週",
+    "workoutsCount": "{{n}}回のワークアウト",
+    "empty": "今週のワークアウトはありません",
+    "emptyHint": "セッションを記録すると週次グラフが表示されます。",
+    "logWorkout": "ワークアウトを記録",
+    "unlockTitle": "高度な Progress を解除",
+    "unlockBody": "体重トレンド、体の計測、進捗写真、月次分析は Evolve Pro です。上の基本統計は永久に無料です。"
+  }
+}

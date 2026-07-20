@@ -1,0 +1,40 @@
+{
+  "title": "Planlar",
+  "subtitle": "Gerçek hayat öğünleri — Chipotle, burger, pizza, kahve molaları — kalori hedeflerine göre hazırlandı.",
+  "adjustWeek": "Haftayı ayarla",
+  "toast": {
+    "weekRefreshed": "Haftalık öğün değişimleri yeni restoran seçenekleriyle yenilendi.",
+    "weekProOnly": "Haftalık ayarlamalar bir Pro özelliğidir.",
+    "loggedMealDemo": "{{name}}, {{slot}} öğününe eklendi (demo).",
+    "addedSuggestion": "Öneri eklendi: {{name}} (demo)."
+  },
+  "nutritionTitle": "Beslenme planı",
+  "dailyCalories": "Günlük kalori",
+  "strategy": "Strateji",
+  "proteinBar": "Protein {{n}}g",
+  "carbsBar": "Karbonhidrat {{n}}g",
+  "fatBar": "Yağ {{n}}g",
+  "strategyExtra": "Patates kızartmasını atlayarak, Chipotle’da yarım pirinçle veya bütün pizza yerine pizza + salatayla fast food’u sığdır.",
+  "nutritionEmpty": "Beslenme planını oluşturmak için onboarding’i tamamla.",
+  "workoutProgram": "Antrenman programı",
+  "defaultPlanName": "Kişiselleştirilmiş antrenman planı",
+  "programMeta": "Haftada {{sessions}} seans · {{level}} seviye · {{access}}",
+  "gymAccess": "salon erişimi",
+  "homeFriendly": "ev dostu",
+  "openTrainingPlan": "Antrenman planını aç",
+  "recipeLibrary": "Tarif kütüphanesi",
+  "weekMealPlanTitle": "Bu haftanın öğün planı",
+  "weekMealPlanSubtitle": "Gerçekten gideceğin market temel ürünleri ve restoranların karışımı.",
+  "logThisMeal": "Bu öğünü kaydet",
+  "mealIdeasTitle": "Kalan makrolar için öğün fikirleri",
+  "vibe": {
+    "all": "Tümü",
+    "flexible": "Esnek",
+    "highProtein": "Yüksek protein",
+    "craving": "Canın çekiyor",
+    "lighter": "Daha hafif"
+  },
+  "addToPlan": "Plana ekle",
+  "popularPlaces": "Yiyecek günlüğündeki popüler yerler",
+  "placeCount": "{{place}} · {{count}} öğe"
+}

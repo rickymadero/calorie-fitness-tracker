@@ -1,7 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { Camera, Ruler, Scale, TrendingUp } from "lucide-react";
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import {
+  Camera,
+  Crown,
+  Flame,
+  Ruler,
+  Scale,
+  Timer,
+  TrendingUp,
+  Route,
+} from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -10,31 +20,60 @@ import { Badge } from "@/components/ui/Badge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { usePosts } from "@/components/posts/PostsProvider";
 import { useToast } from "@/components/providers/ToastProvider";
-import { ProGate } from "@/components/pro/ProGate";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
+import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
 
-const MEASUREMENTS = [
-  { label: "Chest", value: "102 cm" },
-  { label: "Waist", value: "84 cm" },
-  { label: "Hips", value: "96 cm" },
-  { label: "Arms", value: "36 cm" },
-];
+const MEASUREMENT_KEYS = ["chest", "waist", "hips", "arms"] as const;
+const MEASUREMENT_VALUES: Record<(typeof MEASUREMENT_KEYS)[number], string> = {
+  chest: "102 cm",
+  waist: "84 cm",
+  hips: "96 cm",
+  arms: "36 cm",
+};
+
+function formatDuration(totalMin: number) {
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  if (h <= 0) return `${m}m`;
+  return `${h}h ${m}m`;
+}
 
 export default function ProgressPage() {
-  const { user, onboarding, updateOnboarding } = useAuth();
+  const { user, onboarding, updateOnboarding, setPlan } = useAuth();
+  const { tick, weekStats } = usePosts();
   const { toast } = useToast();
+  const { t } = useAppTranslation(["progress", "common"]);
   const [weightOpen, setWeightOpen] = useState(false);
   const [measureOpen, setMeasureOpen] = useState(false);
   const [photoOpen, setPhotoOpen] = useState(false);
   const [weight, setWeight] = useState("");
   const [photos, setPhotos] = useState<{ id: string; label: string }[]>([]);
+
+  const isPro = user?.plan === "pro";
   const unit =
     (user?.measurementSystem || onboarding.measurementSystem) === "imperial"
       ? "lb"
       : "kg";
 
+  const stats = useMemo(() => {
+    void tick;
+    if (!user) {
+      return {
+        days: [],
+        totals: { workouts: 0, minutes: 0, distanceKm: 0, calories: 0 },
+      };
+    }
+    return weekStats(user.id);
+  }, [tick, user, weekStats]);
+
+  const maxMinutes = Math.max(1, ...stats.days.map((d) => d.minutes));
+
   const currentWeight =
-    typeof onboarding.currentWeight === "number" ? onboarding.currentWeight : 78.4;
+    typeof onboarding.currentWeight === "number"
+      ? onboarding.currentWeight
+      : 78.4;
   const goalWeight =
     typeof onboarding.targetWeight === "number" ? onboarding.targetWeight : 72;
 
@@ -44,156 +83,336 @@ export default function ProgressPage() {
     { date: "Jun 15", value: Math.round((currentWeight + 1.4) * 10) / 10 },
     { date: "Jun 22", value: Math.round((currentWeight + 0.7) * 10) / 10 },
     { date: "Jun 29", value: Math.round((currentWeight + 0.3) * 10) / 10 },
-    { date: "Today", value: currentWeight },
+    { date: t("chartToday"), value: currentWeight },
   ];
   const maxW = Math.max(...weightHistory.map((w) => w.value));
   const minW = Math.min(...weightHistory.map((w) => w.value));
   const change = Math.round((weightHistory[0].value - currentWeight) * 10) / 10;
 
   return (
-    <ProGate feature="Progress analytics">
     <div>
-      <div className="flex flex-wrap items-end justify-between gap-4">
+      <ExploreBackHeader title={t("basic.title")} />
+      {/* Free basic stats */}
+      <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl font-bold tracking-tight md:text-3xl">
-            Progress
-          </h1>
-          <p className="mt-1 text-sm text-muted">
-            Track weight, measurements, photos, and adherence over time.
-          </p>
+          <p className="text-sm text-muted">{t("basic.subtitle")}</p>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Button variant="outline" onClick={() => setMeasureOpen(true)}>
-            <Ruler size={16} />
-            Measurements
-          </Button>
-          <Button variant="outline" onClick={() => setPhotoOpen(true)}>
-            <Camera size={16} />
-            Photo
-          </Button>
-          <Button onClick={() => setWeightOpen(true)}>
-            <Scale size={16} />
-            Log weight
-          </Button>
-        </div>
+        <Badge variant="default">{t("basic.freeBadge")}</Badge>
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        <Card elevated className="lg:col-span-2">
-          <div className="flex items-center justify-between">
-            <h2 className="font-display text-lg font-semibold">Weight trend</h2>
-            <Badge variant="accent">
-              {change > 0 ? "−" : change < 0 ? "+" : ""}
-              {Math.abs(change)} {unit} this month
-            </Badge>
+      <div className="mt-5 grid grid-cols-3 gap-2.5">
+        <Card padding="sm">
+          <div className="flex items-center gap-1.5 text-muted">
+            <Route size={14} />
+            <p className="text-[11px] font-medium uppercase tracking-wide">
+              {t("basic.distance")}
+            </p>
           </div>
-          <div className="mt-8 flex h-48 items-end gap-3">
-            {weightHistory.map((point) => {
-              const pct = ((point.value - minW) / (maxW - minW || 1)) * 100;
-              const height = 40 + pct * 0.9;
+          <p className="mt-2 font-display text-xl font-bold tabular-nums">
+            {stats.totals.distanceKm}
+            <span className="ml-1 text-xs font-medium text-muted">km</span>
+          </p>
+        </Card>
+        <Card padding="sm">
+          <div className="flex items-center gap-1.5 text-muted">
+            <Timer size={14} />
+            <p className="text-[11px] font-medium uppercase tracking-wide">
+              {t("basic.time")}
+            </p>
+          </div>
+          <p className="mt-2 font-display text-xl font-bold tabular-nums">
+            {formatDuration(stats.totals.minutes)}
+          </p>
+        </Card>
+        <Card padding="sm">
+          <div className="flex items-center gap-1.5 text-muted">
+            <Flame size={14} />
+            <p className="text-[11px] font-medium uppercase tracking-wide">
+              {t("basic.calories")}
+            </p>
+          </div>
+          <p className="mt-2 font-display text-xl font-bold tabular-nums">
+            {stats.totals.calories}
+          </p>
+        </Card>
+      </div>
+
+      <Card elevated className="mt-4">
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="font-display text-lg font-semibold">
+            {t("basic.weeklyActivity")}
+          </h2>
+          <p className="text-xs text-muted">
+            {t("basic.workoutsCount", { n: stats.totals.workouts })}
+          </p>
+        </div>
+
+        {stats.totals.workouts === 0 ? (
+          <div className="mt-4">
+            <EmptyState
+              icon={<TrendingUp size={28} />}
+              title={t("basic.empty")}
+              description={t("basic.emptyHint")}
+              action={
+                <Link href="/posts/new">
+                  <Button size="sm">{t("basic.logWorkout")}</Button>
+                </Link>
+              }
+            />
+          </div>
+        ) : (
+          <div className="mt-6 flex h-40 items-end gap-2">
+            {stats.days.map((day) => {
+              const height =
+                day.minutes > 0
+                  ? Math.max(12, (day.minutes / maxMinutes) * 100)
+                  : 6;
               return (
                 <div
-                  key={point.date}
-                  className="flex flex-1 flex-col items-center gap-2"
+                  key={day.key}
+                  className="flex min-w-0 flex-1 flex-col items-center gap-1.5"
                 >
-                  <span className="text-[10px] text-muted">{point.value}</span>
+                  <span className="text-[10px] tabular-nums text-muted">
+                    {day.minutes > 0 ? `${day.minutes}m` : "—"}
+                  </span>
                   <div
-                    className="w-full max-w-[48px] rounded-t-xl bg-accent"
+                    className={`w-full max-w-[40px] rounded-t-lg ${
+                      day.minutes > 0 ? "bg-accent" : "bg-muted-bg"
+                    }`}
                     style={{ height }}
+                    title={`${day.label}: ${day.minutes} min`}
                   />
-                  <span className="text-[10px] text-muted">{point.date}</span>
+                  <span className="text-[10px] text-muted">{day.label}</span>
                 </div>
               );
             })}
           </div>
-          <p className="mt-4 text-sm text-muted">
-            Current: <strong className="text-foreground">{currentWeight} {unit}</strong>
-            {" · "}
-            Goal: <strong className="text-foreground">{goalWeight} {unit}</strong>
-          </p>
-        </Card>
+        )}
+      </Card>
 
-        <Card>
-          <h2 className="font-display text-lg font-semibold">Body measurements</h2>
-          <ul className="mt-4 space-y-3">
-            {MEASUREMENTS.map((m) => (
-              <li
-                key={m.label}
-                className="flex justify-between rounded-xl bg-muted-bg px-3 py-2 text-sm"
-              >
-                <span>{m.label}</span>
-                <span className="font-medium">{m.value}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
+      {/* Advanced Pro analytics */}
+      <div className="mt-8 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 className="font-display text-xl font-bold tracking-tight">
+            {t("title")}
+          </h2>
+          <p className="mt-1 text-sm text-muted">{t("subtitle")}</p>
+        </div>
+        {isPro ? (
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => setMeasureOpen(true)}>
+              <Ruler size={16} />
+              {t("measurements")}
+            </Button>
+            <Button variant="outline" onClick={() => setPhotoOpen(true)}>
+              <Camera size={16} />
+              {t("photo")}
+            </Button>
+            <Button onClick={() => setWeightOpen(true)}>
+              <Scale size={16} />
+              {t("logWeight")}
+            </Button>
+          </div>
+        ) : (
+          <Badge variant="accent">
+            <Crown size={12} className="mr-1" />
+            {t("labels.pro", { ns: "common" })}
+          </Badge>
+        )}
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <Card>
-          <h2 className="font-display text-lg font-semibold">Consistency</h2>
-          <div className="mt-5 space-y-4">
-            <ProgressBar label="Calorie adherence" value={86} max={100} showValue />
-            <ProgressBar label="Workout consistency" value={75} max={100} showValue />
-            <ProgressBar label="Habit completion" value={68} max={100} showValue />
+      {!isPro ? (
+        <Card className="mt-4 border-accent/30 bg-accent-soft/40 text-center">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft text-accent-dim dark:text-accent">
+            <Crown size={22} />
+          </div>
+          <h3 className="mt-3 font-display text-lg font-semibold">
+            {t("basic.unlockTitle")}
+          </h3>
+          <p className="mx-auto mt-2 max-w-md text-sm text-muted">
+            {t("basic.unlockBody")}
+          </p>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            <Button
+              onClick={() => {
+                setPlan("pro");
+                toast(t("success.upgradedPro", { ns: "common" }), "success");
+              }}
+            >
+              <Crown size={16} />
+              {t("proGate.upgradeDemo", { ns: "common" })}
+            </Button>
+            <Link href="/pricing">
+              <Button variant="outline">
+                {t("proGate.viewPlans", { ns: "common" })}
+              </Button>
+            </Link>
           </div>
         </Card>
+      ) : (
+        <>
+          <div className="mt-6 grid gap-6 lg:grid-cols-3">
+            <Card elevated className="lg:col-span-2">
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-lg font-semibold">
+                  {t("weightTrend")}
+                </h2>
+                <Badge variant="accent">
+                  {t("changeThisMonth", {
+                    sign: change > 0 ? "−" : change < 0 ? "+" : "",
+                    amount: Math.abs(change),
+                    unit,
+                  })}
+                </Badge>
+              </div>
+              <div className="mt-8 flex h-48 items-end gap-3">
+                {weightHistory.map((point) => {
+                  const pct =
+                    ((point.value - minW) / (maxW - minW || 1)) * 100;
+                  const height = 40 + pct * 0.9;
+                  return (
+                    <div
+                      key={point.date}
+                      className="flex flex-1 flex-col items-center gap-2"
+                    >
+                      <span className="text-[10px] text-muted">
+                        {point.value}
+                      </span>
+                      <div
+                        className="w-full max-w-[48px] rounded-t-xl bg-accent"
+                        style={{ height }}
+                      />
+                      <span className="text-[10px] text-muted">
+                        {point.date}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+              <p className="mt-4 text-sm text-muted">
+                {t("currentGoal", {
+                  current: currentWeight,
+                  unit,
+                  goal: goalWeight,
+                })}
+              </p>
+            </Card>
 
-        <Card>
-          <div className="flex items-center justify-between">
-            <h2 className="font-display text-lg font-semibold">Progress photos</h2>
-            <TrendingUp size={18} className="text-muted" />
+            <Card>
+              <h2 className="font-display text-lg font-semibold">
+                {t("bodyMeasurements")}
+              </h2>
+              <ul className="mt-4 space-y-3">
+                {MEASUREMENT_KEYS.map((key) => (
+                  <li
+                    key={key}
+                    className="flex justify-between rounded-xl bg-muted-bg px-3 py-2 text-sm"
+                  >
+                    <span>{t(`measure.${key}`)}</span>
+                    <span className="font-medium">
+                      {MEASUREMENT_VALUES[key]}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
           </div>
-          {photos.length === 0 ? (
-            <div className="mt-4">
-              <EmptyState
-                icon={<Camera size={28} />}
-                title="No photos yet"
-                description="Upload progress photos to compare changes over time."
-                action={
-                  <Button onClick={() => setPhotoOpen(true)}>Add photo</Button>
-                }
-              />
-            </div>
-          ) : (
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              {photos.map((p) => (
-                <div
-                  key={p.id}
-                  className="flex aspect-[3/4] items-end rounded-2xl border border-border bg-gradient-to-br from-muted-bg to-border p-3"
-                >
-                  <span className="text-xs font-medium">{p.label}</span>
+
+          <div className="mt-6 grid gap-6 lg:grid-cols-2">
+            <Card>
+              <h2 className="font-display text-lg font-semibold">
+                {t("consistency")}
+              </h2>
+              <div className="mt-5 space-y-4">
+                <ProgressBar
+                  label={t("calorieAdherence")}
+                  value={86}
+                  max={100}
+                  showValue
+                />
+                <ProgressBar
+                  label={t("workoutConsistency")}
+                  value={75}
+                  max={100}
+                  showValue
+                />
+                <ProgressBar
+                  label={t("habitCompletion")}
+                  value={68}
+                  max={100}
+                  showValue
+                />
+              </div>
+            </Card>
+
+            <Card>
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-lg font-semibold">
+                  {t("progressPhotos")}
+                </h2>
+                <TrendingUp size={18} className="text-muted" />
+              </div>
+              {photos.length === 0 ? (
+                <div className="mt-4">
+                  <EmptyState
+                    icon={<Camera size={28} />}
+                    title={t("photosEmptyTitle")}
+                    description={t("photosEmptyDescription")}
+                    action={
+                      <Button onClick={() => setPhotoOpen(true)}>
+                        {t("addPhoto")}
+                      </Button>
+                    }
+                  />
+                </div>
+              ) : (
+                <div className="mt-4 grid grid-cols-2 gap-3">
+                  {photos.map((p) => (
+                    <div
+                      key={p.id}
+                      className="flex aspect-[3/4] items-end rounded-2xl border border-border bg-gradient-to-br from-muted-bg to-border p-3"
+                    >
+                      <span className="text-xs font-medium">{p.label}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          </div>
+
+          <Card className="mt-6">
+            <h2 className="font-display text-lg font-semibold">
+              {t("monthlyOverview")}
+            </h2>
+            <p className="mt-2 text-sm text-muted">{t("monthlyOverviewBody")}</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              {[
+                { label: t("avgDailyCalories"), value: "2,080" },
+                { label: t("workoutsCompleted"), value: "14" },
+                {
+                  label: t("bestStreak"),
+                  value: t("bestStreakValue", { n: 9 }),
+                },
+              ].map((s) => (
+                <div key={s.label} className="rounded-2xl bg-muted-bg p-4">
+                  <p className="text-xs text-muted">{s.label}</p>
+                  <p className="mt-1 font-display text-xl font-bold">
+                    {s.value}
+                  </p>
                 </div>
               ))}
             </div>
-          )}
-        </Card>
-      </div>
+          </Card>
+        </>
+      )}
 
-      <Card className="mt-6">
-        <h2 className="font-display text-lg font-semibold">Monthly overview</h2>
-        <p className="mt-2 text-sm text-muted">
-          Chart placeholders are ready for a charting library or analytics API.
-          Current mock shows healthy downward weight trend with solid workout
-          adherence.
-        </p>
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
-          {[
-            { label: "Avg daily calories", value: "2,080" },
-            { label: "Workouts completed", value: "14" },
-            { label: "Best streak", value: "9 days" },
-          ].map((s) => (
-            <div key={s.label} className="rounded-2xl bg-muted-bg p-4">
-              <p className="text-xs text-muted">{s.label}</p>
-              <p className="mt-1 font-display text-xl font-bold">{s.value}</p>
-            </div>
-          ))}
-        </div>
-      </Card>
-
-      <Modal open={weightOpen} onClose={() => setWeightOpen(false)} title="Log weight">
+      <Modal
+        open={weightOpen}
+        onClose={() => setWeightOpen(false)}
+        title={t("modal.logWeightTitle")}
+      >
         <Input
-          label={`Weight (${unit})`}
+          label={t("modal.weightLabel", { unit })}
           type="number"
           step="0.1"
           value={weight}
@@ -206,44 +425,50 @@ export default function ProgressPage() {
           onClick={() => {
             const next = Number(weight);
             if (!Number.isFinite(next) || next <= 0) {
-              toast("Enter a valid weight.", "error");
+              toast(t("toast.invalidWeight"), "error");
               return;
             }
             updateOnboarding({ currentWeight: next });
-            toast("Weight logged.", "success");
+            toast(t("toast.weightLogged"), "success");
             setWeightOpen(false);
             setWeight("");
           }}
         >
-          Save
+          {t("buttons.save", { ns: "common" })}
         </Button>
       </Modal>
 
       <Modal
         open={measureOpen}
         onClose={() => setMeasureOpen(false)}
-        title="Update measurements"
+        title={t("modal.updateMeasurements")}
       >
         <div className="space-y-3">
-          {MEASUREMENTS.map((m) => (
-            <Input key={m.label} label={m.label} defaultValue={m.value} />
+          {MEASUREMENT_KEYS.map((key) => (
+            <Input
+              key={key}
+              label={t(`measure.${key}`)}
+              defaultValue={MEASUREMENT_VALUES[key]}
+            />
           ))}
           <Button
             fullWidth
             onClick={() => {
-              toast("Measurements updated.", "success");
+              toast(t("toast.measurementsUpdated"), "success");
               setMeasureOpen(false);
             }}
           >
-            Save
+            {t("buttons.save", { ns: "common" })}
           </Button>
         </div>
       </Modal>
 
-      <Modal open={photoOpen} onClose={() => setPhotoOpen(false)} title="Add progress photo">
-        <p className="text-sm text-muted">
-          Photo upload will connect to storage later. This demo adds a placeholder.
-        </p>
+      <Modal
+        open={photoOpen}
+        onClose={() => setPhotoOpen(false)}
+        title={t("modal.addPhotoTitle")}
+      >
+        <p className="text-sm text-muted">{t("modal.addPhotoBody")}</p>
         <Button
           className="mt-4"
           fullWidth
@@ -256,13 +481,12 @@ export default function ProgressPage() {
               },
             ]);
             setPhotoOpen(false);
-            toast("Progress photo added.", "success");
+            toast(t("toast.photoAdded"), "success");
           }}
         >
-          Add placeholder photo
+          {t("addPlaceholderPhoto")}
         </Button>
       </Modal>
     </div>
-    </ProGate>
   );
 }

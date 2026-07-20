@@ -1,0 +1,42 @@
+{
+  "title": "レシピ",
+  "subtitle": "マクロに連動した食事アイデア。Proでパーソナライズ週間プランとマクロベースの提案が解放。",
+  "recommendedNow": "今のおすすめ",
+  "remainingMacros": "残り 約{{kcal}} kcal · タンパク質 {{protein}}g",
+  "postWorkoutFocus": " · ワークアウト後向け",
+  "unlockProMeals": "Proミールを解除",
+  "recipeCardMeta": "{{calories}} kcal · {{protein}}P · {{carbs}}C · {{fat}}F",
+  "searchPlaceholder": "レシピを検索...",
+  "filter": {
+    "all": "すべて",
+    "breakfast": "朝食",
+    "lunch": "昼食",
+    "dinner": "夕食",
+    "snack": "間食",
+    "highProtein": "高タンパク",
+    "quick": "時短",
+    "vegetarian": "ベジタリアン",
+    "keto": "ケト"
+  },
+  "cardMeta": "{{calories}} kcal · タンパク質 {{protein}}g · {{minutes}} 分",
+  "notFound": "レシピが見つかりません。",
+  "back": "レシピ",
+  "timing": "下ごしらえ {{prep}}分 · 調理 {{cook}}分 · {{difficulty}}",
+  "portions": "分量",
+  "logToTracker": "カロリートラッカーに記録",
+  "groceryList": "買い物リスト",
+  "toast": {
+    "logProRequired": "パーソナライズレシピの記録にはProへのアップグレードが必要です。",
+    "loggedDemo": "{{name}} をフードトラッカーに記録しました（デモ）。",
+    "groceryDemo": "材料を買い物リストに追加しました（デモ）。",
+    "groceryProOnly": "スマート買い物リストはPro機能です。"
+  },
+  "lockedTitle": "パーソナライズProレシピを解除",
+  "lockedBody": "詳細手順、週間ミールプラン、マクロベースの提案、自動分量調整を利用できます。",
+  "ingredients": "材料",
+  "allergens": "アレルゲン: {{list}}",
+  "steps": "手順",
+  "equipmentPortion": "器具: {{equipment}} · 分量: {{portion}}",
+  "disclaimer": "栄養値は計画用の推定値であり、医療アドバイスではありません。",
+  "openMealPlan": "食事プランを開く"
+}

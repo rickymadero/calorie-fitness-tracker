@@ -1,0 +1,157 @@
+{
+  "title": "Settings",
+  "profile": "Profile",
+  "account": "Account",
+  "privacy": "Account privacy",
+  "linked": "Linked social account",
+  "security": "Security",
+  "preferences": "Preferences",
+  "fullName": "Full name",
+  "username": "Username",
+  "bio": "Bio",
+  "bioPlaceholder": "Short intro for other athletes…",
+  "photo": "Profile picture",
+  "removePhoto": "Remove photo",
+  "email": "Email address",
+  "passwordCurrent": "Current password",
+  "passwordNew": "New password",
+  "passwordConfirm": "Confirm new password",
+  "passwordHint": "Leave blank to keep your password",
+  "measurement": "Measurement system",
+  "appearance": "Appearance",
+  "dark": "Dark mode",
+  "light": "Light mode",
+  "language": "Language",
+  "languageHint": "App language for menus, feed, settings, and more",
+  "subscription": "Subscription",
+  "subscriptionBody": "Social feed is free. Pro unlocks food logging, plans, scanners, and analytics.",
+  "shownAs": "Shown as @{{username}}",
+  "visibilityPublic": "Public",
+  "visibilityPrivate": "Private",
+  "visibilityPublicHint": "Anyone can follow",
+  "visibilityPrivateHint": "Approve requests",
+  "morePrivacy": "More privacy controls →",
+  "instagram": "Instagram",
+  "instagramHint": "Without @",
+  "showInstagram": "Show Instagram on profile",
+  "twoFactor": "Two-factor authentication",
+  "twoFactorHint": "Demo toggle — full 2FA ships later",
+  "blockReport": "Block & report settings →",
+  "emailChangeTitle": "Confirm email change",
+  "passwordChangeTitle": "Confirm password change",
+  "emailChangeBody": "Change your email to {{email}}? You'll use this address to sign in.",
+  "passwordChangeBody": "Update your password? This is a demo change and is not synced to a real auth server.",
+  "updatePassword": "Update password",
+  "notifications": {
+    "title": "Notifications",
+    "intro": "Choose which updates you want on this device. Demo preferences are stored locally.",
+    "save": "Save preferences",
+    "saved": "Notification preferences saved.",
+    "likes": "Likes",
+    "likesHint": "When someone likes your workout",
+    "comments": "Comments",
+    "commentsHint": "Replies and mentions on your posts",
+    "follows": "Follows & requests",
+    "followsHint": "New followers and follow requests",
+    "messages": "Direct messages",
+    "messagesHint": "Private replies and chats",
+    "stories": "Stories",
+    "storiesHint": "Reactions and replies to your stories"
+  },
+  "privacyPage": {
+    "title": "Account Privacy",
+    "visibility": "Profile visibility",
+    "visibilityHint": "Private accounts require follow approval before others see your workouts.",
+    "whoCanMessage": "Who can message you",
+    "everyone": "Everyone",
+    "peopleYouFollow": "People you follow",
+    "noOne": "No one",
+    "blocked": "Blocked accounts",
+    "blockedEmpty": "You haven't blocked anyone. You can block athletes from their profile menu.",
+    "reports": "Reports",
+    "reportsBody": "To report a post or athlete, open their profile or post and use the menu.",
+    "nowPrivate": "Account is now private.",
+    "nowPublic": "Account is now public.",
+    "messagesUpdated": "Message privacy updated.",
+    "unblocked": "User unblocked.",
+    "openProfile": "Open profile",
+    "approveFollows": "Approve follows",
+    "contactSupport": "Contact support →",
+    "reportsBodyLong": "To report a post or athlete, open their profile or post and use the menu. Reports are reviewed by Evolve support in production builds."
+  },
+  "help": {
+    "title": "Help & Support",
+    "intro": "Need a hand? Browse common questions or email the Evolve team.",
+    "faq": "FAQ",
+    "aboutLink": "About Evolve →",
+    "privacyLink": "Privacy controls →",
+    "faqItems": [
+      {
+        "q": "How do I make my account private?",
+        "a": "Open Edit profile (or Profile → ⋮ → Account Privacy), then choose Private."
+      },
+      {
+        "q": "Where do I change language or appearance?",
+        "a": "Profile → ⋮ → Preferences. Language, measurement, appearance, security, and subscription live there."
+      },
+      {
+        "q": "Where are my saved workouts?",
+        "a": "Profile → ⋮ → Saved Posts. Bookmark any post from the feed to add it there."
+      },
+      {
+        "q": "How do dual camera stories work?",
+        "a": "From Feed, tap Your story. On devices with front and rear cameras, Evolve captures both in one moment."
+      },
+      {
+        "q": "What's included in Free vs Pro?",
+        "a": "Feed, social, and posting are free. Pro unlocks food logging, training plans, scanners, and deeper analytics."
+      }
+    ]
+  },
+  "about": {
+    "title": "About",
+    "body": "Evolve is a fitness network for athletes who train in public — share workouts, dual-camera stories, and stay accountable with the people who push you.",
+    "version": "Version 0.1.0 · Demo",
+    "contact": "Contact",
+    "plans": "Plans & pricing",
+    "tagline": "Made for athletes. Built with intention.",
+    "helpLink": "Help & Support"
+  },
+  "photoHint": "Tap the + to add or change your photo",
+  "instagramPlaceholder": "username",
+  "health": {
+    "title": "Health integrations",
+    "subtitle": "Connect Apple Health or Garmin Connect to sync steps, workouts, and recovery into Evolve Pro.",
+    "statusOn": "Connected",
+    "statusOff": "Not connected",
+    "disconnect": "Disconnect",
+    "connectedSince": "Connected since {{date}}",
+    "syncTitle": "What to sync",
+    "syncHint": "Turn categories on or off without disconnecting.",
+    "sync": {
+      "steps": "Steps & activity",
+      "stepsBody": "Daily step count and move totals.",
+      "workouts": "Workouts",
+      "workoutsBody": "Import sessions and outdoor activities.",
+      "recovery": "Recovery",
+      "recoveryBody": "Sleep, heart rate, and recovery metrics when available."
+    },
+    "apple": {
+      "title": "Apple Health",
+      "body": "Sync from the Health app on iPhone. Connect once, then choose what Evolve can read.",
+      "connect": "Connect Apple Health",
+      "connected": "Apple Health connected.",
+      "disconnected": "Apple Health disconnected.",
+      "connectFirst": "Connect Apple Health first."
+    },
+    "garmin": {
+      "title": "Garmin Connect",
+      "body": "Pull activities from your Garmin watch and Connect account into Evolve.",
+      "connect": "Connect Garmin",
+      "connected": "Garmin Connect connected.",
+      "disconnected": "Garmin Connect disconnected.",
+      "connectFirst": "Connect Garmin Connect first."
+    },
+    "webNote": "Full native sync ships with the mobile app. This screen saves your Pro connection preferences for demo."
+  }
+}

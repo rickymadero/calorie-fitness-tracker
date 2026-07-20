@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { getPostAuthPath } from "@/lib/auth/routes";
 import { storage } from "@/lib/storage";
 
@@ -19,6 +20,7 @@ export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+  const { t } = useAppTranslation(["common", "auth"]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -28,21 +30,21 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     if (!email.includes("@")) {
-      setError("Enter a valid email address.");
+      setError(t("errors.invalidEmail"));
       return;
     }
     if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
+      setError(t("errors.passwordShort"));
       return;
     }
     setLoading(true);
     const result = await login(email, password);
     setLoading(false);
     if (!result.ok) {
-      setError(result.error || "Login failed.");
+      setError(result.error || t("errors.loginFailed"));
       return;
     }
-    toast("Welcome back!", "success");
+    toast(t("success.welcomeBack"), "success");
     const user = storage.getUser();
     router.push(getPostAuthPath(user));
   }
@@ -51,15 +53,15 @@ export default function LoginPage() {
     <MinimalAuthShell>
       <form onSubmit={onSubmit} className="flex flex-col gap-4">
         <AuthField
-          label="Email"
+          label={t("email", { ns: "auth" })}
           type="email"
           autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@email.com"
+          placeholder={t("emailPlaceholder", { ns: "auth" })}
         />
         <AuthField
-          label="Password"
+          label={t("password", { ns: "auth" })}
           type="password"
           autoComplete="current-password"
           value={password}
@@ -68,16 +70,16 @@ export default function LoginPage() {
         />
         {error && <p className="text-sm text-red-400">{error}</p>}
         <Button type="submit" fullWidth size="lg" loading={loading} className="mt-2">
-          Sign in
+          {t("signIn", { ns: "auth" })}
         </Button>
       </form>
 
-      <AuthDivider />
-      <InstagramContinueButton />
+      <AuthDivider label={t("labels.or")} />
+      <InstagramContinueButton label={t("continueInstagram", { ns: "auth" })} />
 
       <AuthSwitchLink
-        prompt="New to Evolve?"
-        actionLabel="Create account"
+        prompt={t("newToApp", { ns: "auth" })}
+        actionLabel={t("createAccount", { ns: "auth" })}
         href="/register"
       />
     </MinimalAuthShell>

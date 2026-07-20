@@ -342,13 +342,19 @@ export function scaleFood(
   food: FoodItem,
   servings: number,
 ): FoodItem {
-  const factor = Math.max(0.25, servings);
+  const factor = Math.max(0.01, servings);
+  const round1 = (n: number) => Math.round(n * factor * 10) / 10;
   return {
     ...food,
     calories: Math.round(food.calories * factor),
-    protein: Math.round(food.protein * factor * 10) / 10,
-    carbs: Math.round(food.carbs * factor * 10) / 10,
-    fat: Math.round(food.fat * factor * 10) / 10,
-    serving: servings === 1 ? food.serving : `${servings} × ${food.serving}`,
+    protein: round1(food.protein),
+    carbs: round1(food.carbs),
+    fat: round1(food.fat),
+    fiber: food.fiber != null ? round1(food.fiber) : undefined,
+    sodium: food.sodium != null ? Math.round(food.sodium * factor) : undefined,
+    serving:
+      Math.abs(factor - 1) < 0.001
+        ? food.serving
+        : `${Number(factor.toFixed(2))} × ${food.serving}`,
   };
 }

@@ -1,0 +1,153 @@
+{
+  "title": "设置",
+  "profile": "个人主页",
+  "account": "账户",
+  "privacy": "账户隐私",
+  "linked": "已关联的社交账户",
+  "security": "安全",
+  "preferences": "偏好设置",
+  "fullName": "姓名",
+  "username": "用户名",
+  "bio": "个人简介",
+  "bioPlaceholder": "给其他运动员的简短介绍…",
+  "photo": "头像",
+  "removePhoto": "移除头像",
+  "email": "电子邮箱地址",
+  "passwordCurrent": "当前密码",
+  "passwordNew": "新密码",
+  "passwordConfirm": "确认新密码",
+  "passwordHint": "留空表示保持当前密码不变",
+  "measurement": "计量单位",
+  "appearance": "外观",
+  "dark": "深色模式",
+  "light": "浅色模式",
+  "language": "语言",
+  "languageHint": "应用于菜单、动态、设置等界面的语言",
+  "subscription": "订阅",
+  "subscriptionBody": "社交动态功能免费。Pro 解锁饮食记录、计划、扫描器和数据分析。",
+  "shownAs": "显示为 @{{username}}",
+  "visibilityPublic": "公开",
+  "visibilityPrivate": "私密",
+  "visibilityPublicHint": "任何人都可以关注",
+  "visibilityPrivateHint": "需批准申请",
+  "morePrivacy": "更多隐私设置 →",
+  "instagram": "Instagram",
+  "instagramHint": "无需 @",
+  "showInstagram": "在主页显示 Instagram",
+  "twoFactor": "双重验证",
+  "twoFactorHint": "演示开关——完整的双重验证功能将在后续上线",
+  "blockReport": "屏蔽与举报设置 →",
+  "emailChangeTitle": "确认更改邮箱",
+  "passwordChangeTitle": "确认更改密码",
+  "emailChangeBody": "将邮箱更改为 {{email}}？你将使用此邮箱登录。",
+  "passwordChangeBody": "更新密码？这是演示性更改，不会同步到真实的身份验证服务器。",
+  "updatePassword": "更新密码",
+  "notifications": {
+    "title": "通知",
+    "intro": "选择你想在此设备上接收的更新。演示偏好设置保存在本地。",
+    "save": "保存偏好设置",
+    "saved": "通知偏好设置已保存。",
+    "likes": "点赞",
+    "likesHint": "当有人为你的训练点赞时",
+    "comments": "评论",
+    "commentsHint": "对你动态的回复与提及",
+    "follows": "关注与申请",
+    "followsHint": "新粉丝与关注申请",
+    "messages": "私信",
+    "messagesHint": "私密回复与聊天",
+    "stories": "快拍",
+    "storiesHint": "对你快拍的反应与回复"
+  },
+  "privacyPage": {
+    "title": "账户隐私",
+    "visibility": "主页可见性",
+    "visibilityHint": "私密账户需要批准关注申请后，其他人才能看到你的训练。",
+    "whoCanMessage": "谁可以给你发私信",
+    "everyone": "所有人",
+    "peopleYouFollow": "你关注的人",
+    "noOne": "无人",
+    "blocked": "已屏蔽的账户",
+    "blockedEmpty": "你还没有屏蔽任何人。可以在运动员主页菜单中屏蔽对方。",
+    "reports": "举报",
+    "reportsBody": "如需举报动态或运动员，请打开其主页或动态，使用菜单进行举报。",
+    "nowPrivate": "账户现已设为私密。",
+    "nowPublic": "账户现已设为公开。",
+    "messagesUpdated": "私信隐私设置已更新。",
+    "unblocked": "已取消屏蔽该用户。",
+    "openProfile": "打开主页",
+    "approveFollows": "批准关注",
+    "contactSupport": "联系支持 →",
+    "reportsBodyLong": "要举报帖子或运动员，请打开其主页或帖子并使用菜单。正式版本中由 Evolve 支持团队审核举报。"
+  },
+  "help": {
+    "title": "帮助与支持",
+    "intro": "需要帮助？查看常见问题，或发邮件联系 Evolve 团队。",
+    "faq": "常见问题",
+    "aboutLink": "关于 Evolve →",
+    "privacyLink": "隐私设置 →",
+    "faqItems": [
+      {
+        "q": "How do I make my account private?",
+        "a": "Open Settings → Account privacy, or Profile → ⋮ → Account Privacy, then choose Private."
+      },
+      {
+        "q": "Where are my saved workouts?",
+        "a": "Profile → ⋮ → Saved Posts. Bookmark any post from the feed to add it there."
+      },
+      {
+        "q": "How do dual camera stories work?",
+        "a": "From Feed, tap Your story. On devices with front and rear cameras, Evolve captures both in one moment."
+      },
+      {
+        "q": "What's included in Free vs Pro?",
+        "a": "Feed, social, and posting are free. Pro unlocks food logging, training plans, scanners, and deeper analytics."
+      }
+    ]
+  },
+  "about": {
+    "title": "关于",
+    "body": "Evolve 是为公开训练的运动员打造的健身网络——分享训练动态、双摄快拍，并与激励你的人保持相互监督。",
+    "version": "版本 0.1.0 · 演示版",
+    "contact": "联系我们",
+    "plans": "套餐与价格",
+    "tagline": "为运动员而生，用心打造。",
+    "helpLink": "帮助与支持"
+  },
+  "photoHint": "点击 + 添加或更换头像",
+  "instagramPlaceholder": "用户名",
+  "health": {
+    "title": "健康集成",
+    "subtitle": "连接 Apple Health 或 Garmin Connect，将步数、训练与恢复同步到 Evolve Pro。",
+    "statusOn": "已连接",
+    "statusOff": "未连接",
+    "disconnect": "断开连接",
+    "connectedSince": "连接于 {{date}}",
+    "syncTitle": "同步内容",
+    "syncHint": "无需断开即可开关类别。",
+    "sync": {
+      "steps": "步数与活动",
+      "stepsBody": "每日步数与活动总量。",
+      "workouts": "训练",
+      "workoutsBody": "导入课程与户外活动。",
+      "recovery": "恢复",
+      "recoveryBody": "睡眠、心率及可用的恢复指标。"
+    },
+    "apple": {
+      "title": "Apple Health",
+      "body": "从 iPhone 健康 App 同步。连接一次，再选择 Evolve 可读取的内容。",
+      "connect": "连接 Apple Health",
+      "connected": "已连接 Apple Health。",
+      "disconnected": "已断开 Apple Health。",
+      "connectFirst": "请先连接 Apple Health。"
+    },
+    "garmin": {
+      "title": "Garmin Connect",
+      "body": "将 Garmin 手表与 Connect 账号中的活动导入 Evolve。",
+      "connect": "连接 Garmin",
+      "connected": "已连接 Garmin Connect。",
+      "disconnected": "已断开 Garmin Connect。",
+      "connectFirst": "请先连接 Garmin Connect。"
+    },
+    "webNote": "完整原生同步将随移动 App 推出。此页面保存 Pro 演示偏好。"
+  }
+}

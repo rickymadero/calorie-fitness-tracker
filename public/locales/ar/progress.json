@@ -1,0 +1,61 @@
+{
+  "title": "التقدّم",
+  "subtitle": "تتبّع الوزن والقياسات والصور والالتزام عبر الزمن.",
+  "measurements": "القياسات",
+  "photo": "صورة",
+  "logWeight": "تسجيل الوزن",
+  "weightTrend": "اتجاه الوزن",
+  "changeThisMonth": "{{sign}}{{amount}} {{unit}} هذا الشهر",
+  "currentGoal": "الحالي: {{current}} {{unit}} · الهدف: {{goal}} {{unit}}",
+  "bodyMeasurements": "قياسات الجسم",
+  "measure": {
+    "chest": "الصدر",
+    "waist": "الخصر",
+    "hips": "الوركين",
+    "arms": "الذراعين"
+  },
+  "consistency": "الانتظام",
+  "calorieAdherence": "الالتزام بالسعرات",
+  "workoutConsistency": "انتظام التمرين",
+  "habitCompletion": "إكمال العادات",
+  "progressPhotos": "صور التقدّم",
+  "photosEmptyTitle": "لا صور بعد",
+  "photosEmptyDescription": "ارفع صور تقدّم لمقارنة التغييرات بمرور الوقت.",
+  "addPhoto": "إضافة صورة",
+  "monthlyOverview": "نظرة شهرية",
+  "monthlyOverviewBody": "عناصر الرسم البياني جاهزة لمكتبة رسوم أو واجهة تحليلات. العرض التجريبي الحالي يُظهر اتجاه وزن هابط صحيًا مع التزام قوي بالتمرين.",
+  "avgDailyCalories": "متوسط السعرات اليومية",
+  "workoutsCompleted": "تمارين مكتملة",
+  "bestStreak": "أفضل سلسلة",
+  "bestStreakValue": "{{n}} أيام",
+  "modal": {
+    "logWeightTitle": "تسجيل الوزن",
+    "weightLabel": "الوزن ({{unit}})",
+    "updateMeasurements": "تحديث القياسات",
+    "addPhotoTitle": "إضافة صورة تقدّم",
+    "addPhotoBody": "سيُربط رفع الصور بالتخزين لاحقًا. هذا العرض يضيف عنصرًا نائبًا."
+  },
+  "addPlaceholderPhoto": "إضافة صورة نائبة",
+  "toast": {
+    "invalidWeight": "أدخل وزنًا صالحًا.",
+    "weightLogged": "تم تسجيل الوزن.",
+    "measurementsUpdated": "تم تحديث القياسات.",
+    "photoAdded": "تمت إضافة صورة التقدّم."
+  },
+  "chartToday": "اليوم",
+  "basic": {
+    "title": "إحصائيات أساسية",
+    "subtitle": "مسافة ووقت وسعرات هذا الأسبوع من تمارينك المسجّلة — مجانًا للجميع.",
+    "freeBadge": "مجاني",
+    "distance": "المسافة",
+    "time": "الوقت",
+    "calories": "السعرات",
+    "weeklyActivity": "هذا الأسبوع",
+    "workoutsCount": "{{n}} تمارين",
+    "empty": "لا تمارين هذا الأسبوع",
+    "emptyHint": "سجّل جلسة لرؤية الرسم الأسبوعي.",
+    "logWorkout": "تسجيل تمرين",
+    "unlockTitle": "افتح Progress المتقدم",
+    "unlockBody": "اتجاهات الوزن والقياسات وصور التقدم والتحليلات الشهرية ضمن Evolve Pro. الإحصائيات الأساسية أعلاه مجانية دائمًا."
+  }
+}

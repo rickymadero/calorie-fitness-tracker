@@ -1,0 +1,61 @@
+{
+  "title": "진행",
+  "subtitle": "체중, 치수, 사진, 달성률을 시간에 따라 추적하세요.",
+  "measurements": "치수",
+  "photo": "사진",
+  "logWeight": "체중 기록",
+  "weightTrend": "체중 추이",
+  "changeThisMonth": "이번 달 {{sign}}{{amount}} {{unit}}",
+  "currentGoal": "현재: {{current}} {{unit}} · 목표: {{goal}} {{unit}}",
+  "bodyMeasurements": "신체 치수",
+  "measure": {
+    "chest": "가슴",
+    "waist": "허리",
+    "hips": "엉덩이",
+    "arms": "팔"
+  },
+  "consistency": "꾸준함",
+  "calorieAdherence": "칼로리 준수율",
+  "workoutConsistency": "운동 꾸준함",
+  "habitCompletion": "습관 완료율",
+  "progressPhotos": "진행 사진",
+  "photosEmptyTitle": "아직 사진 없음",
+  "photosEmptyDescription": "진행 사진을 올려 변화를 비교하세요.",
+  "addPhoto": "사진 추가",
+  "monthlyOverview": "월간 요약",
+  "monthlyOverviewBody": "차트 플레이스홀더는 차트 라이브러리 또는 분석 API용으로 준비되었습니다. 현재 목업은 건강한 체중 감소 추이와 탄탄한 운동 준수를 보여줍니다.",
+  "avgDailyCalories": "일평균 칼로리",
+  "workoutsCompleted": "완료한 운동",
+  "bestStreak": "최장 연속",
+  "bestStreakValue": "{{n}}일",
+  "modal": {
+    "logWeightTitle": "체중 기록",
+    "weightLabel": "체중 ({{unit}})",
+    "updateMeasurements": "치수 업데이트",
+    "addPhotoTitle": "진행 사진 추가",
+    "addPhotoBody": "사진 업로드는 나중에 스토리지에 연결됩니다. 이 데모는 플레이스홀더를 추가합니다."
+  },
+  "addPlaceholderPhoto": "플레이스홀더 사진 추가",
+  "toast": {
+    "invalidWeight": "유효한 체중을 입력하세요.",
+    "weightLogged": "체중이 기록되었습니다.",
+    "measurementsUpdated": "치수가 업데이트되었습니다.",
+    "photoAdded": "진행 사진이 추가되었습니다."
+  },
+  "chartToday": "오늘",
+  "basic": {
+    "title": "기본 통계",
+    "subtitle": "기록한 운동으로 이번 주 거리·시간·칼로리 — 모두에게 무료.",
+    "freeBadge": "무료",
+    "distance": "거리",
+    "time": "시간",
+    "calories": "칼로리",
+    "weeklyActivity": "이번 주",
+    "workoutsCount": "운동 {{n}}회",
+    "empty": "이번 주 운동 없음",
+    "emptyHint": "세션을 기록하면 주간 차트에 표시됩니다.",
+    "logWorkout": "운동 기록",
+    "unlockTitle": "고급 Progress 잠금 해제",
+    "unlockBody": "체중 추이, 신체 측정, 진행 사진, 월간 분석은 Evolve Pro입니다. 위 기본 통계는 영구 무료입니다."
+  }
+}

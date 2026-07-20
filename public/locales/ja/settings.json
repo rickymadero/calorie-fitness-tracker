@@ -1,0 +1,153 @@
+{
+  "title": "設定",
+  "profile": "プロフィール",
+  "account": "アカウント",
+  "privacy": "アカウントのプライバシー",
+  "linked": "連携済みのソーシャルアカウント",
+  "security": "セキュリティ",
+  "preferences": "環境設定",
+  "fullName": "氏名",
+  "username": "ユーザー名",
+  "bio": "自己紹介",
+  "bioPlaceholder": "他のアスリートへの簡単な自己紹介…",
+  "photo": "プロフィール写真",
+  "removePhoto": "写真を削除",
+  "email": "メールアドレス",
+  "passwordCurrent": "現在のパスワード",
+  "passwordNew": "新しいパスワード",
+  "passwordConfirm": "新しいパスワード（確認）",
+  "passwordHint": "変更しない場合は空欄のままにしてください",
+  "measurement": "単位系",
+  "appearance": "外観",
+  "dark": "ダークモード",
+  "light": "ライトモード",
+  "language": "言語",
+  "languageHint": "メニュー、フィード、設定などに使用するアプリの言語",
+  "subscription": "サブスクリプション",
+  "subscriptionBody": "ソーシャルフィードは無料です。Proでは食事記録、プラン、スキャナー、分析機能が利用できます。",
+  "shownAs": "@{{username}} として表示されます",
+  "visibilityPublic": "公開",
+  "visibilityPrivate": "非公開",
+  "visibilityPublicHint": "誰でもフォローできます",
+  "visibilityPrivateHint": "リクエストを承認する必要があります",
+  "morePrivacy": "詳細なプライバシー設定 →",
+  "instagram": "Instagram",
+  "instagramHint": "@は不要です",
+  "showInstagram": "プロフィールにInstagramを表示",
+  "twoFactor": "二段階認証",
+  "twoFactorHint": "デモ用のトグルです — 完全な2FAは今後追加されます",
+  "blockReport": "ブロックと報告の設定 →",
+  "emailChangeTitle": "メールアドレスの変更を確認",
+  "passwordChangeTitle": "パスワードの変更を確認",
+  "emailChangeBody": "メールアドレスを {{email}} に変更しますか？このアドレスでログインするようになります。",
+  "passwordChangeBody": "パスワードを更新しますか？これはデモ用の変更で、実際の認証サーバーとは同期されません。",
+  "updatePassword": "パスワードを更新",
+  "notifications": {
+    "title": "通知",
+    "intro": "この端末で受け取りたい通知を選択してください。デモ用の設定はローカルに保存されます。",
+    "save": "設定を保存",
+    "saved": "通知設定を保存しました。",
+    "likes": "いいね",
+    "likesHint": "誰かがあなたのワークアウトにいいねしたとき",
+    "comments": "コメント",
+    "commentsHint": "あなたの投稿への返信やメンション",
+    "follows": "フォローとリクエスト",
+    "followsHint": "新しいフォロワーとフォローリクエスト",
+    "messages": "ダイレクトメッセージ",
+    "messagesHint": "個人的な返信とチャット",
+    "stories": "ストーリー",
+    "storiesHint": "あなたのストーリーへのリアクションや返信"
+  },
+  "privacyPage": {
+    "title": "アカウントのプライバシー",
+    "visibility": "プロフィールの公開範囲",
+    "visibilityHint": "非公開アカウントでは、他の人があなたのワークアウトを見るにはフォロー承認が必要です。",
+    "whoCanMessage": "メッセージを送れる相手",
+    "everyone": "全員",
+    "peopleYouFollow": "フォロー中のユーザー",
+    "noOne": "誰にも許可しない",
+    "blocked": "ブロック済みのアカウント",
+    "blockedEmpty": "まだ誰もブロックしていません。アスリートのプロフィールメニューからブロックできます。",
+    "reports": "報告",
+    "reportsBody": "投稿またはアスリートを報告するには、そのプロフィールまたは投稿を開いてメニューを使用してください。",
+    "nowPrivate": "アカウントを非公開に設定しました。",
+    "nowPublic": "アカウントを公開に設定しました。",
+    "messagesUpdated": "メッセージのプライバシー設定を更新しました。",
+    "unblocked": "ユーザーのブロックを解除しました。",
+    "openProfile": "プロフィールを開く",
+    "approveFollows": "フォローを承認",
+    "contactSupport": "サポートに連絡 →",
+    "reportsBodyLong": "投稿やアスリートを報告するには、プロフィールまたは投稿を開きメニューを使ってください。本番ビルドではEvolveサポートが報告を確認します。"
+  },
+  "help": {
+    "title": "ヘルプとサポート",
+    "intro": "お困りですか？よくある質問をご覧いただくか、Evolveチームにメールでお問い合わせください。",
+    "faq": "よくある質問",
+    "aboutLink": "Evolveについて →",
+    "privacyLink": "プライバシー設定 →",
+    "faqItems": [
+      {
+        "q": "How do I make my account private?",
+        "a": "Open Settings → Account privacy, or Profile → ⋮ → Account Privacy, then choose Private."
+      },
+      {
+        "q": "Where are my saved workouts?",
+        "a": "Profile → ⋮ → Saved Posts. Bookmark any post from the feed to add it there."
+      },
+      {
+        "q": "How do dual camera stories work?",
+        "a": "From Feed, tap Your story. On devices with front and rear cameras, Evolve captures both in one moment."
+      },
+      {
+        "q": "What's included in Free vs Pro?",
+        "a": "Feed, social, and posting are free. Pro unlocks food logging, training plans, scanners, and deeper analytics."
+      }
+    ]
+  },
+  "about": {
+    "title": "アプリについて",
+    "body": "Evolveは、人前でトレーニングするアスリートのためのフィットネスネットワークです — ワークアウトやデュアルカメラのストーリーをシェアし、あなたを支える仲間と一緒に自分を律しましょう。",
+    "version": "バージョン 0.1.0 · デモ",
+    "contact": "お問い合わせ",
+    "plans": "プランと価格",
+    "tagline": "アスリートのために、心を込めて。",
+    "helpLink": "ヘルプとサポート"
+  },
+  "photoHint": "＋をタップして写真を追加・変更",
+  "instagramPlaceholder": "ユーザー名",
+  "health": {
+    "title": "ヘルスケア連携",
+    "subtitle": "Apple Health または Garmin Connect を接続して、歩数・ワークアウト・回復を Evolve Pro に同期します。",
+    "statusOn": "接続済み",
+    "statusOff": "未接続",
+    "disconnect": "切断",
+    "connectedSince": "{{date}} から接続",
+    "syncTitle": "同期する項目",
+    "syncHint": "切断せずにカテゴリを切り替えられます。",
+    "sync": {
+      "steps": "歩数とアクティビティ",
+      "stepsBody": "1日の歩数と活動量。",
+      "workouts": "ワークアウト",
+      "workoutsBody": "セッションとアウトドア活動を取り込みます。",
+      "recovery": "リカバリー",
+      "recoveryBody": "睡眠・心拍・回復指標（取得可能な場合）。"
+    },
+    "apple": {
+      "title": "Apple Health",
+      "body": "iPhone のヘルスケアアプリから同期。一度接続し、Evolve が読み取れる内容を選べます。",
+      "connect": "Apple Health を接続",
+      "connected": "Apple Health を接続しました。",
+      "disconnected": "Apple Health を切断しました。",
+      "connectFirst": "先に Apple Health を接続してください。"
+    },
+    "garmin": {
+      "title": "Garmin Connect",
+      "body": "Garmin ウォッチと Connect アカウントのアクティビティを Evolve に取り込みます。",
+      "connect": "Garmin を接続",
+      "connected": "Garmin Connect を接続しました。",
+      "disconnected": "Garmin Connect を切断しました。",
+      "connectFirst": "先に Garmin Connect を接続してください。"
+    },
+    "webNote": "完全なネイティブ同期はモバイルアプリで提供予定です。この画面は Pro デモ設定を保存します。"
+  }
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Check, Sparkles } from "lucide-react";
@@ -11,48 +11,29 @@ import { Badge } from "@/components/ui/Badge";
 import { PageLoader } from "@/components/ui/Spinner";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
-
-const FREE_FEATURES = [
-  "Basic calorie tracking",
-  "Basic macronutrient tracking",
-  "Weight tracking",
-  "Personalized starter workout plan",
-  "Basic exercise names, sets & reps",
-  "Basic recipe library",
-  "Manual food logging",
-  "Limited saved meals",
-];
-
-const PRO_FEATURES = [
-  "Full exercise demonstration videos",
-  "Detailed technique & safety coaching",
-  "Personalized workout plans + admin assignments",
-  "Workout plan adjustments from performance",
-  "Advanced progression tracking",
-  "Smart exercise replacements",
-  "Guided workout mode with rest timers",
-  "Barcode scanner",
-  "Personalized recipe recommendations",
-  "Weekly meal plans & grocery lists",
-  "Macro-based meal suggestions",
-  "Advanced progress analytics",
-  "Automatic plan update recommendations",
-  "Trainer notes & premium programs",
-  "Advanced recovery recommendations",
-  "No advertisements",
-  "Priority support",
-];
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 
 export default function PricingPage() {
   const { user, isReady, markPricingSeen, setPlan } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+  const { t } = useAppTranslation("pricing");
   const [billing, setBilling] = useState<"monthly" | "annual">("annual");
 
   useEffect(() => {
     if (!isReady) return;
     if (!user) router.replace("/");
   }, [user, isReady, router]);
+
+  const freeFeatures = useMemo(() => {
+    const raw = t("freeFeatures", { returnObjects: true });
+    return Array.isArray(raw) ? (raw as string[]) : [];
+  }, [t]);
+
+  const proFeatures = useMemo(() => {
+    const raw = t("proFeatures", { returnObjects: true });
+    return Array.isArray(raw) ? (raw as string[]) : [];
+  }, [t]);
 
   if (!isReady || !user) return <PageLoader />;
 
@@ -67,16 +48,13 @@ export default function PricingPage() {
 
   function startFree() {
     setPlan("free");
-    toast("You're on the Free plan. Upgrade anytime.", "success");
+    toast(t("toastFree"), "success");
     goDashboard();
   }
 
   function startPro(trial?: boolean) {
     setPlan("pro");
-    toast(
-      trial ? "Pro free trial started (demo)." : "Upgraded to Pro (demo).",
-      "success",
-    );
+    toast(trial ? t("toastTrial") : t("toastPro"), "success");
     goDashboard();
   }
 
@@ -84,13 +62,13 @@ export default function PricingPage() {
     <div className="min-h-dvh bg-background">
       <header className="border-b border-border px-4 py-4 md:px-8">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <EvolveLogo size="sm" href="#" />
+          <EvolveLogo size="sm" />
           <button
             type="button"
             onClick={goDashboard}
             className="text-sm text-muted hover:text-foreground"
           >
-            Skip for now
+            {t("skip")}
           </button>
         </div>
       </header>
@@ -98,11 +76,9 @@ export default function PricingPage() {
       <main className="mx-auto max-w-5xl px-4 py-10 md:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="font-display text-3xl font-bold tracking-tight md:text-4xl">
-            Choose your plan
+            {t("title")}
           </h1>
-          <p className="mt-3 text-muted">
-            Start free and upgrade when you want deeper personalization and unlimited tools.
-          </p>
+          <p className="mt-3 text-muted">{t("subtitle")}</p>
 
           <div className="mt-8 inline-flex rounded-2xl border border-border bg-card p-1">
             <button
@@ -112,7 +88,7 @@ export default function PricingPage() {
                 billing === "monthly" ? "bg-muted-bg" : "text-muted"
               }`}
             >
-              Monthly
+              {t("monthly")}
             </button>
             <button
               type="button"
@@ -121,8 +97,10 @@ export default function PricingPage() {
                 billing === "annual" ? "bg-accent text-accent-fg" : "text-muted"
               }`}
             >
-              Annual
-              <span className="ml-2 text-xs opacity-80">Save {savings}%</span>
+              {t("annual")}
+              <span className="ml-2 text-xs opacity-80">
+                {t("savePercent", { pct: savings })}
+              </span>
             </button>
           </div>
         </div>
@@ -133,16 +111,19 @@ export default function PricingPage() {
             animate={{ opacity: 1, y: 0 }}
           >
             <Card className="flex h-full flex-col">
-              <h2 className="font-display text-xl font-semibold">Free</h2>
-              <p className="mt-1 text-sm text-muted">
-                Everything you need to start building better habits.
-              </p>
+              <h2 className="font-display text-xl font-semibold">
+                {t("freeTitle")}
+              </h2>
+              <p className="mt-1 text-sm text-muted">{t("freeBody")}</p>
               <p className="mt-6 font-display text-4xl font-bold">
-                $0
-                <span className="text-base font-medium text-muted"> / forever</span>
+                {t("freePrice")}
+                <span className="text-base font-medium text-muted">
+                  {" "}
+                  {t("forever")}
+                </span>
               </p>
               <ul className="mt-6 flex-1 space-y-3">
-                {FREE_FEATURES.map((f) => (
+                {freeFeatures.map((f) => (
                   <li key={f} className="flex items-start gap-3 text-sm">
                     <Check size={16} className="mt-0.5 shrink-0 text-muted" />
                     {f}
@@ -156,7 +137,7 @@ export default function PricingPage() {
                 fullWidth
                 onClick={startFree}
               >
-                Start for Free
+                {t("startFree")}
               </Button>
             </Card>
           </motion.div>
@@ -173,25 +154,28 @@ export default function PricingPage() {
               <div className="absolute -top-3 right-5">
                 <Badge variant="accent">
                   <span className="inline-flex items-center gap-1">
-                    <Sparkles size={12} /> Recommended
+                    <Sparkles size={12} /> {t("recommended")}
                   </span>
                 </Badge>
               </div>
-              <h2 className="font-display text-xl font-semibold">Pro</h2>
-              <p className="mt-1 text-sm text-muted">
-                Full personalization, unlimited logging, and advanced insights.
-              </p>
+              <h2 className="font-display text-xl font-semibold">
+                {t("proTitle")}
+              </h2>
+              <p className="mt-1 text-sm text-muted">{t("proBody")}</p>
               <p className="mt-6 font-display text-4xl font-bold">
                 ${billing === "annual" ? annualMonthly : monthlyPrice}
-                <span className="text-base font-medium text-muted"> / month</span>
+                <span className="text-base font-medium text-muted">
+                  {" "}
+                  {t("perMonth")}
+                </span>
               </p>
               {billing === "annual" && (
                 <p className="mt-1 text-xs text-muted">
-                  Billed annually · Save {savings}% vs monthly
+                  {t("billedAnnual", { pct: savings })}
                 </p>
               )}
               <ul className="mt-6 flex-1 space-y-3">
-                {PRO_FEATURES.map((f) => (
+                {proFeatures.map((f) => (
                   <li key={f} className="flex items-start gap-3 text-sm">
                     <Check
                       size={16}
@@ -203,7 +187,7 @@ export default function PricingPage() {
               </ul>
               <div className="mt-8 space-y-3">
                 <Button size="lg" fullWidth onClick={() => startPro(true)}>
-                  Start Free Trial
+                  {t("startTrial")}
                 </Button>
                 <Button
                   size="lg"
@@ -211,7 +195,7 @@ export default function PricingPage() {
                   variant="secondary"
                   onClick={() => startPro(false)}
                 >
-                  Upgrade to Pro
+                  {t("upgrade")}
                 </Button>
               </div>
             </Card>

@@ -1,0 +1,42 @@
+{
+  "title": "Rezepte",
+  "subtitle": "Essensideen verknüpft mit deinen Makros. Pro schaltet personalisierte Wochenpläne und makrobasierte Empfehlungen frei.",
+  "recommendedNow": "Jetzt für dich empfohlen",
+  "remainingMacros": "~{{kcal}} kcal und {{protein}}g Protein verbleibend",
+  "postWorkoutFocus": " · Fokus nach dem Workout",
+  "unlockProMeals": "Pro-Mahlzeiten freischalten",
+  "recipeCardMeta": "{{calories}} kcal · {{protein}}P · {{carbs}}C · {{fat}}F",
+  "searchPlaceholder": "Rezepte suchen...",
+  "filter": {
+    "all": "alle",
+    "breakfast": "frühstück",
+    "lunch": "mittagessen",
+    "dinner": "abendessen",
+    "snack": "snack",
+    "highProtein": "proteinreich",
+    "quick": "schnell",
+    "vegetarian": "vegetarisch",
+    "keto": "keto"
+  },
+  "cardMeta": "{{calories}} kcal · {{protein}}g Protein · {{minutes}} Min.",
+  "notFound": "Rezept nicht gefunden.",
+  "back": "Rezepte",
+  "timing": "Prep {{prep}}m · Kochen {{cook}}m · {{difficulty}}",
+  "portions": "Portionen",
+  "logToTracker": "Im Kalorien-Tracker eintragen",
+  "groceryList": "Einkaufsliste",
+  "toast": {
+    "logProRequired": "Upgrade auf Pro, um personalisierte Rezepte einzutragen.",
+    "loggedDemo": "{{name}} im Food-Tracker eingetragen (Demo).",
+    "groceryDemo": "Zutaten zur Einkaufsliste hinzugefügt (Demo).",
+    "groceryProOnly": "Smarte Einkaufslisten sind ein Pro-Feature."
+  },
+  "lockedTitle": "Personalisierte Pro-Rezepte freischalten",
+  "lockedBody": "Erhalte volle Anleitungen, wöchentliche Essenspläne, makrobasierte Vorschläge und automatische Portionsanpassungen.",
+  "ingredients": "Zutaten",
+  "allergens": "Allergene: {{list}}",
+  "steps": "Schritte",
+  "equipmentPortion": "Geräte: {{equipment}} · Portion: {{portion}}",
+  "disclaimer": "Nährwerte sind Schätzungen nur zur Planung und keine medizinische Beratung.",
+  "openMealPlan": "Essensplanung öffnen"
+}

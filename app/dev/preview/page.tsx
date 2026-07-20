@@ -112,10 +112,14 @@ export default function DevPhonePreviewPage() {
 
       <div className="flex flex-1 justify-center overflow-auto p-6">
         <div
-          className="relative shrink-0 rounded-[2.75rem] border border-white/20 bg-black p-[10px] shadow-[0_25px_80px_rgba(0,0,0,0.65)]"
-          style={{ width: device.width + 20, height: device.height + 20 }}
+          className="relative shrink-0 rounded-[2.75rem] border border-white/20 bg-black px-[10px] pb-[10px] pt-[38px] shadow-[0_25px_80px_rgba(0,0,0,0.65)]"
+          style={{
+            width: device.width + 20,
+            height: device.height + 48,
+          }}
         >
-          <div className="pointer-events-none absolute left-1/2 top-[12px] z-20 h-[26px] w-[100px] -translate-x-1/2 rounded-full bg-black" />
+          {/* Dynamic Island sits in the top bezel — not over app chrome */}
+          <div className="pointer-events-none absolute left-1/2 top-[14px] z-20 h-[26px] w-[100px] -translate-x-1/2 rounded-full bg-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]" />
           <iframe
             ref={iframeRef}
             key={`${iframeKey}-${device.id}`}

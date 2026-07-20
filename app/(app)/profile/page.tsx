@@ -2,33 +2,31 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Moon, Sun, LogOut, Crown, MapPin, Settings } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { Badge } from "@/components/ui/Badge";
-import { Modal } from "@/components/ui/Modal";
+import { CountryFlag } from "@/components/ui/CountryFlag";
+import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { EvolveLogo } from "@/components/ui/EvolveLogo";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { useTheme } from "@/components/providers/ThemeProvider";
-import { useToast } from "@/components/providers/ToastProvider";
 import { useSocial } from "@/components/social/SocialProvider";
 import { usePosts } from "@/components/posts/PostsProvider";
 import { SocialAvatar } from "@/components/social/PersonCard";
-import { SocialProfileEditor } from "@/components/social/SocialProfileEditor";
+import { ProfilePrList } from "@/components/social/ProfilePrs";
 import { FeedList } from "@/components/feed/FeedComponents";
-import type { MeasurementSystem } from "@/lib/types";
+import { ProfileOverflowMenu } from "@/components/profile/ProfileOverflowMenu";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
+
+type ProfileTab = "workouts" | "prs";
 
 export default function ProfilePage() {
-  const { user, logout, updateUser, setPlan } = useAuth();
-  const { theme, toggleTheme } = useTheme();
-  const { toast } = useToast();
-  const router = useRouter();
+  const { user } = useAuth();
   const { myProfile, ensureMyProfile, followersOf, followingOf, ready } =
     useSocial();
   const { tick, postsByAuthor, authorStats } = usePosts();
-  const [showSettings, setShowSettings] = useState(false);
-  const [showSocialEdit, setShowSocialEdit] = useState(false);
+  const { t } = useAppTranslation(["common", "profile"]);
+  const [tab, setTab] = useState<ProfileTab>("workouts");
 
   const profile = myProfile ?? (ready ? ensureMyProfile() : null);
 
@@ -47,80 +45,62 @@ export default function ProfilePage() {
   const followerCount = profile ? followersOf(profile.userId).length : 0;
   const followingCount = profile ? followingOf(profile.userId).length : 0;
   const postCount = posts.length;
+  const prCount = profile?.personalRecords?.length ?? 0;
 
   if (!user) return null;
-
-  function handleLogout() {
-    logout();
-    toast("Signed out.", "info");
-    router.push("/");
-  }
 
   return (
     <div className="min-w-0 w-full">
       <PageHeader
-        title="Profile"
-        subtitle="Your fitness identity"
         sticky
-        actions={
-          <>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowSettings(true)}
-              aria-label="Settings"
-              className="!min-w-11 !px-0"
-            >
-              <Settings size={18} />
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleLogout}
-              aria-label="Log out"
-              className="!min-w-11 !px-0"
-            >
-              <LogOut size={18} />
-            </Button>
-          </>
-        }
+        titleContent={<EvolveLogo size="md" />}
+        actions={<ProfileOverflowMenu />}
       />
 
       {profile && (
-        <section className="mt-4 min-w-0">
-          {/* Instagram-style identity row */}
+        <section className="mt-3 min-w-0">
           <div className="flex items-center gap-5">
-            <SocialAvatar name={profile.displayName} size="lg" />
+            <SocialAvatar
+              name={profile.displayName}
+              size="lg"
+              src={profile.avatarUrl || undefined}
+            />
             <div className="grid min-w-0 flex-1 grid-cols-3 gap-1 text-center">
               <div className="min-w-0">
                 <p className="font-display text-lg font-bold tabular-nums">
                   {postCount}
                 </p>
-                <p className="text-[11px] text-muted">posts</p>
+                <p className="text-[11px] text-muted">{t("common:labels.posts")}</p>
               </div>
               <Link href="/network" className="min-w-0 hover:text-accent">
                 <p className="font-display text-lg font-bold tabular-nums">
                   {followerCount}
                 </p>
-                <p className="text-[11px] text-muted">followers</p>
+                <p className="text-[11px] text-muted">
+                  {t("common:labels.followers")}
+                </p>
               </Link>
               <Link href="/network" className="min-w-0 hover:text-accent">
                 <p className="font-display text-lg font-bold tabular-nums">
                   {followingCount}
                 </p>
-                <p className="text-[11px] text-muted">following</p>
+                <p className="text-[11px] text-muted">
+                  {t("common:labels.following")}
+                </p>
               </Link>
             </div>
           </div>
 
-          {/* Name + handle + bio — full width, no side buttons */}
           <div className="mt-4 min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="truncate font-display text-base font-bold">
                 {profile.displayName}
               </h2>
+              <CountryFlag code={profile.countryCode ?? user.country} size="md" />
               <Badge variant={user.plan === "pro" ? "accent" : "default"}>
-                {user.plan === "pro" ? "Pro" : "Free"}
+                {user.plan === "pro"
+                  ? t("common:labels.pro")
+                  : t("common:labels.free")}
               </Badge>
             </div>
             <p className="truncate text-sm text-muted">@{profile.username}</p>
@@ -129,9 +109,7 @@ export default function ProfilePage() {
                 {profile.bio}
               </p>
             ) : (
-              <p className="mt-2 text-sm text-muted">
-                Add a bio in settings so athletes know who you are.
-              </p>
+              <p className="mt-2 text-sm text-muted">{t("profile:addBio")}</p>
             )}
             {profile.showLocation && profile.location ? (
               <p className="mt-1.5 inline-flex items-center gap-1 text-sm text-muted">
@@ -141,28 +119,31 @@ export default function ProfilePage() {
             ) : null}
           </div>
 
-          {/* Full-width CTAs under identity */}
           <div className="mt-4 grid grid-cols-2 gap-2">
             <Link href={`/social/u/${profile.username}`} className="min-w-0">
               <Button variant="secondary" size="sm" fullWidth>
-                Public view
+                {t("profile:publicView")}
               </Button>
             </Link>
-            <Button
-              size="sm"
-              fullWidth
-              onClick={() => setShowSocialEdit(true)}
-            >
-              Edit profile
-            </Button>
+            <Link href="/settings" className="min-w-0">
+              <Button size="sm" fullWidth>
+                {t("profile:edit")}
+              </Button>
+            </Link>
           </div>
 
           {stats && (
             <div className="evolve-stats-vivid mt-4 grid grid-cols-3 gap-1 rounded-2xl px-2 py-3 text-center">
               {[
-                { label: "Month", value: stats.workoutsThisMonth },
-                { label: "Distance", value: `${stats.totalKm} km` },
-                { label: "Streak", value: `${stats.streakDays}d` },
+                { label: t("profile:statMonth"), value: stats.workoutsThisMonth },
+                {
+                  label: t("profile:statDistance"),
+                  value: `${stats.totalKm} km`,
+                },
+                {
+                  label: t("profile:statStreak"),
+                  value: `${stats.streakDays}d`,
+                },
               ].map((s) => (
                 <div key={s.label} className="min-w-0 px-1">
                   <p className="truncate font-display text-base font-bold sm:text-lg">
@@ -178,146 +159,51 @@ export default function ProfilePage() {
         </section>
       )}
 
-      <div className="mt-6 min-w-0">
-        <div className="mb-3 flex items-center justify-between gap-2">
-          <h2 className="font-display text-lg font-semibold">Recent workouts</h2>
-          <Link href="/posts/new">
-            <Button size="sm" variant="outline">
-              New post
-            </Button>
-          </Link>
-        </div>
-        <FeedList
-          posts={posts}
-          emptyTitle="No posts yet"
-          emptyHint="Share your first workout with the network."
-          emptyAction={
-            <Link href="/posts/new">
-              <Button>Create post</Button>
-            </Link>
-          }
+      <div className="mt-5">
+        <SegmentedControl
+          segments={[
+            {
+              id: "workouts",
+              label: `${t("profile:tabWorkouts")} · ${postCount}`,
+            },
+            { id: "prs", label: `${t("profile:tabPrs")} · ${prCount}` },
+          ]}
+          value={tab}
+          onChange={setTab}
         />
       </div>
 
-      <Modal
-        open={showSocialEdit}
-        onClose={() => setShowSocialEdit(false)}
-        title="Edit social profile"
-        size="lg"
-      >
-        <SocialProfileEditor
-          embedded
-          onSaved={() => setShowSocialEdit(false)}
-        />
-      </Modal>
-
-      <Modal
-        open={showSettings}
-        onClose={() => setShowSettings(false)}
-        title="Settings"
-        size="md"
-      >
-        <div className="space-y-6">
-          <section>
-            <h3 className="font-display text-sm font-semibold uppercase tracking-wide text-muted">
-              Account
-            </h3>
-            <div className="mt-3 space-y-4">
-              <Input
-                label="Full name"
-                value={user.fullName}
-                onChange={(e) => updateUser({ fullName: e.target.value })}
-              />
-              <Input label="Email" value={user.email} disabled />
-              <Button
-                fullWidth
-                onClick={() => toast("Profile saved.", "success")}
-              >
-                Save changes
-              </Button>
-            </div>
-          </section>
-
-          <section>
-            <h3 className="font-display text-sm font-semibold uppercase tracking-wide text-muted">
-              Preferences
-            </h3>
-            <div className="mt-3 space-y-4">
-              <div>
-                <p className="mb-2 text-sm font-medium">Measurement system</p>
-                <div className="grid grid-cols-2 gap-3">
-                  {(["metric", "imperial"] as MeasurementSystem[]).map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      onClick={() => updateUser({ measurementSystem: s })}
-                      className={`min-h-11 rounded-2xl border text-sm font-medium capitalize ${
-                        user.measurementSystem === s
-                          ? "border-accent bg-accent-soft"
-                          : "border-border"
-                      }`}
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="flex items-center justify-between rounded-2xl border border-border px-4 py-3">
-                <div>
-                  <p className="text-sm font-medium">Appearance</p>
-                  <p className="mt-0.5 text-xs text-muted">
-                    {theme === "dark" ? "Dark mode" : "Light mode"}
-                  </p>
-                </div>
-                <Button variant="secondary" size="sm" onClick={toggleTheme}>
-                  {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-                  Toggle
+      <div className="mt-5 min-w-0">
+        {tab === "workouts" ? (
+          <>
+            <div className="mb-3 flex items-center justify-between gap-2">
+              <h2 className="font-display text-lg font-semibold">
+                {t("profile:recentWorkouts")}
+              </h2>
+              <Link href="/posts/new">
+                <Button size="sm" variant="outline">
+                  {t("profile:newPost")}
                 </Button>
-              </div>
-
-              <div className="rounded-2xl border border-border p-4">
-                <div className="flex items-center justify-between">
-                  <p className="font-medium">Subscription</p>
-                  <Badge variant={user.plan === "pro" ? "accent" : "default"}>
-                    {user.plan === "pro" ? "Pro" : "Free"}
-                  </Badge>
-                </div>
-                <p className="mt-2 text-sm text-muted">
-                  Social feed is free. Pro unlocks food logging, plans,
-                  scanners, and analytics.
-                </p>
-                <div className="mt-3">
-                  {user.plan !== "pro" ? (
-                    <Button
-                      fullWidth
-                      size="sm"
-                      onClick={() => {
-                        setPlan("pro");
-                        toast("Upgraded to Pro (demo).", "success");
-                      }}
-                    >
-                      <Crown size={14} />
-                      Upgrade to Pro
-                    </Button>
-                  ) : (
-                    <Button
-                      fullWidth
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        setPlan("free");
-                        toast("Moved to Free.", "info");
-                      }}
-                    >
-                      Switch to Free
-                    </Button>
-                  )}
-                </div>
-              </div>
+              </Link>
             </div>
-          </section>
-        </div>
-      </Modal>
+            <FeedList
+              posts={posts}
+              emptyTitle={t("profile:emptyPosts")}
+              emptyHint={t("profile:emptyPostsHint")}
+              emptyAction={
+                <Link href="/posts/new">
+                  <Button>{t("profile:createPost")}</Button>
+                </Link>
+              }
+            />
+          </>
+        ) : (
+          <ProfilePrList
+            records={profile?.personalRecords ?? []}
+            canEdit
+          />
+        )}
+      </div>
     </div>
   );
 }

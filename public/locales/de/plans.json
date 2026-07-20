@@ -1,0 +1,40 @@
+{
+  "title": "Pläne",
+  "subtitle": "Alltagsmahlzeiten — Chipotle, Burger, Pizza, Kaffee-Stops — rund um deine Kalorienziele.",
+  "adjustWeek": "Woche anpassen",
+  "toast": {
+    "weekRefreshed": "Wöchentliche Mahlzeiten-Swaps mit neuen Restaurant-Optionen aktualisiert.",
+    "weekProOnly": "Wöchentliche Anpassungen sind ein Pro-Feature.",
+    "loggedMealDemo": "{{name}} zu {{slot}} hinzugefügt (Demo).",
+    "addedSuggestion": "Vorschlag hinzugefügt: {{name}} (Demo)."
+  },
+  "nutritionTitle": "Ernährungsplan",
+  "dailyCalories": "Tägliche Kalorien",
+  "strategy": "Strategie",
+  "proteinBar": "Protein {{n}}g",
+  "carbsBar": "Kohlenhydrate {{n}}g",
+  "fatBar": "Fett {{n}}g",
+  "strategyExtra": "Fast Food einbauen, indem du Pommes weglässt, bei Chipotle halben Reis nimmst oder Pizza + Salat statt einer ganzen Pizza.",
+  "nutritionEmpty": "Schließe das Onboarding ab, um deinen Ernährungsplan zu erzeugen.",
+  "workoutProgram": "Trainingsprogramm",
+  "defaultPlanName": "Personalisierter Trainingsplan",
+  "programMeta": "{{sessions}} Einheiten / Woche · Level {{level}} · {{access}}",
+  "gymAccess": "Studiozugang",
+  "homeFriendly": "home-tauglich",
+  "openTrainingPlan": "Trainingsplan öffnen",
+  "recipeLibrary": "Rezeptbibliothek",
+  "weekMealPlanTitle": "Essensplan dieser Woche",
+  "weekMealPlanSubtitle": "Mix aus Supermarkt-Basics und Restaurants, wo du wirklich hingehst.",
+  "logThisMeal": "Diese Mahlzeit eintragen",
+  "mealIdeasTitle": "Essensideen für verbleibende Makros",
+  "vibe": {
+    "all": "Alle",
+    "flexible": "Flexibel",
+    "highProtein": "Proteinreich",
+    "craving": "Heißhunger",
+    "lighter": "Leichter"
+  },
+  "addToPlan": "Zum Plan hinzufügen",
+  "popularPlaces": "Beliebte Orte in deinem Essens-Log",
+  "placeCount": "{{place}} · {{count}} Artikel"
+}

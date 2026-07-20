@@ -5,12 +5,13 @@ import { usePathname } from "next/navigation";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   Home,
-  Compass,
+  Dumbbell,
   Plus,
   Users,
   User,
+  MessageCircle,
   Utensils,
-  Dumbbell,
+  Activity,
   TrendingUp,
   ClipboardList,
   BookOpen,
@@ -18,40 +19,47 @@ import {
 } from "lucide-react";
 import { EvolveLogo } from "@/components/ui/EvolveLogo";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { useMessages } from "@/components/messages/MessagesProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 
 /** Desktop side rail — secondary. Mobile bottom tabs are primary. */
 const DESKTOP_PRIMARY = [
-  { href: "/feed", label: "Feed", icon: Home },
-  { href: "/explore", label: "Explore", icon: Compass },
-  { href: "/network", label: "Network", icon: Users },
-  { href: "/profile", label: "Profile", icon: User },
-];
+  { href: "/feed", labelKey: "nav.feed", icon: Home },
+  { href: "/explore", labelKey: "nav.evofit", icon: Dumbbell },
+  { href: "/messages", labelKey: "nav.messages", icon: MessageCircle },
+  { href: "/network", labelKey: "nav.network", icon: Users },
+  { href: "/profile", labelKey: "nav.profile", icon: User },
+] as const;
 
 const DESKTOP_TOOLS = [
-  { href: "/food", label: "Food", icon: Utensils },
-  { href: "/workouts", label: "Train", icon: Dumbbell },
-  { href: "/progress", label: "Progress", icon: TrendingUp },
-  { href: "/plans", label: "Plans", icon: ClipboardList },
-  { href: "/exercises", label: "Moves", icon: BookOpen },
-  { href: "/recipes", label: "Meals", icon: ChefHat },
-];
+  { href: "/food", labelKey: "nav.food", icon: Utensils },
+  { href: "/workouts", labelKey: "nav.train", icon: Activity },
+  { href: "/progress", labelKey: "nav.progress", icon: TrendingUp },
+  { href: "/plans", labelKey: "nav.plans", icon: ClipboardList },
+  { href: "/exercises", labelKey: "nav.moves", icon: BookOpen },
+  { href: "/recipes", labelKey: "nav.meals", icon: ChefHat },
+] as const;
 
 /**
  * Mobile bottom bar — Instagram/Strava pattern.
  * Center Post is the primary create action.
  */
 const MOBILE_TABS = [
-  { href: "/feed", label: "Feed", icon: Home, kind: "tab" as const },
-  { href: "/explore", label: "Explore", icon: Compass, kind: "tab" as const },
-  { href: "/posts/new", label: "Post", icon: Plus, kind: "create" as const },
-  { href: "/network", label: "Network", icon: Users, kind: "tab" as const },
-  { href: "/profile", label: "You", icon: User, kind: "tab" as const },
+  { href: "/feed", icon: Home, kind: "tab" as const },
+  { href: "/explore", icon: Dumbbell, kind: "tab" as const },
+  { href: "/posts/new", icon: Plus, kind: "create" as const },
+  { href: "/network", icon: Users, kind: "tab" as const },
+  { href: "/profile", icon: User, kind: "tab" as const },
 ];
 
 export function SideNav() {
   const pathname = usePathname();
   const { user } = useAuth();
+  const { tick, unreadTotal } = useMessages();
+  const { t } = useAppTranslation("common");
   const isPro = user?.plan === "pro";
+  void tick;
+  const unread = unreadTotal();
 
   return (
     <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-nav text-nav-fg lg:flex">
@@ -81,7 +89,12 @@ export function SideNav() {
                 />
               )}
               <Icon size={18} className="relative z-10" />
-              <span className="relative z-10">{item.label}</span>
+              <span className="relative z-10">{t(item.labelKey)}</span>
+              {item.href === "/messages" && unread > 0 && (
+                <span className="relative z-10 ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-accent-fg/20 px-1.5 text-[10px] font-bold text-accent-fg">
+                  {unread > 9 ? "9+" : unread}
+                </span>
+              )}
             </Link>
           );
         })}
@@ -91,12 +104,12 @@ export function SideNav() {
           className="mt-2 flex min-h-11 items-center justify-center gap-2 rounded-xl bg-accent px-3 py-2.5 text-sm font-semibold text-accent-fg transition hover:brightness-110 active:scale-[0.98]"
         >
           <Plus size={18} />
-          Share workout
+          {t("buttons.shareWorkout")}
         </Link>
 
         <div className="my-3 border-t border-white/10 pt-3">
           <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-wider text-white/35">
-            Fitness tools
+            {t("nav.fitnessTools")}
           </p>
           {DESKTOP_TOOLS.map((item) => {
             const active =
@@ -113,16 +126,18 @@ export function SideNav() {
                 }`}
               >
                 <Icon size={16} />
-                {item.label}
+                {t(item.labelKey)}
                 {!isPro && item.href !== "/food" && item.href !== "/workouts" && (
-                  <span className="ml-auto text-[10px] text-white/30">Pro</span>
+                  <span className="ml-auto text-[10px] text-white/30">
+                    {t("labels.pro")}
+                  </span>
                 )}
               </Link>
             );
           })}
         </div>
       </nav>
-      <p className="px-5 py-4 text-xs text-white/30">Evolve Fitness</p>
+      <p className="px-5 py-4 text-xs text-white/30">{t("brandFooter")}</p>
     </aside>
   );
 }
@@ -130,6 +145,14 @@ export function SideNav() {
 export function BottomNav() {
   const pathname = usePathname();
   const reduce = useReducedMotion();
+  const { t } = useAppTranslation("common");
+
+  const labels: Record<string, string> = {
+    "/feed": t("nav.feed"),
+    "/explore": t("nav.evofit"),
+    "/network": t("nav.network"),
+    "/profile": t("nav.you"),
+  };
 
   return (
     <nav
@@ -150,7 +173,7 @@ export function BottomNav() {
                 key={item.href}
                 href={item.href}
                 className="flex min-h-[52px] flex-col items-center justify-center gap-0.5 py-1.5"
-                aria-label="Create post"
+                aria-label={t("nav.post")}
               >
                 <motion.span
                   whileHover={reduce ? undefined : { scale: 1.06 }}
@@ -172,7 +195,7 @@ export function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`evolve-press relative flex min-h-[54px] flex-col items-center justify-center gap-1 py-1.5 text-[11px] font-medium transition-colors duration-200 ${
+              className={`evolve-press relative flex min-h-[54px] min-w-0 flex-col items-center justify-center gap-1 overflow-hidden py-1.5 text-[10px] font-medium leading-tight transition-colors duration-200 sm:text-[11px] ${
                 active ? "text-accent-dim dark:text-accent" : "text-muted"
               }`}
             >
@@ -193,7 +216,9 @@ export function BottomNav() {
               >
                 <Icon size={23} strokeWidth={active ? 2.5 : 2} />
               </motion.span>
-              {item.label}
+              <span className="max-w-full truncate px-0.5 text-center">
+                {labels[item.href]}
+              </span>
             </Link>
           );
         })}

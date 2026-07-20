@@ -1,0 +1,92 @@
+{
+  "athletesHint": "운동선수를 찾고 계신가요?",
+  "searchNetwork": "네트워크에서 검색",
+  "orSuggestions": "또는 피드의 추천을 확인해 보세요.",
+  "upgradeCta": "Pro로 업그레이드 →",
+  "tabs": {
+    "forYou": "추천",
+    "workouts": "운동",
+    "nutrition": "영양",
+    "tools": "도구",
+    "pro": "Pro"
+  },
+  "proHero": {
+    "onPro": "Pro 이용 중입니다",
+    "title": "Evolve Pro · $9.99/월",
+    "body": "영구 무료: 기본 운동 기록, EvoFit 탐색, 기본 통계. Pro는 트래킹, 플랜, 스캐너, 분석 등 더 많은 기능을 제공합니다."
+  },
+  "features": {
+    "basicLogging": {
+      "title": "기본 운동 기록",
+      "desc": "유형, 시간, 거리 — 모두에게 무료로 제공됩니다."
+    },
+    "basicStats": {
+      "title": "기본 통계",
+      "desc": "간단하게 확인하는 지표 — 항상 무료입니다."
+    },
+    "plans": {
+      "title": "맞춤형 운동 플랜",
+      "desc": "목표와 일정에 맞춘 플랜."
+    },
+    "macros": {
+      "title": "칼로리 및 영양소 트래커",
+      "desc": "매일의 칼로리, 단백질, 탄수화물, 지방."
+    },
+    "scanner": {
+      "title": "AI 음식 스캐너",
+      "desc": "바코드와 사진 스캔으로 빠르게 기록."
+    },
+    "formGuides": {
+      "title": "동작 가이드",
+      "desc": "테크닉 팁과 운동 동작 시연."
+    },
+    "history": {
+      "title": "운동 기록 분석",
+      "desc": "지난 세션과 운동 강도를 분석합니다."
+    },
+    "library": {
+      "title": "저장한 운동 라이브러리",
+      "desc": "북마크한 세션을 한곳에서 확인하세요."
+    },
+    "goals": {
+      "title": "목표 설정 및 추적",
+      "desc": "목표를 설정하고 이행 여부를 추적합니다."
+    },
+    "meals": {
+      "title": "식단 계획",
+      "desc": "운동일 식단과 장보기 목록을 만드세요."
+    },
+    "recipes": {
+      "title": "Pro 레시피 데이터베이스",
+      "desc": "운동선수를 위한 방대한 식단 라이브러리."
+    },
+    "analytics": {
+      "title": "고급 분석 및 그래프",
+      "desc": "트렌드, 볼륨 그래프 및 심층 인사이트."
+    },
+    "body": {
+      "title": "체형 변화 트래커",
+      "desc": "사진, 신체 측정치, 시간에 따른 변화."
+    },
+    "health": {
+      "title": "Apple Health 연동",
+      "desc": "걸음 수, 운동, 회복 데이터 동기화."
+    },
+    "support": {
+      "title": "우선 지원",
+      "desc": "필요할 때 더 빠른 도움을 받아보세요."
+    },
+    "adFree": {
+      "title": "광고 없는 경험",
+      "desc": "방해 없이 운동하세요."
+    },
+    "forums": {
+      "title": "선수 네트워크",
+      "desc": "Evolve에서 선수를 찾고 팔로우하세요."
+    }
+  },
+  "sections": {
+    "free": "무료 포함",
+    "pro": "Pro 도구"
+  }
+}

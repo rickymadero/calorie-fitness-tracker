@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useMemo } from "react";
+import { use, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Trash2, Share2, Bookmark, ChevronLeft } from "lucide-react";
@@ -15,11 +15,11 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import {
   formatDurationClock,
   formatPace,
 } from "@/lib/geo/routes";
-import { useState } from "react";
 
 export default function PostDetailPage({
   params,
@@ -31,6 +31,7 @@ export default function PostDetailPage({
   const { tick, getPost, deletePost, hasSaved, toggleSave } = usePosts();
   const { getCard } = useSocial();
   const { toast } = useToast();
+  const { t } = useAppTranslation(["common", "posts", "feed"]);
   const router = useRouter();
   const [shareOpen, setShareOpen] = useState(false);
 
@@ -42,12 +43,14 @@ export default function PostDetailPage({
   if (!post) {
     return (
       <div className="rounded-apex-lg border border-dashed border-border px-6 py-16 text-center">
-        <p className="font-display text-lg font-semibold">Post not found</p>
+        <p className="font-display text-lg font-semibold">
+          {t("notFound", { ns: "posts" })}
+        </p>
         <p className="mt-1 text-sm text-muted">
-          It may be private or was deleted.
+          {t("notFoundHint", { ns: "posts" })}
         </p>
         <Link href="/feed" className="mt-4 inline-block">
-          <Button>Back to Feed</Button>
+          <Button>{t("backToFeed", { ns: "posts" })}</Button>
         </Link>
       </div>
     );
@@ -62,59 +65,81 @@ export default function PostDetailPage({
   const detailStats: { label: string; value: string }[] = [];
   if (post.distanceKm != null) {
     detailStats.push({
-      label: "Distance",
+      label: t("stats.distance", { ns: "feed" }),
       value: `${post.distanceKm.toFixed(2)} km`,
     });
   }
   if (post.durationMin != null) {
     detailStats.push({
-      label: "Elapsed",
+      label: t("statsExtra.elapsed", { ns: "posts" }),
       value: formatDurationClock(post.durationMin),
     });
   }
   if (post.movingTimeMin != null) {
     detailStats.push({
-      label: "Moving",
+      label: t("statsExtra.moving", { ns: "posts" }),
       value: formatDurationClock(post.movingTimeMin),
     });
   }
   const pace = formatPace(post.paceMinPerKm);
-  if (pace) detailStats.push({ label: "Avg pace", value: pace });
+  if (pace) {
+    detailStats.push({
+      label: t("stats.avgPace", { ns: "feed" }),
+      value: pace,
+    });
+  }
   const best = formatPace(post.fastestPaceMinPerKm);
-  if (best) detailStats.push({ label: "Best pace", value: best });
+  if (best) {
+    detailStats.push({
+      label: t("statsExtra.bestPace", { ns: "posts" }),
+      value: best,
+    });
+  }
   if (post.avgSpeedKmh != null) {
     detailStats.push({
-      label: "Avg speed",
+      label: t("stats.avgSpeed", { ns: "feed" }),
       value: `${post.avgSpeedKmh.toFixed(1)} km/h`,
     });
   }
   if (post.maxSpeedKmh != null) {
     detailStats.push({
-      label: "Max speed",
+      label: t("statsExtra.maxSpeed", { ns: "posts" }),
       value: `${post.maxSpeedKmh.toFixed(1)} km/h`,
     });
   }
   if (post.caloriesBurned != null) {
-    detailStats.push({ label: "Calories", value: String(post.caloriesBurned) });
+    detailStats.push({
+      label: t("stats.calories", { ns: "feed" }),
+      value: String(post.caloriesBurned),
+    });
   }
   if (post.elevationGainM != null) {
     detailStats.push({
-      label: "Elev gain",
+      label: t("stats.elevGain", { ns: "feed" }),
       value: `${post.elevationGainM} m`,
     });
   }
   if (post.avgHeartRate != null) {
-    detailStats.push({ label: "Avg HR", value: `${post.avgHeartRate} bpm` });
+    detailStats.push({
+      label: t("statsExtra.avgHr", { ns: "posts" }),
+      value: `${post.avgHeartRate} bpm`,
+    });
   }
   if (post.maxHeartRate != null) {
-    detailStats.push({ label: "Max HR", value: `${post.maxHeartRate} bpm` });
+    detailStats.push({
+      label: t("statsExtra.maxHr", { ns: "posts" }),
+      value: `${post.maxHeartRate} bpm`,
+    });
   }
   if (post.cadence != null) {
-    detailStats.push({ label: "Cadence", value: `${post.cadence} spm` });
+    detailStats.push({
+      label: t("statsExtra.cadence", { ns: "posts" }),
+      value: `${post.cadence} spm`,
+    });
   }
   if (post.totalVolumeKg != null) {
     detailStats.push({
-      label: "Volume",
+      label: t("stats.volume", { ns: "feed" }),
       value: `${post.totalVolumeKg.toLocaleString()} kg`,
     });
   }
@@ -127,12 +152,14 @@ export default function PostDetailPage({
           className="evolve-press inline-flex min-h-11 items-center gap-0.5 text-sm font-medium text-muted hover:text-foreground"
         >
           <ChevronLeft size={18} />
-          Feed
+          {t("nav.feed")}
         </Link>
         <div className="flex items-center justify-end gap-0.5">
           <Button size="sm" variant="ghost" onClick={() => setShareOpen(true)}>
             <Share2 size={14} />
-            <span className="sr-only sm:not-sr-only sm:inline">Share</span>
+            <span className="sr-only sm:not-sr-only sm:inline">
+              {t("buttons.share")}
+            </span>
           </Button>
           <Button
             size="sm"
@@ -140,7 +167,9 @@ export default function PostDetailPage({
             onClick={() => {
               const res = toggleSave(post.id);
               toast(
-                res.saved ? "Saved." : "Removed from saved.",
+                res.saved
+                  ? t("saved", { ns: "posts" })
+                  : t("unsavedToast", { ns: "feed" }),
                 "info",
               );
             }}
@@ -150,7 +179,7 @@ export default function PostDetailPage({
               className={saved ? "fill-accent text-accent" : ""}
             />
             <span className="sr-only sm:not-sr-only sm:inline">
-              {saved ? "Saved" : "Save"}
+              {saved ? t("saved", { ns: "posts" }) : t("save", { ns: "posts" })}
             </span>
           </Button>
           {isOwner && (
@@ -159,25 +188,28 @@ export default function PostDetailPage({
               variant="ghost"
               onClick={() => {
                 if (deletePost(post.id)) {
-                  toast("Post deleted.", "info");
+                  toast(t("toast.deleted", { ns: "posts" }), "info");
                   router.push("/feed");
                 }
               }}
             >
               <Trash2 size={14} />
-              <span className="sr-only sm:not-sr-only sm:inline">Delete</span>
+              <span className="sr-only sm:not-sr-only sm:inline">
+                {t("buttons.delete")}
+              </span>
             </Button>
           )}
         </div>
       </div>
 
-      {/* Full activity summary (map shown once in Route card below) */}
       <PostCard post={post} hideMap={hasFullMap} />
 
       {hasFullMap && (
         <Card className="mt-4 overflow-hidden p-0">
           <div className="border-b border-border px-4 py-3">
-            <h2 className="font-display text-lg font-semibold">Route</h2>
+            <h2 className="font-display text-lg font-semibold">
+              {t("section.route", { ns: "posts" })}
+            </h2>
             {post.locationName && (
               <p className="text-xs text-muted">{post.locationName}</p>
             )}
@@ -197,7 +229,9 @@ export default function PostDetailPage({
 
       {detailStats.length > 0 && (
         <Card className="mt-4">
-          <h2 className="font-display text-lg font-semibold">Statistics</h2>
+          <h2 className="font-display text-lg font-semibold">
+            {t("section.stats", { ns: "posts" })}
+          </h2>
           <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
             {detailStats.map((s) => (
               <div key={s.label} className="evolve-stats-vivid rounded-2xl p-3">
@@ -213,14 +247,18 @@ export default function PostDetailPage({
 
       {post.splits && post.splits.length > 0 && (
         <Card className="mt-4">
-          <h2 className="font-display text-lg font-semibold">Splits</h2>
+          <h2 className="font-display text-lg font-semibold">
+            {t("section.splits", { ns: "posts" })}
+          </h2>
           <ul className="mt-3 space-y-2">
             {post.splits.map((sp) => (
               <li
                 key={sp.km}
                 className="flex items-center justify-between text-sm"
               >
-                <span className="text-muted">Kilometer {sp.km}</span>
+                <span className="text-muted">
+                  {t("kilometer", { ns: "posts", n: sp.km })}
+                </span>
                 <span className="font-medium">
                   {formatPace(sp.paceMinPerKm)}
                 </span>
@@ -232,7 +270,9 @@ export default function PostDetailPage({
 
       {post.exercises && post.exercises.length > 0 && (
         <Card className="mt-4">
-          <h2 className="font-display text-lg font-semibold">Exercises</h2>
+          <h2 className="font-display text-lg font-semibold">
+            {t("section.exercises", { ns: "posts" })}
+          </h2>
           {post.muscleGroups && (
             <div className="mt-2 flex flex-wrap gap-1.5">
               {post.muscleGroups.map((m) => (
@@ -261,7 +301,9 @@ export default function PostDetailPage({
 
       {post.achievements && post.achievements.length > 0 && (
         <Card className="mt-4">
-          <h2 className="font-display text-lg font-semibold">Achievements</h2>
+          <h2 className="font-display text-lg font-semibold">
+            {t("section.achievements", { ns: "posts" })}
+          </h2>
           <div className="mt-3 flex flex-wrap gap-2">
             {post.achievements.map((a) => (
               <Badge key={a.id} variant="success">
@@ -274,11 +316,15 @@ export default function PostDetailPage({
 
       <Card className="mt-4">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-display text-lg font-semibold">Comments</h2>
+          <h2 className="font-display text-lg font-semibold">
+            {t("section.comments", { ns: "posts" })}
+          </h2>
           <LikeButton postId={post.id} likesCount={post.likesCount} />
         </div>
         {post.commentsEnabled === false ? (
-          <p className="text-sm text-muted">Comments are turned off.</p>
+          <p className="text-sm text-muted">
+            {t("commentsOff", { ns: "posts" })}
+          </p>
         ) : (
           <CommentThread postId={post.id} postAuthorId={post.authorId} />
         )}
@@ -286,7 +332,7 @@ export default function PostDetailPage({
 
       {author && (
         <p className="mt-4 text-center text-sm text-muted">
-          More from{" "}
+          {t("moreFrom", { ns: "posts" })}{" "}
           <Link
             href={`/social/u/${author.profile.username}`}
             className="font-medium text-accent-dim dark:text-accent"

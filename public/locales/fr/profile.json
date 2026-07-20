@@ -1,0 +1,37 @@
+{
+  "edit": "Modifier le profil",
+  "publicView": "Vue publique",
+  "createPost": "Créer une publication",
+  "emptyPosts": "Aucune publication pour l'instant",
+  "emptyPostsHint": "Partagez votre première séance avec le réseau.",
+  "addBio": "Ajoutez une bio dans les paramètres pour que les athlètes sachent qui vous êtes.",
+  "statMonth": "Mois",
+  "statDistance": "Distance parcourue",
+  "statStreak": "Série",
+  "tabWorkouts": "Séances",
+  "tabPrs": "Records",
+  "recentWorkouts": "Séances récentes",
+  "newPost": "Nouvelle publication",
+  "savedTitle": "Publications enregistrées",
+  "savedEmpty": "Aucune séance enregistrée",
+  "savedEmptyHint": "Appuyez sur le signet de n'importe quelle publication pour l'enregistrer ici.",
+  "browseFeed": "Parcourir le fil",
+  "signedOut": "Déconnecté.",
+  "menuAria": "Menu du profil",
+  "prs": {
+    "empty": "Aucun record pour l'instant",
+    "emptySelf": "Ajoutez votre premier record",
+    "emptySelfHint": "Développé couché, squat, 5 km, HYROX, Ironman — montrez au réseau ce que vous avez accompli.",
+    "addTitle": "Ajouter un record personnel",
+    "label": "Libellé",
+    "result": "Résultat",
+    "saved": "Record enregistré.",
+    "removed": "Record supprimé.",
+    "cat": {
+      "strength": "Force",
+      "running": "Course",
+      "endurance": "Endurance et courses",
+      "other": "Autre"
+    }
+  }
+}

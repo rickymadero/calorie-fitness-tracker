@@ -22,12 +22,14 @@ import { ExerciseDemoPlayer } from "@/components/training/ExerciseDemo";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useTraining } from "@/components/training/TrainingProvider";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { getExerciseById, getReplacementExercises } from "@/lib/mock/exercises";
 import type { ExerciseSessionLog, SetLog } from "@/lib/types/training";
 import {
   calculateSessionStats,
   estimateWorkoutCalories,
 } from "@/lib/training/adjustments";
+import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
 
 export default function WorkoutSessionPage({
   params,
@@ -40,6 +42,7 @@ export default function WorkoutSessionPage({
   const { assignedPlan, ensurePersonalizedPlan, saveSession, isReady } =
     useTraining();
   const { toast } = useToast();
+  const { t } = useAppTranslation(["workouts", "common"]);
   const isPro = user?.plan === "pro";
 
   const [exerciseIndex, setExerciseIndex] = useState(0);
@@ -87,10 +90,10 @@ export default function WorkoutSessionPage({
 
   useEffect(() => {
     if (restLeft <= 0 || restPaused) return;
-    const t = window.setInterval(() => {
+    const timer = window.setInterval(() => {
       setRestLeft((s) => Math.max(0, s - 1));
     }, 1000);
-    return () => window.clearInterval(t);
+    return () => window.clearInterval(timer);
   }, [restLeft, restPaused]);
 
   if (!isReady || !assignedPlan || !day) return <PageLoader />;
@@ -146,7 +149,7 @@ export default function WorkoutSessionPage({
       return copy;
     });
 
-    toast(`Set ${currentSet} logged.`, "success");
+    toast(t("toast.setLogged", { n: currentSet }), "success");
 
     if (currentSet < planExercise.sets) {
       setRestLeft(planExercise.restSeconds);
@@ -181,7 +184,7 @@ export default function WorkoutSessionPage({
         },
       ];
     });
-    toast("Exercise skipped.", "info");
+    toast(t("toast.exerciseSkipped"), "info");
     nextExercise();
   }
 
@@ -236,7 +239,7 @@ export default function WorkoutSessionPage({
       estimatedCalories,
       totalVolume: stats.volume,
       personalRecords:
-        stats.volume > 0 ? [`Volume ${stats.volume} kg`] : [],
+        stats.volume > 0 ? [t("session.volumePr", { volume: stats.volume })] : [],
     };
     saveSession(session);
     router.push(`/workouts/summary/${session.id}`);
@@ -245,9 +248,9 @@ export default function WorkoutSessionPage({
   if (!planExercise || !exercise) {
     return (
       <div className="py-10 text-center">
-        <p>No exercises in this workout.</p>
+        <p>{t("live.noExercises")}</p>
         <Link href="/workouts">
-          <Button className="mt-4">Back</Button>
+          <Button className="mt-4">{t("live.back")}</Button>
         </Link>
       </div>
     );
@@ -255,15 +258,22 @@ export default function WorkoutSessionPage({
 
   return (
     <div className="mx-auto max-w-2xl">
+      <ExploreBackHeader
+        title={t("title")}
+        href="/workouts"
+      />
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
           <p className="text-xs text-muted">
-            Exercise {exerciseIndex + 1} / {planExercises.length}
+            {t("live.progress", {
+              current: exerciseIndex + 1,
+              total: planExercises.length,
+            })}
           </p>
           <h1 className="font-display text-2xl font-bold">{exercise.name}</h1>
         </div>
         <Badge>
-          Set {currentSet}/{planExercise.sets}
+          {t("live.setBadge", { current: currentSet, total: planExercise.sets })}
         </Badge>
       </div>
 
@@ -281,33 +291,37 @@ export default function WorkoutSessionPage({
       <Card className="mt-4">
         <div className="grid grid-cols-3 gap-3 text-center">
           <div>
-            <p className="text-xs text-muted">Target reps</p>
+            <p className="text-xs text-muted">{t("live.targetReps")}</p>
             <p className="font-display text-xl font-bold">{planExercise.reps}</p>
           </div>
           <div>
-            <p className="text-xs text-muted">Suggested</p>
+            <p className="text-xs text-muted">{t("live.suggested")}</p>
             <p className="font-display text-xl font-bold">
               {planExercise.recommendedWeight}
             </p>
           </div>
           <div>
-            <p className="text-xs text-muted">Rest</p>
+            <p className="text-xs text-muted">{t("live.rest")}</p>
             <p className="font-display text-xl font-bold">
-              {planExercise.restSeconds}s
+              {t("live.restSeconds", { n: planExercise.restSeconds })}
             </p>
           </div>
         </div>
         {planExercise.notes && (
-          <p className="mt-3 text-sm text-muted">Coach: {planExercise.notes}</p>
+          <p className="mt-3 text-sm text-muted">
+            {t("live.coachNotes", { notes: planExercise.notes })}
+          </p>
         )}
         <p className="mt-2 text-xs text-muted">
-          Previous: — (first tracked set) · Tempo {planExercise.tempo || "controlled"}
+          {t("live.previousTempo", {
+            tempo: planExercise.tempo || t("live.tempoDefault"),
+          })}
         </p>
       </Card>
 
       {restLeft > 0 ? (
         <Card elevated className="mt-4 text-center">
-          <p className="text-sm text-muted">Rest timer</p>
+          <p className="text-sm text-muted">{t("live.restTimer")}</p>
           <p className="font-display text-5xl font-bold tabular-nums">
             {Math.floor(restLeft / 60)}:{String(restLeft % 60).padStart(2, "0")}
           </p>
@@ -317,14 +331,14 @@ export default function WorkoutSessionPage({
               onClick={() => setRestPaused((p) => !p)}
             >
               {restPaused ? <Play size={16} /> : <Pause size={16} />}
-              {restPaused ? "Resume" : "Pause"}
+              {restPaused ? t("live.resume") : t("live.pause")}
             </Button>
             <Button variant="outline" onClick={() => setRestLeft((s) => s + 30)}>
-              +30s
+              {t("live.add30s")}
             </Button>
             <Button onClick={() => setRestLeft(0)}>
               <SkipForward size={16} />
-              Skip rest
+              {t("live.skipRest")}
             </Button>
           </div>
         </Card>
@@ -332,20 +346,20 @@ export default function WorkoutSessionPage({
         <Card className="mt-4 space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <Input
-              label="Reps completed"
+              label={t("live.repsCompleted")}
               type="number"
               value={reps}
               onChange={(e) => setReps(e.target.value)}
             />
             <Input
-              label="Weight"
+              label={t("live.weight")}
               type="number"
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
             />
           </div>
           <div>
-            <p className="mb-2 text-sm font-medium">Set difficulty</p>
+            <p className="mb-2 text-sm font-medium">{t("live.setDifficulty")}</p>
             <div className="flex gap-2">
               {([1, 2, 3, 4, 5] as const).map((n) => (
                 <button
@@ -364,25 +378,25 @@ export default function WorkoutSessionPage({
             </div>
           </div>
           <Input
-            label="Personal notes"
+            label={t("live.personalNotes")}
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            placeholder="Optional"
+            placeholder={t("placeholder.optional", { ns: "common" })}
           />
           <Button size="lg" fullWidth onClick={completeSet}>
             <Check size={18} />
-            Complete set
+            {t("live.completeSet")}
           </Button>
         </Card>
       )}
 
       <div className="mt-4 grid grid-cols-3 gap-2">
         <Button variant="outline" onClick={skipExercise}>
-          Skip
+          {t("live.skip")}
         </Button>
         <Button variant="outline" onClick={() => setReplaceOpen(true)}>
           <RefreshCw size={16} />
-          Replace
+          {t("live.replace")}
         </Button>
         <Button
           variant="outline"
@@ -391,15 +405,19 @@ export default function WorkoutSessionPage({
             setLogs((prev) =>
               prev.map((l) =>
                 l.planExerciseId === planExercise.id
-                  ? { ...l, painReported: true, painNotes: "Discomfort reported" }
+                  ? {
+                      ...l,
+                      painReported: true,
+                      painNotes: t("live.painNoteInternal"),
+                    }
                   : l,
               ),
             );
-            toast("Pain noted. Consider replacing the movement.", "info");
+            toast(t("toast.painNoted"), "info");
           }}
         >
           <AlertTriangle size={16} />
-          Pain
+          {t("live.pain")}
         </Button>
       </div>
 
@@ -409,19 +427,18 @@ export default function WorkoutSessionPage({
         fullWidth
         onClick={finishWorkout}
       >
-        End workout
+        {t("live.endWorkout")}
         <ChevronRight size={16} />
       </Button>
 
       <Modal
         open={replaceOpen}
         onClose={() => setReplaceOpen(false)}
-        title="Replace exercise"
+        title={t("live.replaceTitle")}
         size="lg"
       >
         <p className="mb-3 text-sm text-muted">
-          Same muscle pattern
-          {isPro ? " with smarter Pro recommendations." : "."}
+          {isPro ? t("live.replaceHintPro") : t("live.replaceHintFree")}
         </p>
         <div className="space-y-2">
           {replacements.map((r) => (
@@ -432,7 +449,7 @@ export default function WorkoutSessionPage({
               onClick={() => {
                 setActiveExerciseId(r.id);
                 setReplaceOpen(false);
-                toast(`Swapped to ${r.name}.`, "success");
+                toast(t("toast.swapped", { name: r.name }), "success");
               }}
             >
               <span>
@@ -441,7 +458,9 @@ export default function WorkoutSessionPage({
                   {r.equipment.join(", ")}
                 </span>
               </span>
-              <span className="text-xs text-accent-dim dark:text-accent">Use</span>
+              <span className="text-xs text-accent-dim dark:text-accent">
+                {t("buttons.use", { ns: "common" })}
+              </span>
             </button>
           ))}
         </div>

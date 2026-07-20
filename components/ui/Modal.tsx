@@ -1,14 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
+import { useAppTranslation } from "@/components/providers/LanguageProvider";
 
 interface ModalProps {
   open: boolean;
   onClose: () => void;
   title?: string;
   children: React.ReactNode;
+  /** Pinned below the scroll area — keeps CTAs visible on short viewports */
+  footer?: React.ReactNode;
   size?: "sm" | "md" | "lg";
 }
 
@@ -18,7 +22,25 @@ const widths = {
   lg: "max-w-lg",
 };
 
-export function Modal({ open, onClose, title, children, size = "md" }: ModalProps) {
+function useIsClient() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+}
+
+export function Modal({
+  open,
+  onClose,
+  title,
+  children,
+  footer,
+  size = "md",
+}: ModalProps) {
+  const mounted = useIsClient();
+  const { t } = useAppTranslation("common");
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -32,13 +54,15 @@ export function Modal({ open, onClose, title, children, size = "md" }: ModalProp
     };
   }, [open, onClose]);
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4">
+        <div className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center sm:p-4">
           <motion.button
             type="button"
-            aria-label="Close overlay"
+            aria-label={t("buttons.close")}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -76,7 +100,7 @@ export function Modal({ open, onClose, title, children, size = "md" }: ModalProp
                 type="button"
                 onClick={onClose}
                 className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted transition hover:bg-muted-bg hover:text-foreground"
-                aria-label="Close"
+                aria-label={t("buttons.close")}
               >
                 <X size={18} />
               </button>
@@ -84,9 +108,15 @@ export function Modal({ open, onClose, title, children, size = "md" }: ModalProp
             <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-2 sm:px-6">
               {children}
             </div>
+            {footer ? (
+              <div className="shrink-0 border-t border-border/70 bg-card px-5 pb-3 pt-3 sm:px-6">
+                {footer}
+              </div>
+            ) : null}
           </motion.div>
         </div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

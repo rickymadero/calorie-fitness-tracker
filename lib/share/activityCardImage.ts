@@ -1,13 +1,19 @@
 import type { WorkoutPost } from "@/lib/types/posts";
 import { formatDurationClock, formatPace } from "@/lib/geo/routes";
+import { drawRealStreetMap } from "@/lib/share/renderRouteMap";
 
 export interface ShareCardInput {
   post: WorkoutPost;
   displayName: string;
   username: string;
+  /** Matches feed map tiles: dark → Dark Matter, light → Voyager. */
+  theme?: "light" | "dark";
 }
 
-/** Instagram Stories–friendly portrait card (1080×1920). */
+/**
+ * Evolve Stories card — “broadcast” layout.
+ * Route workouts use the same Carto Voyager street tiles as feed posts.
+ */
 export async function generateActivityShareImage(
   input: ShareCardInput,
 ): Promise<Blob> {
@@ -19,126 +25,199 @@ export async function generateActivityShareImage(
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Canvas unavailable");
 
-  const { post, displayName, username } = input;
+  const { post, displayName, username, theme = "dark" } = input;
+  const typeLabel = post.type.charAt(0).toUpperCase() + post.type.slice(1);
+  const hero = pickHeroStat(post);
+  const support = buildSupportStats(post, hero?.key).slice(0, 3);
+  const when = formatStamp(post.createdAt);
 
-  // Background — Evolve dark athletic
+  // Warm-ink stage (not classic black GPS night)
   const bg = ctx.createLinearGradient(0, 0, W, H);
-  bg.addColorStop(0, "#070807");
-  bg.addColorStop(0.45, "#0d1510");
-  bg.addColorStop(1, "#070807");
+  bg.addColorStop(0, "#12100e");
+  bg.addColorStop(0.4, "#171a1f");
+  bg.addColorStop(1, "#0e1412");
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
-  // Soft green glow
-  const glow = ctx.createRadialGradient(W * 0.2, H * 0.15, 40, W * 0.2, H * 0.15, 520);
-  glow.addColorStop(0, "rgba(34, 212, 132, 0.28)");
-  glow.addColorStop(1, "rgba(34, 212, 132, 0)");
-  ctx.fillStyle = glow;
-  ctx.fillRect(0, 0, W, H);
+  // Diagonal light plane
+  ctx.save();
+  ctx.translate(W * 0.55, -80);
+  ctx.rotate((-18 * Math.PI) / 180);
+  const beam = ctx.createLinearGradient(0, 0, 0, H * 1.2);
+  beam.addColorStop(0, "rgba(46, 207, 135, 0.16)");
+  beam.addColorStop(0.35, "rgba(122, 151, 184, 0.08)");
+  beam.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = beam;
+  ctx.fillRect(-200, 0, 520, H * 1.3);
+  ctx.restore();
 
-  // Logo
-  ctx.fillStyle = "#22d484";
-  ctx.font = "700 42px system-ui, sans-serif";
-  ctx.fillText("EVOLVE", 72, 120);
-  // strike line vibe
-  ctx.strokeStyle = "#22d484";
-  ctx.lineWidth = 4;
+  // Live signal rail — lighter so composition stays visually centered
+  const rail = ctx.createLinearGradient(0, 120, 0, H - 120);
+  rail.addColorStop(0, "rgba(46, 207, 135, 0.1)");
+  rail.addColorStop(0.5, "rgba(46, 207, 135, 0.85)");
+  rail.addColorStop(1, "rgba(46, 207, 135, 0.15)");
+  ctx.fillStyle = rail;
+  ctx.fillRect(48, 160, 6, H - 360);
+
+  for (let i = 0; i < 5; i++) {
+    const py = 240 + i * 280;
+    ctx.beginPath();
+    ctx.fillStyle = i === 1 ? "#2ecf87" : "rgba(46, 207, 135, 0.3)";
+    ctx.arc(51, py, i === 1 ? 6 : 4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  const padX = 88;
+
+  // Brand
+  ctx.fillStyle = "#f3efe8";
+  ctx.font = "800 36px system-ui, sans-serif";
+  ctx.fillText("EVOLVE", padX, 120);
+  ctx.strokeStyle = "#2ecf87";
+  ctx.lineWidth = 3;
   ctx.beginPath();
-  ctx.moveTo(72, 108);
-  ctx.lineTo(290, 108);
+  ctx.moveTo(padX, 108);
+  ctx.lineTo(padX + 172, 108);
   ctx.stroke();
 
-  ctx.fillStyle = "rgba(244,245,244,0.55)";
-  ctx.font = "500 28px system-ui, sans-serif";
-  ctx.fillText("Workout summary", 72, 168);
-
-  // Type + title
-  const typeLabel = post.type.charAt(0).toUpperCase() + post.type.slice(1);
-  roundRect(ctx, 72, 220, 16 + typeLabel.length * 18, 52, 26);
-  ctx.fillStyle = "rgba(34, 212, 132, 0.2)";
+  // Live chip
+  roundRect(ctx, W - padX - 160, 88, 160, 44, 22);
+  ctx.fillStyle = "rgba(46, 207, 135, 0.12)";
   ctx.fill();
-  ctx.fillStyle = "#22d484";
-  ctx.font = "600 28px system-ui, sans-serif";
-  ctx.fillText(typeLabel, 92, 254);
-
-  ctx.fillStyle = "#f4f5f4";
-  ctx.font = "700 72px system-ui, sans-serif";
-  wrapText(ctx, post.title || "Workout", 72, 360, W - 144, 78);
-
-  // Athlete
-  ctx.fillStyle = "rgba(244,245,244,0.7)";
-  ctx.font = "500 32px system-ui, sans-serif";
-  ctx.fillText(`${displayName}  ·  @${username}`, 72, 470);
-
-  // Map panel
-  const mapX = 72;
-  const mapY = 520;
-  const mapW = W - 144;
-  const mapH = 620;
-  roundRect(ctx, mapX, mapY, mapW, mapH, 36);
-  ctx.fillStyle = "#141614";
+  ctx.beginPath();
+  ctx.fillStyle = "#2ecf87";
+  ctx.arc(W - padX - 132, 110, 6, 0, Math.PI * 2);
   ctx.fill();
-  ctx.strokeStyle = "#252825";
-  ctx.lineWidth = 2;
+  ctx.fillStyle = "#f3efe8";
+  ctx.font = "700 20px system-ui, sans-serif";
+  ctx.fillText("ON AIR", W - padX - 114, 117);
+
+  // Type + stamp
+  ctx.fillStyle = "rgba(243, 239, 232, 0.5)";
+  ctx.font = "600 24px system-ui, sans-serif";
+  ctx.fillText(`${typeLabel.toUpperCase()}  ·  ${when}`, padX, 190);
+
+  // Giant title
+  ctx.fillStyle = "#f7f4ef";
+  ctx.font = "800 82px system-ui, sans-serif";
+  const titleEnd = wrapText(
+    ctx,
+    post.title || "Session",
+    padX,
+    296,
+    W - padX * 2,
+    88,
+    3,
+  );
+
+  // Athlete social line
+  const avatarY = titleEnd + 56;
+  ctx.beginPath();
+  ctx.fillStyle = "#2ecf87";
+  ctx.arc(padX + 28, avatarY, 28, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#042214";
+  ctx.font = "800 22px system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText(initials(displayName), padX + 28, avatarY + 8);
+  ctx.textAlign = "left";
+  ctx.fillStyle = "#f7f4ef";
+  ctx.font = "700 30px system-ui, sans-serif";
+  ctx.fillText(displayName, padX + 72, avatarY - 4);
+  ctx.fillStyle = "rgba(243, 239, 232, 0.5)";
+  ctx.font = "500 24px system-ui, sans-serif";
+  ctx.fillText(`@${username}`, padX + 72, avatarY + 28);
+
+  // Map / activity panel — centered column
+  const panelX = padX;
+  const panelY = avatarY + 70;
+  const panelW = W - padX * 2;
+  const panelH = 520;
+  roundRect(ctx, panelX, panelY, panelW, panelH, 32);
+  ctx.fillStyle = "rgba(255,255,255,0.03)";
+  ctx.fill();
+  ctx.strokeStyle = "rgba(243, 239, 232, 0.08)";
+  ctx.lineWidth = 1.5;
   ctx.stroke();
 
   const route = post.routePreview ?? post.route;
   if (route && route.length > 1 && post.routeVisible !== false) {
-    drawRouteOnPanel(ctx, route, mapX + 24, mapY + 24, mapW - 48, mapH - 48, {
-      hideStart: post.hideStart,
-      hideEnd: post.hideEnd,
-    });
+    await drawRealStreetMap(
+      ctx,
+      route,
+      panelX + 16,
+      panelY + 16,
+      panelW - 32,
+      panelH - 32,
+      {
+        hideStart: post.hideStart,
+        hideEnd: post.hideEnd,
+        theme,
+      },
+    );
   } else if (post.type === "gym" && post.exercises?.length) {
-    drawGymPanel(ctx, post, mapX + 40, mapY + 48, mapW - 80);
+    drawGymBroadcast(ctx, post, panelX + 44, panelY + 48, panelW - 88);
   } else {
-    ctx.fillStyle = "rgba(244,245,244,0.4)";
-    ctx.font = "500 36px system-ui, sans-serif";
-    ctx.fillText("Activity summary", mapX + 48, mapY + mapH / 2);
+    // Abstract concentric rings — energy, not GPS
+    drawEnergyRings(ctx, panelX + panelW / 2, panelY + panelH / 2, 160);
+    ctx.fillStyle = "rgba(243, 239, 232, 0.45)";
+    ctx.font = "600 28px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("SESSION LOCKED", panelX + panelW / 2, panelY + panelH / 2 + 8);
+    ctx.textAlign = "left";
   }
 
-  // Stats row
-  const stats = buildStats(post);
-  const rowY = mapY + mapH + 60;
-  const cellW = (W - 144) / Math.min(stats.length, 4);
-  stats.slice(0, 4).forEach((s, i) => {
-    const x = 72 + i * cellW;
-    ctx.fillStyle = "#f4f5f4";
-    ctx.font = "700 52px system-ui, sans-serif";
-    ctx.fillText(s.value, x, rowY + 56);
-    ctx.fillStyle = "rgba(244,245,244,0.5)";
-    ctx.font = "600 24px system-ui, sans-serif";
-    ctx.fillText(s.label.toUpperCase(), x, rowY + 96);
+  // Hero metric — one big number (magazine, not dashboard)
+  let y = panelY + panelH + 72;
+  if (hero) {
+    ctx.fillStyle = "rgba(243, 239, 232, 0.45)";
+    ctx.font = "700 22px system-ui, sans-serif";
+    ctx.fillText(hero.label.toUpperCase(), padX, y);
+    ctx.fillStyle = "#2ecf87";
+    ctx.font = "800 100px system-ui, sans-serif";
+    ctx.fillText(hero.value, padX, y + 100);
+    y += 140;
+  }
+
+  // Supporting metrics as type rows with rules
+  support.forEach((s) => {
+    ctx.strokeStyle = "rgba(243, 239, 232, 0.1)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(padX, y);
+    ctx.lineTo(W - padX, y);
+    ctx.stroke();
+    ctx.fillStyle = "rgba(243, 239, 232, 0.45)";
+    ctx.font = "600 22px system-ui, sans-serif";
+    ctx.fillText(s.label.toUpperCase(), padX, y + 36);
+    ctx.fillStyle = "#f7f4ef";
+    ctx.font = "700 36px system-ui, sans-serif";
+    ctx.textAlign = "right";
+    ctx.fillText(s.value, W - padX, y + 38);
+    ctx.textAlign = "left";
+    y += 70;
   });
 
-  // Achievements
-  if (post.achievements?.length) {
-    let ax = 72;
-    const ay = rowY + 160;
-    post.achievements.slice(0, 3).forEach((a) => {
-      const tw = ctx.measureText(a.label).width + 48;
-      roundRect(ctx, ax, ay, Math.max(tw, 120), 48, 24);
-      ctx.fillStyle = "rgba(34, 212, 132, 0.18)";
-      ctx.fill();
-      ctx.fillStyle = "#22d484";
-      ctx.font = "600 24px system-ui, sans-serif";
-      ctx.fillText(a.label, ax + 24, ay + 32);
-      ax += Math.max(tw, 120) + 16;
-    });
-  }
-
-  // Caption snippet
+  // Caption whisper
   if (post.caption) {
-    ctx.fillStyle = "rgba(244,245,244,0.65)";
-    ctx.font = "400 30px system-ui, sans-serif";
-    wrapText(ctx, post.caption, 72, H - 280, W - 144, 42, 3);
+    y += 20;
+    ctx.fillStyle = "rgba(243, 239, 232, 0.5)";
+    ctx.font = "400 26px system-ui, sans-serif";
+    wrapText(ctx, `“${post.caption}”`, padX, y + 28, W - padX * 2, 36, 2);
   }
 
-  // Footer
-  ctx.fillStyle = "rgba(244,245,244,0.35)";
-  ctx.font = "500 26px system-ui, sans-serif";
-  ctx.fillText("Shared with Evolve", 72, H - 100);
-  ctx.fillStyle = "#22d484";
-  ctx.fillText("evolve", 72, H - 60);
+  // Footer manifesto
+  ctx.fillStyle = "rgba(243, 239, 232, 0.35)";
+  ctx.font = "600 22px system-ui, sans-serif";
+  ctx.fillText("TRAIN IN PUBLIC", padX, H - 100);
+  ctx.fillStyle = "#2ecf87";
+  ctx.font = "800 28px system-ui, sans-serif";
+  ctx.fillText("evolve", padX, H - 58);
+  ctx.fillStyle = "rgba(243, 239, 232, 0.4)";
+  ctx.font = "500 24px system-ui, sans-serif";
+  ctx.textAlign = "right";
+  ctx.fillText(`@${username}`, W - padX, H - 58);
+  ctx.textAlign = "left";
 
   return new Promise((resolve, reject) => {
     canvas.toBlob(
@@ -149,153 +228,157 @@ export async function generateActivityShareImage(
   });
 }
 
-function buildStats(post: WorkoutPost) {
-  const out: { label: string; value: string }[] = [];
+function pickHeroStat(post: WorkoutPost): {
+  key: string;
+  label: string;
+  value: string;
+} | null {
   if (post.distanceKm != null) {
-    out.push({ label: "Distance", value: `${post.distanceKm.toFixed(2)} km` });
+    return {
+      key: "distance",
+      label: "Distance km",
+      value: post.distanceKm.toFixed(2),
+    };
   }
-  if (post.durationMin != null) {
-    out.push({ label: "Time", value: formatDurationClock(post.durationMin) });
-  }
-  const pace = formatPace(post.paceMinPerKm);
-  if (pace) out.push({ label: "Pace", value: pace.replace("/km", "") });
-  if (post.avgSpeedKmh != null && !pace) {
-    out.push({ label: "Speed", value: `${post.avgSpeedKmh.toFixed(1)}` });
+  if (post.totalVolumeKg != null) {
+    return {
+      key: "volume",
+      label: "Volume kg",
+      value: String(Math.round(post.totalVolumeKg)),
+    };
   }
   if (post.caloriesBurned != null) {
-    out.push({ label: "Cal", value: String(post.caloriesBurned) });
+    return {
+      key: "cal",
+      label: "Calories",
+      value: String(post.caloriesBurned),
+    };
   }
-  if (post.elevationGainM != null && out.length < 4) {
-    out.push({ label: "Elev", value: `${post.elevationGainM}m` });
+  if (post.durationMin != null) {
+    return {
+      key: "time",
+      label: "Elapsed",
+      value: formatDurationClock(post.durationMin),
+    };
   }
-  if (post.totalVolumeKg != null && out.length < 4) {
+  return null;
+}
+
+function buildSupportStats(
+  post: WorkoutPost,
+  skip?: string,
+): { label: string; value: string }[] {
+  const out: { label: string; value: string; key: string }[] = [];
+  if (post.durationMin != null) {
     out.push({
-      label: "Volume",
-      value: `${Math.round(post.totalVolumeKg / 100) / 10}k`,
+      key: "time",
+      label: "Time",
+      value: formatDurationClock(post.durationMin),
     });
   }
-  if (post.exerciseCount != null && out.length < 4) {
-    out.push({ label: "Moves", value: String(post.exerciseCount) });
+  const pace = formatPace(post.paceMinPerKm);
+  if (pace) out.push({ key: "pace", label: "Pace", value: pace });
+  if (post.caloriesBurned != null) {
+    out.push({
+      key: "cal",
+      label: "Calories",
+      value: String(post.caloriesBurned),
+    });
   }
-  if (out.length === 0 && post.durationMin != null) {
-    out.push({ label: "Time", value: formatDurationClock(post.durationMin) });
+  if (post.elevationGainM != null) {
+    out.push({
+      key: "elev",
+      label: "Climb",
+      value: `${post.elevationGainM} m`,
+    });
   }
-  return out;
+  if (post.exerciseCount != null) {
+    out.push({
+      key: "moves",
+      label: "Moves",
+      value: String(post.exerciseCount),
+    });
+  }
+  if (post.avgSpeedKmh != null && !pace) {
+    out.push({
+      key: "speed",
+      label: "Speed",
+      value: `${post.avgSpeedKmh.toFixed(1)} km/h`,
+    });
+  }
+  return out.filter((s) => s.key !== skip).map(({ label, value }) => ({ label, value }));
 }
 
-function drawRouteOnPanel(
-  ctx: CanvasRenderingContext2D,
-  points: { lat: number; lng: number }[],
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  opts: { hideStart?: boolean; hideEnd?: boolean },
-) {
-  // Fake streets grid
-  ctx.save();
-  ctx.beginPath();
-  roundRectPath(ctx, x, y, w, h, 24);
-  ctx.clip();
-  ctx.fillStyle = "#101210";
-  ctx.fillRect(x, y, w, h);
-  ctx.strokeStyle = "rgba(37, 40, 37, 0.9)";
-  ctx.lineWidth = 1;
-  for (let i = 1; i < 8; i++) {
-    ctx.beginPath();
-    ctx.moveTo(x, y + (h / 8) * i);
-    ctx.lineTo(x + w, y + (h / 8) * i);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(x + (w / 8) * i, y);
-    ctx.lineTo(x + (w / 8) * i, y + h);
-    ctx.stroke();
-  }
-
-  const lats = points.map((p) => p.lat);
-  const lngs = points.map((p) => p.lng);
-  const minLat = Math.min(...lats);
-  const maxLat = Math.max(...lats);
-  const minLng = Math.min(...lngs);
-  const maxLng = Math.max(...lngs);
-  const pad = 36;
-  const latSpan = Math.max(maxLat - minLat, 0.0001);
-  const lngSpan = Math.max(maxLng - minLng, 0.0001);
-
-  const xy = points.map((p) => ({
-    x: x + pad + ((p.lng - minLng) / lngSpan) * (w - pad * 2),
-    y: y + pad + (1 - (p.lat - minLat) / latSpan) * (h - pad * 2),
-  }));
-
-  ctx.strokeStyle = "#22d484";
-  ctx.lineWidth = 8;
-  ctx.lineJoin = "round";
-  ctx.lineCap = "round";
-  ctx.shadowColor = "rgba(34, 212, 132, 0.55)";
-  ctx.shadowBlur = 16;
-  ctx.beginPath();
-  xy.forEach((p, i) => (i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y)));
-  ctx.stroke();
-  ctx.shadowBlur = 0;
-
-  if (!opts.hideStart) {
-    ctx.fillStyle = "#22d484";
-    ctx.beginPath();
-    ctx.arc(xy[0].x, xy[0].y, 12, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = "#fff";
-    ctx.lineWidth = 3;
-    ctx.stroke();
-  }
-  if (!opts.hideEnd) {
-    ctx.fillStyle = "#0a0a0a";
-    ctx.beginPath();
-    ctx.arc(xy[xy.length - 1].x, xy[xy.length - 1].y, 12, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = "#22d484";
-    ctx.lineWidth = 3;
-    ctx.stroke();
-  }
-  ctx.restore();
-}
-
-function drawGymPanel(
+function drawGymBroadcast(
   ctx: CanvasRenderingContext2D,
   post: WorkoutPost,
   x: number,
   y: number,
   w: number,
 ) {
-  ctx.fillStyle = "#f4f5f4";
-  ctx.font = "700 40px system-ui, sans-serif";
-  ctx.fillText(post.gymSummary || "Gym session", x, y);
-  let yy = y + 70;
-  (post.exercises ?? []).slice(0, 6).forEach((ex) => {
-    ctx.fillStyle = "rgba(244,245,244,0.9)";
-    ctx.font = "600 32px system-ui, sans-serif";
-    ctx.fillText(ex.name, x, yy);
-    ctx.fillStyle = "rgba(244,245,244,0.5)";
-    ctx.font = "500 28px system-ui, sans-serif";
-    const detail = `${ex.sets} sets${ex.reps ? ` · ${ex.reps} reps` : ""}${
-      ex.weightKg ? ` · ${ex.weightKg} kg` : ""
+  ctx.fillStyle = "rgba(243, 239, 232, 0.4)";
+  ctx.font = "700 20px system-ui, sans-serif";
+  ctx.fillText((post.gymSummary || "LIFT BROADCAST").toUpperCase(), x, y);
+
+  let yy = y + 56;
+  (post.exercises ?? []).slice(0, 5).forEach((ex, idx) => {
+    ctx.fillStyle = "#2ecf87";
+    ctx.font = "800 26px system-ui, sans-serif";
+    ctx.fillText(String(idx + 1).padStart(2, "0"), x, yy);
+
+    ctx.fillStyle = "#f7f4ef";
+    ctx.font = "700 32px system-ui, sans-serif";
+    const name =
+      ex.name.length > 22 ? `${ex.name.slice(0, 21)}…` : ex.name;
+    ctx.fillText(name, x + 64, yy);
+
+    ctx.fillStyle = "rgba(243, 239, 232, 0.45)";
+    ctx.font = "500 24px system-ui, sans-serif";
+    const detail = `${ex.sets} × ${ex.reps ?? "—"}${
+      ex.weightKg ? ` @ ${ex.weightKg}kg` : ""
     }`;
-    ctx.fillText(detail, x, yy + 38);
+    ctx.fillText(detail, x + 64, yy + 34);
     yy += 88;
   });
 }
 
-function roundRect(
+function drawEnergyRings(
   ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
+  cx: number,
+  cy: number,
   r: number,
 ) {
-  roundRectPath(ctx, x, y, w, h, r);
+  for (let i = 3; i >= 1; i--) {
+    ctx.beginPath();
+    ctx.strokeStyle = `rgba(46, 207, 135, ${0.08 * i})`;
+    ctx.lineWidth = 2;
+    ctx.arc(cx, cy, r * (i / 3), 0, Math.PI * 2);
+    ctx.stroke();
+  }
 }
 
-function roundRectPath(
+function initials(name: string) {
+  return name
+    .split(" ")
+    .map((p) => p[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
+
+function formatStamp(iso?: string) {
+  if (!iso) return "TODAY";
+  try {
+    return new Date(iso).toLocaleDateString(undefined, {
+      month: "short",
+      day: "numeric",
+    }).toUpperCase();
+  } catch {
+    return "TODAY";
+  }
+}
+
+function roundRect(
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
@@ -321,24 +404,29 @@ function wrapText(
   maxWidth: number,
   lineHeight: number,
   maxLines = 2,
-) {
+): number {
   const words = text.split(/\s+/);
   let line = "";
   let lines = 0;
+  let cy = y;
   for (let n = 0; n < words.length; n++) {
     const test = line + words[n] + " ";
     if (ctx.measureText(test).width > maxWidth && n > 0) {
-      ctx.fillText(line.trim(), x, y);
+      ctx.fillText(line.trim(), x, cy);
       line = words[n] + " ";
-      y += lineHeight;
+      cy += lineHeight;
       lines += 1;
       if (lines >= maxLines - 1) {
-        ctx.fillText((line + words.slice(n + 1).join(" ")).trim().slice(0, 42) + "…", x, y);
-        return;
+        const rest = (line + words.slice(n + 1).join(" ")).trim();
+        const clipped =
+          rest.length > 34 ? `${rest.slice(0, 34).trim()}…` : rest;
+        ctx.fillText(clipped, x, cy);
+        return cy;
       }
     } else {
       line = test;
     }
   }
-  ctx.fillText(line.trim(), x, y);
+  ctx.fillText(line.trim(), x, cy);
+  return cy;
 }

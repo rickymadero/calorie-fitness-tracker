@@ -38,7 +38,7 @@ export const RECIPES: Recipe[] = [
     id: "r2",
     name: "Chipotle-Style Chicken Bowl (Home)",
     imageUrl:
-      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
     prepMinutes: 15,
     cookMinutes: 20,
     difficulty: "medium",
@@ -70,7 +70,7 @@ export const RECIPES: Recipe[] = [
     id: "r3",
     name: "Greek Turkey Wrap",
     imageUrl:
-      "https://images.unsplash.com/photo-1528735602780-2552fd968942?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=800&q=80",
     prepMinutes: 10,
     cookMinutes: 0,
     difficulty: "easy",

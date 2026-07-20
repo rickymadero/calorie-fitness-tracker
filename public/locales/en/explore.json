@@ -1,0 +1,92 @@
+{
+  "athletesHint": "Looking for athletes?",
+  "searchNetwork": "Search in Network",
+  "orSuggestions": "or see suggestions on Feed.",
+  "upgradeCta": "Upgrade to Pro →",
+  "tabs": {
+    "forYou": "For You",
+    "workouts": "Workouts",
+    "nutrition": "Nutrition",
+    "tools": "Tools",
+    "pro": "Pro"
+  },
+  "proHero": {
+    "onPro": "You're on Pro",
+    "title": "Evolve Pro · $9.99/mo",
+    "body": "Free forever: basic workout logging, exploring EvoFit, and basic stats. Pro unlocks tracking, plans, scanners, analytics, and more."
+  },
+  "features": {
+    "basicLogging": {
+      "title": "Basic workout logging",
+      "desc": "Type, duration, and distance — free for everyone."
+    },
+    "basicStats": {
+      "title": "Basic stats",
+      "desc": "Simple glance metrics — always free."
+    },
+    "plans": {
+      "title": "Personalized Training Plans",
+      "desc": "Plans matched to your goals and schedule."
+    },
+    "macros": {
+      "title": "Calorie & Macro Tracker",
+      "desc": "Daily calories, protein, carbs, and fat."
+    },
+    "scanner": {
+      "title": "AI Food Scanner",
+      "desc": "Barcode and photo scan for fast logging."
+    },
+    "formGuides": {
+      "title": "Form Guides",
+      "desc": "Technique cues and exercise demos."
+    },
+    "history": {
+      "title": "Training History Analysis",
+      "desc": "Break down past sessions and effort."
+    },
+    "library": {
+      "title": "Saved Workouts Library",
+      "desc": "Your bookmarked sessions in one place."
+    },
+    "goals": {
+      "title": "Goal Setting & Tracking",
+      "desc": "Set targets and track follow-through."
+    },
+    "meals": {
+      "title": "Meal Planning",
+      "desc": "Weekly meal schedule, restaurant swaps, and macro targets."
+    },
+    "recipes": {
+      "title": "Pro Recipe Database",
+      "desc": "Cook-at-home recipes with ingredients, steps, and portions."
+    },
+    "analytics": {
+      "title": "Advanced Analytics & Graphs",
+      "desc": "Trends, volume charts, and deeper insights."
+    },
+    "body": {
+      "title": "Body Transformation Tracker",
+      "desc": "Photos, measurements, and change over time."
+    },
+    "health": {
+      "title": "Health Integrations",
+      "desc": "Apple Health and Garmin Connect sync."
+    },
+    "support": {
+      "title": "Priority Support",
+      "desc": "Faster help when you need it."
+    },
+    "adFree": {
+      "title": "Ad-Free Experience",
+      "desc": "Train without interruptions."
+    },
+    "forums": {
+      "title": "Athlete Network",
+      "desc": "Find and follow athletes on Evolve."
+    }
+  },
+  "sections": {
+    "free": "Included free",
+    "pro": "Pro tools"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "title": "Piani",
+  "subtitle": "Pasti reali — Chipotle, burger, pizza, pause caffè — costruiti intorno ai tuoi target calorici.",
+  "adjustWeek": "Regola la settimana",
+  "toast": {
+    "weekRefreshed": "Scambi pasti settimanali aggiornati con nuove opzioni ristorante.",
+    "weekProOnly": "Gli adeguamenti settimanali sono una funzione Pro.",
+    "loggedMealDemo": "{{name}} aggiunto a {{slot}} (demo).",
+    "addedSuggestion": "Suggerimento aggiunto: {{name}} (demo)."
+  },
+  "nutritionTitle": "Piano nutrizione",
+  "dailyCalories": "Calorie giornaliere",
+  "strategy": "Strategia",
+  "proteinBar": "Proteine {{n}}g",
+  "carbsBar": "Carboidrati {{n}}g",
+  "fatBar": "Grassi {{n}}g",
+  "strategyExtra": "Integra il fast food saltando le patatine, mezzo riso da Chipotle, o pizza + insalata invece di una pizza intera.",
+  "nutritionEmpty": "Completa l'onboarding per generare il tuo piano nutrizione.",
+  "workoutProgram": "Programma di allenamento",
+  "defaultPlanName": "Piano di allenamento personalizzato",
+  "programMeta": "{{sessions}} sessioni / settimana · livello {{level}} · {{access}}",
+  "gymAccess": "accesso palestra",
+  "homeFriendly": "adatto a casa",
+  "openTrainingPlan": "Apri piano di allenamento",
+  "recipeLibrary": "Libreria ricette",
+  "weekMealPlanTitle": "Piano pasti di questa settimana",
+  "weekMealPlanSubtitle": "Mix di basi da supermercato e ristoranti dove andresti davvero.",
+  "logThisMeal": "Registra questo pasto",
+  "mealIdeasTitle": "Idee pasto per i macro rimanenti",
+  "vibe": {
+    "all": "Tutti",
+    "flexible": "Flessibile",
+    "highProtein": "Alto contenuto proteico",
+    "craving": "Voglie",
+    "lighter": "Più leggero"
+  },
+  "addToPlan": "Aggiungi al piano",
+  "popularPlaces": "Luoghi popolari nel tuo diario alimentare",
+  "placeCount": "{{place}} · {{count}} elementi"
+}

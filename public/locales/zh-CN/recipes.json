@@ -1,0 +1,42 @@
+{
+  "title": "食谱",
+  "subtitle": "与你的宏量营养素联动的餐食灵感。Pro 解锁个性化周计划与基于宏量的推荐。",
+  "recommendedNow": "此刻为你推荐",
+  "remainingMacros": "还剩约 {{kcal}} 千卡和 {{protein}}g 蛋白质",
+  "postWorkoutFocus": " · 练后重点",
+  "unlockProMeals": "解锁 Pro 餐食",
+  "recipeCardMeta": "{{calories}} 千卡 · {{protein}}蛋白 · {{carbs}}碳水 · {{fat}}脂肪",
+  "searchPlaceholder": "搜索食谱...",
+  "filter": {
+    "all": "全部",
+    "breakfast": "早餐",
+    "lunch": "午餐",
+    "dinner": "晚餐",
+    "snack": "加餐",
+    "highProtein": "高蛋白",
+    "quick": "快手",
+    "vegetarian": "素食",
+    "keto": "生酮"
+  },
+  "cardMeta": "{{calories}} 千卡 · {{protein}}g 蛋白质 · {{minutes}} 分钟",
+  "notFound": "未找到食谱。",
+  "back": "食谱",
+  "timing": "准备 {{prep}}分钟 · 烹饪 {{cook}}分钟 · {{difficulty}}",
+  "portions": "份量",
+  "logToTracker": "记录到卡路里追踪",
+  "groceryList": "购物清单",
+  "toast": {
+    "logProRequired": "升级到 Pro 即可记录个性化食谱。",
+    "loggedDemo": "已将 {{name}} 记录到饮食追踪（演示）。",
+    "groceryDemo": "食材已加入购物清单（演示）。",
+    "groceryProOnly": "智能购物清单是 Pro 功能。"
+  },
+  "lockedTitle": "解锁个性化 Pro 食谱",
+  "lockedBody": "获取完整步骤、每周餐食计划、基于宏量的建议，以及自动份量调整。",
+  "ingredients": "食材",
+  "allergens": "过敏原：{{list}}",
+  "steps": "步骤",
+  "equipmentPortion": "厨具：{{equipment}} · 份量：{{portion}}",
+  "disclaimer": "营养数值仅为规划估算，不构成医疗建议。",
+  "openMealPlan": "打开饮食计划"
+}

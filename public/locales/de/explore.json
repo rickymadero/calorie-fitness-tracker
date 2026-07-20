@@ -1,0 +1,92 @@
+{
+  "athletesHint": "Suchst du Athleten?",
+  "searchNetwork": "Im Netzwerk suchen",
+  "orSuggestions": "oder sieh dir Vorschläge im Feed an.",
+  "upgradeCta": "Auf Pro upgraden →",
+  "tabs": {
+    "forYou": "Für dich",
+    "workouts": "Trainings",
+    "nutrition": "Ernährung",
+    "tools": "Tools",
+    "pro": "Pro"
+  },
+  "proHero": {
+    "onPro": "Du hast Pro",
+    "title": "Evolve Pro · 9,99 $/Monat",
+    "body": "Für immer kostenlos: einfaches Trainingstracking, EvoFit entdecken und einfache Statistiken. Pro schaltet Tracking, Pläne, Scanner, Analysen und mehr frei."
+  },
+  "features": {
+    "basicLogging": {
+      "title": "Einfaches Trainingstracking",
+      "desc": "Typ, Dauer und Distanz — kostenlos für alle."
+    },
+    "basicStats": {
+      "title": "Einfache Statistiken",
+      "desc": "Einfache Kennzahlen auf einen Blick — immer kostenlos."
+    },
+    "plans": {
+      "title": "Personalisierte Trainingspläne",
+      "desc": "Pläne, die auf deine Ziele und deinen Zeitplan abgestimmt sind."
+    },
+    "macros": {
+      "title": "Kalorien- & Makro-Tracker",
+      "desc": "Tägliche Kalorien, Proteine, Kohlenhydrate und Fette."
+    },
+    "scanner": {
+      "title": "KI-Lebensmittelscanner",
+      "desc": "Barcode- und Fotoscan für schnelles Erfassen."
+    },
+    "formGuides": {
+      "title": "Technikanleitungen",
+      "desc": "Techniktipps und Übungsdemonstrationen."
+    },
+    "history": {
+      "title": "Analyse der Trainingshistorie",
+      "desc": "Analysiere vergangene Einheiten und Belastung."
+    },
+    "library": {
+      "title": "Bibliothek gespeicherter Trainings",
+      "desc": "Deine gemerkten Einheiten an einem Ort."
+    },
+    "goals": {
+      "title": "Zielsetzung & -verfolgung",
+      "desc": "Setze Ziele und verfolge deinen Fortschritt."
+    },
+    "meals": {
+      "title": "Mahlzeitenplanung",
+      "desc": "Erstelle Mahlzeiten und Einkaufslisten für Trainingstage."
+    },
+    "recipes": {
+      "title": "Pro-Rezeptdatenbank",
+      "desc": "Vollständige Bibliothek an sportlichen Mahlzeiten."
+    },
+    "analytics": {
+      "title": "Erweiterte Analysen & Grafiken",
+      "desc": "Trends, Volumendiagramme und tiefere Einblicke."
+    },
+    "body": {
+      "title": "Körperveränderungs-Tracker",
+      "desc": "Fotos, Maße und Veränderungen über die Zeit."
+    },
+    "health": {
+      "title": "Apple Health-Integration",
+      "desc": "Synchronisiere Schritte, Trainings und Erholung."
+    },
+    "support": {
+      "title": "Priorisierter Support",
+      "desc": "Schnellere Hilfe, wenn du sie brauchst."
+    },
+    "adFree": {
+      "title": "Werbefreie Nutzung",
+      "desc": "Trainiere ohne Unterbrechungen."
+    },
+    "forums": {
+      "title": "Athleten-Netzwerk",
+      "desc": "Finde und folge Athleten auf Evolve."
+    }
+  },
+  "sections": {
+    "free": "Kostenlos enthalten",
+    "pro": "Pro-Tools"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Receitas",
+  "subtitle": "Ideias de refeições ligadas aos seus macros. O Pro libera planos semanais personalizados e recomendações baseadas em macros.",
+  "recommendedNow": "Recomendado para você agora",
+  "remainingMacros": "~{{kcal}} kcal e {{protein}}g de proteína restantes",
+  "postWorkoutFocus": " · foco pós-treino",
+  "unlockProMeals": "Desbloquear refeições Pro",
+  "recipeCardMeta": "{{calories}} kcal · {{protein}}P · {{carbs}}C · {{fat}}G",
+  "searchPlaceholder": "Buscar receitas...",
+  "filter": {
+    "all": "todos",
+    "breakfast": "café da manhã",
+    "lunch": "almoço",
+    "dinner": "jantar",
+    "snack": "lanche",
+    "highProtein": "alta proteína",
+    "quick": "rápido",
+    "vegetarian": "vegetariano",
+    "keto": "cetogênico"
+  },
+  "cardMeta": "{{calories}} kcal · {{protein}}g de proteína · {{minutes}} min",
+  "notFound": "Receita não encontrada.",
+  "back": "Receitas",
+  "timing": "Prep {{prep}}m · Cozimento {{cook}}m · {{difficulty}}",
+  "portions": "Porções",
+  "logToTracker": "Registrar no rastreador de calorias",
+  "groceryList": "Lista de compras",
+  "toast": {
+    "logProRequired": "Assine o Pro para registrar receitas personalizadas.",
+    "loggedDemo": "{{name}} registrado no rastreador de alimentos (demo).",
+    "groceryDemo": "Ingredientes adicionados à lista de compras (demo).",
+    "groceryProOnly": "Listas de compras inteligentes são um recurso Pro."
+  },
+  "lockedTitle": "Desbloqueie receitas Pro personalizadas",
+  "lockedBody": "Tenha instruções completas, planos semanais de refeições, sugestões baseadas em macros e ajuste automático de porções.",
+  "ingredients": "Ingredientes",
+  "allergens": "Alérgenos: {{list}}",
+  "steps": "Passos",
+  "equipmentPortion": "Equipamento: {{equipment}} · Porção: {{portion}}",
+  "disclaimer": "Os valores nutricionais são estimativas apenas para planejamento e não constituem aconselhamento médico.",
+  "openMealPlan": "Abrir planejamento de refeições"
+}

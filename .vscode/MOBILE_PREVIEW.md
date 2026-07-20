@@ -44,4 +44,5 @@ Task **Evolve: Show Full Browser** → `http://127.0.0.1:3000` (no phone bezel).
 ## Requirements
 
 - Dev server: `npm run dev` → port **3000** (`127.0.0.1`)  
+- **Evolve: Mobile Preview** reuses an existing listener on `:3000` (does not start a second `next dev`)
 - Auto-save is enabled in workspace settings (~800ms) so HMR fires as you type/pause
