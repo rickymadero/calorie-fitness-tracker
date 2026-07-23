@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { SettingsBackHeader } from "@/components/settings/SettingsBackHeader";
 import { SocialAvatar } from "@/components/social/PersonCard";
@@ -17,19 +17,25 @@ import {
 import type { ProfileVisibility } from "@/lib/types/social";
 
 export default function PrivacySettingsPage() {
-  const { user } = useAuth();
+  const { user, profile: authProfile, refreshProfile } = useAuth();
   const { myProfile, ensureMyProfile, updateMyProfile, unblockUser, getCard } =
     useSocial();
   const { toast } = useToast();
   const { t } = useAppTranslation(["common", "settings"]);
 
   const profile = myProfile ?? ensureMyProfile();
-  const [visibility, setVisibility] = useState<ProfileVisibility>(
-    profile?.visibility ?? "public",
-  );
+  const [visibility, setVisibility] = useState<ProfileVisibility>("public");
   const [messagePrivacy, setMessagePrivacy] = useState<MessagePrivacy>(
     settingsPrefs.getMessagePrivacy(),
   );
+
+  useEffect(() => {
+    if (authProfile) {
+      setVisibility(authProfile.is_private ? "private" : "public");
+      return;
+    }
+    if (profile?.visibility) setVisibility(profile.visibility);
+  }, [authProfile, profile?.visibility]);
 
   const blocked = useMemo(() => {
     if (!user) return [];
@@ -42,9 +48,25 @@ export default function PrivacySettingsPage() {
 
   if (!user || !profile) return null;
 
-  function saveVisibility(next: ProfileVisibility) {
+  async function saveVisibility(next: ProfileVisibility) {
     setVisibility(next);
     updateMyProfile({ visibility: next });
+    try {
+      const { createClient } = await import("@/lib/supabase/client");
+      const { profilesService } = await import("@/lib/services/profiles");
+      const supabase = createClient();
+      const { error } = await profilesService.updateOwn(supabase, user!.id, {
+        is_private: next === "private",
+      });
+      if (error) {
+        toast(error.message, "error");
+        return;
+      }
+      await refreshProfile();
+    } catch {
+      toast(t("common:errors.generic"), "error");
+      return;
+    }
     toast(
       next === "private"
         ? t("privacyPage.nowPrivate", { ns: "settings" })
@@ -91,7 +113,7 @@ export default function PrivacySettingsPage() {
             <button
               key={opt.id}
               type="button"
-              onClick={() => saveVisibility(opt.id)}
+              onClick={() => void saveVisibility(opt.id)}
               className={`min-h-11 rounded-2xl border px-3 py-2.5 text-left transition ${
                 visibility === opt.id
                   ? "border-accent bg-accent-soft"

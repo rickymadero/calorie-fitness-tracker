@@ -132,6 +132,12 @@ export function SocialProvider({ children }: { children: React.ReactNode }) {
     refresh();
   }, [user, refresh]);
 
+  // Re-read after AuthProvider mirrors Supabase profile into social storage.
+  useEffect(() => {
+    if (!user) return;
+    refresh();
+  }, [user?.id, user?.fullName, refresh]);
+
   const myProfile = useMemo(() => {
     void tick;
     if (!user) return null;

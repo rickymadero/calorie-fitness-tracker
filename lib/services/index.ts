@@ -1,5 +1,6 @@
 export { authService } from "@/lib/services/auth";
 export { profilesService } from "@/lib/services/profiles";
+export { userSettingsService } from "@/lib/services/userSettings";
 export { activitiesService } from "@/lib/services/activities";
 export { postsService } from "@/lib/services/posts";
 export { socialService } from "@/lib/services/social";

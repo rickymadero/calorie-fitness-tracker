@@ -34,6 +34,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setThemeState(preferred);
     document.documentElement.classList.toggle("dark", preferred === "dark");
     setReady(true);
+
+    const onExternal = (event: Event) => {
+      const detail = (event as CustomEvent<{ theme?: Theme }>).detail;
+      if (detail?.theme === "light" || detail?.theme === "dark") {
+        setThemeState(detail.theme);
+        document.documentElement.classList.toggle(
+          "dark",
+          detail.theme === "dark",
+        );
+      }
+    };
+    window.addEventListener("evolve:theme", onExternal);
+    return () => window.removeEventListener("evolve:theme", onExternal);
   }, []);
 
   const setTheme = useCallback((next: Theme) => {

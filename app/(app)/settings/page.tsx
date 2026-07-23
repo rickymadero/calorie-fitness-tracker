@@ -39,7 +39,7 @@ function downscaleImage(dataUrl: string, max = 640): Promise<string> {
 }
 
 export default function EditProfilePage() {
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, profile, refreshProfile } = useAuth();
   const { myProfile, ensureMyProfile, updateMyProfile } = useSocial();
   const { toast } = useToast();
   const { t } = useAppTranslation(["common", "settings", "profile"]);
@@ -55,20 +55,35 @@ export default function EditProfilePage() {
   const [showInstagram, setShowInstagram] = useState(false);
   const [saving, setSaving] = useState(false);
   const avatarInputRef = useRef<HTMLInputElement>(null);
+  // Auth hydrate / token refresh replaces `user`/`profile` refs often; don't
+  // clobber in-progress edits (especially full name) when that happens.
+  const formDirtyRef = useRef(false);
 
   useEffect(() => {
-    if (!user) return;
+    formDirtyRef.current = false;
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (!user || formDirtyRef.current) return;
     const p = ensureMyProfile();
-    setFullName(user.fullName);
+    setFullName(profile?.full_name?.trim() || user.fullName);
+    setUsername(profile?.username || p?.username || "");
+    setBio(profile?.bio ?? p?.bio ?? "");
+    const httpAvatar =
+      profile?.avatar_url && /^https?:\/\//i.test(profile.avatar_url)
+        ? profile.avatar_url
+        : "";
+    setAvatarUrl(httpAvatar || p?.avatarUrl || "");
+    setVisibility(
+      profile?.is_private
+        ? "private"
+        : (p?.visibility ?? "public"),
+    );
     if (p) {
-      setUsername(p.username);
-      setBio(p.bio);
-      setAvatarUrl(p.avatarUrl ?? "");
-      setVisibility(p.visibility);
       setInstagram(p.instagramUsername ?? "");
       setShowInstagram(p.showInstagram);
     }
-  }, [user, ensureMyProfile, myProfile?.userId]);
+  }, [user, ensureMyProfile, myProfile?.userId, profile]);
 
   if (!user) return null;
 
@@ -86,59 +101,110 @@ export default function EditProfilePage() {
     reader.onload = async () => {
       const raw = String(reader.result);
       const scaled = await downscaleImage(raw);
+      formDirtyRef.current = true;
       setAvatarUrl(scaled);
     };
     reader.readAsDataURL(file);
   }
 
-  function validateUsername() {
+  async function validateUsername() {
     const clean = username
       .toLowerCase()
       .replace(/[^a-z0-9_]/g, "")
-      .slice(0, 24);
+      .slice(0, 30);
     if (clean.length < 3) {
       setUsernameError(t("common:errors.usernameMin"));
       return null;
     }
-    if (socialStorage.isUsernameTaken(clean, user!.id)) {
-      setUsernameError(t("common:errors.usernameTaken"));
-      return null;
+    try {
+      const { createClient } = await import("@/lib/supabase/client");
+      const { profilesService } = await import("@/lib/services/profiles");
+      const supabase = createClient();
+      const check = await profilesService.isUsernameAvailable(
+        supabase,
+        clean,
+        user!.id,
+      );
+      if (check.error) {
+        setUsernameError(check.error.message);
+        return null;
+      }
+      if (!check.available) {
+        setUsernameError(t("common:errors.usernameTaken"));
+        return null;
+      }
+    } catch {
+      if (socialStorage.isUsernameTaken(clean, user!.id)) {
+        setUsernameError(t("common:errors.usernameTaken"));
+        return null;
+      }
     }
     setUsernameError("");
     return clean;
   }
 
   async function saveChanges() {
-    const clean = validateUsername();
+    const clean = await validateUsername();
     if (!clean) return;
 
+    const nextName = fullName.trim().slice(0, 80) || user!.fullName;
+    const nextBio = bio.slice(0, 160);
+    const httpAvatar = avatarUrl.startsWith("http") ? avatarUrl : null;
+
     setSaving(true);
-    updateUser({
-      fullName: fullName.trim() || user!.fullName,
-    });
-    updateMyProfile({
-      username: clean,
-      displayName: fullName.trim() || myProfile?.displayName || "Athlete",
-      bio: bio.slice(0, 160),
-      avatarUrl: avatarUrl.slice(0, 400_000),
-      visibility,
-      instagramUsername: instagram.replace(/^@/, "").trim() || undefined,
-      showInstagram,
-    });
     try {
       const { createClient } = await import("@/lib/supabase/client");
       const { profilesService } = await import("@/lib/services/profiles");
+      const { authService } = await import("@/lib/services/auth");
+      const { mirrorSupabaseProfileToSocial } = await import(
+        "@/lib/auth/mirrorSocialProfile"
+      );
       const supabase = createClient();
-      await profilesService.updateOwn(supabase, user!.id, {
-        username: clean,
-        full_name: fullName.trim() || user!.fullName,
-        bio: bio.slice(0, 160) || null,
-        avatar_url: avatarUrl.startsWith("http") ? avatarUrl : null,
-        is_private: visibility === "private",
+      const { data, error } = await profilesService.updateOwn(
+        supabase,
+        user!.id,
+        {
+          username: clean,
+          full_name: nextName,
+          bio: nextBio || null,
+          // Keep existing http avatar unless replacing with another http URL.
+          // Data-URL picks stay local-only until Storage is wired.
+          ...(httpAvatar || !avatarUrl
+            ? { avatar_url: httpAvatar }
+            : {}),
+          is_private: visibility === "private",
+        },
+      );
+      if (error || !data) {
+        toast(error?.message || t("common:errors.generic"), "error");
+        setSaving(false);
+        return;
+      }
+
+      // Keep Auth metadata in sync so hydrate fallbacks don't revive the old name.
+      await authService.updateMetadata(supabase, { full_name: nextName });
+
+      const savedName = data.full_name?.trim() || nextName;
+      mirrorSupabaseProfileToSocial(data, savedName);
+      updateMyProfile({
+        username: data.username || clean,
+        displayName: savedName,
+        bio: data.bio ?? nextBio,
+        avatarUrl: avatarUrl.slice(0, 400_000),
+        visibility: data.is_private ? "private" : "public",
+        instagramUsername: instagram.replace(/^@/, "").trim() || undefined,
+        showInstagram,
       });
+      // Local session only — avoid a second profiles write + auth event race.
+      updateUser({ fullName: savedName }, { syncRemote: false });
+      await refreshProfile();
     } catch {
-      // Local profile still saved.
+      toast(t("common:errors.generic"), "error");
+      setSaving(false);
+      return;
     }
+
+    formDirtyRef.current = false;
     setSaving(false);
     toast(t("common:success.settingsSaved"), "success");
     router.push("/profile");
@@ -188,7 +254,10 @@ export default function EditProfilePage() {
                 <button
                   type="button"
                   className="mt-2 text-xs font-medium text-muted hover:text-foreground"
-                  onClick={() => setAvatarUrl("")}
+                  onClick={() => {
+                    formDirtyRef.current = true;
+                    setAvatarUrl("");
+                  }}
                 >
                   {t("settings:removePhoto")}
                 </button>
@@ -199,13 +268,17 @@ export default function EditProfilePage() {
           <Input
             label={t("settings:fullName")}
             value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            onChange={(e) => {
+              formDirtyRef.current = true;
+              setFullName(e.target.value);
+            }}
             autoComplete="name"
           />
           <Input
             label={t("settings:username")}
             value={username}
             onChange={(e) => {
+              formDirtyRef.current = true;
               setUsername(e.target.value);
               setUsernameError("");
             }}
@@ -223,7 +296,10 @@ export default function EditProfilePage() {
             </label>
             <textarea
               value={bio}
-              onChange={(e) => setBio(e.target.value.slice(0, 160))}
+              onChange={(e) => {
+                formDirtyRef.current = true;
+                setBio(e.target.value.slice(0, 160));
+              }}
               rows={3}
               placeholder={t("settings:bioPlaceholder")}
               className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-base outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
@@ -254,7 +330,10 @@ export default function EditProfilePage() {
               <button
                 key={opt.id}
                 type="button"
-                onClick={() => setVisibility(opt.id)}
+                onClick={() => {
+                  formDirtyRef.current = true;
+                  setVisibility(opt.id);
+                }}
                 className={`min-h-11 rounded-2xl border px-3 py-2.5 text-left transition ${
                   visibility === opt.id
                     ? "border-accent bg-accent-soft"
@@ -281,7 +360,10 @@ export default function EditProfilePage() {
           <Input
             label={t("settings:instagram")}
             value={instagram}
-            onChange={(e) => setInstagram(e.target.value)}
+            onChange={(e) => {
+              formDirtyRef.current = true;
+              setInstagram(e.target.value);
+            }}
             placeholder={t("settings:instagramPlaceholder")}
             hint={t("settings:instagramHint")}
           />
@@ -290,7 +372,10 @@ export default function EditProfilePage() {
             <input
               type="checkbox"
               checked={showInstagram}
-              onChange={(e) => setShowInstagram(e.target.checked)}
+              onChange={(e) => {
+                formDirtyRef.current = true;
+                setShowInstagram(e.target.checked);
+              }}
               className="h-4 w-4 accent-[var(--accent)]"
             />
           </label>
@@ -311,7 +396,7 @@ export default function EditProfilePage() {
             fullWidth
             size="lg"
             loading={saving}
-            onClick={saveChanges}
+            onClick={() => void saveChanges()}
           >
             {t("common:buttons.saveChanges")}
           </Button>

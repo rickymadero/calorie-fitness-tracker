@@ -22,8 +22,19 @@ import { storage } from "@/lib/storage";
 import { calculateNutritionPlan } from "@/lib/calculations/nutrition";
 import { createClient } from "@/lib/supabase/client";
 import { authService } from "@/lib/services/auth";
-import { profilesService } from "@/lib/services/profiles";
-import { buildSessionProfile } from "@/lib/auth/sessionProfile";
+import { profilesService, type ProfileRow } from "@/lib/services/profiles";
+import {
+  userSettingsService,
+  type UserSettingsRow,
+} from "@/lib/services/userSettings";
+import {
+  buildSessionProfile,
+  resolveAppTheme,
+} from "@/lib/auth/sessionProfile";
+import { runProfileSettingsBridge } from "@/lib/auth/profileSettingsBridge";
+import { mirrorSupabaseProfileToSocial } from "@/lib/auth/mirrorSocialProfile";
+import { settingsPrefs } from "@/lib/storage/settingsPrefs";
+import { i18n, STORAGE_KEY as LANGUAGE_KEY } from "@/lib/i18n/i18n";
 
 type AuthResult = {
   ok: boolean;
@@ -33,6 +44,11 @@ type AuthResult = {
 
 interface AuthContextValue {
   user: UserProfile | null;
+  /** Supabase profiles row for the signed-in user (source of truth). */
+  profile: ProfileRow | null;
+  /** Supabase user_settings row (source of truth for units/language/theme). */
+  userSettings: UserSettingsRow | null;
+  profileError: string | null;
   onboarding: OnboardingData;
   nutritionPlan: NutritionPlan | null;
   registerDraft: RegisterDraft;
@@ -55,7 +71,12 @@ interface AuthContextValue {
   markIntroSeen: () => void;
   markPricingSeen: () => void;
   setPlan: (plan: PlanTier) => void;
-  updateUser: (patch: Partial<UserProfile>) => void;
+  updateUser: (
+    patch: Partial<UserProfile>,
+    options?: { syncRemote?: boolean },
+  ) => void;
+  /** Re-fetch profiles + user_settings and refresh session overlay. */
+  refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -65,8 +86,35 @@ function persistUser(profile: UserProfile | null) {
   else storage.clearUser();
 }
 
+function applyDeviceSettings(settings: UserSettingsRow | null) {
+  if (!settings || typeof window === "undefined") return;
+  try {
+    const theme = resolveAppTheme(settings.theme);
+    storage.setTheme(theme);
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    window.dispatchEvent(
+      new CustomEvent("evolve:theme", { detail: { theme } }),
+    );
+  } catch {
+    /* ignore */
+  }
+  try {
+    const lang = settings.language || "en";
+    settingsPrefs.setLanguage(lang);
+    localStorage.setItem(LANGUAGE_KEY, lang);
+    void i18n.changeLanguage(lang);
+  } catch {
+    /* ignore */
+  }
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserProfile | null>(null);
+  const [profile, setProfile] = useState<ProfileRow | null>(null);
+  const [userSettings, setUserSettings] = useState<UserSettingsRow | null>(
+    null,
+  );
+  const [profileError, setProfileError] = useState<string | null>(null);
   const [onboarding, setOnboarding] = useState<OnboardingData>(
     defaultOnboarding(),
   );
@@ -82,6 +130,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const hydrateFromAuthUser = useCallback(async (authUser: User | null) => {
     if (!authUser) {
       setUser(null);
+      setProfile(null);
+      setUserSettings(null);
+      setProfileError(null);
       return null;
     }
 
@@ -90,25 +141,68 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       storage.noteAuthIdMismatch(local.id);
     }
 
-    let profileRow = null;
+    let profileRow: ProfileRow | null = null;
+    let settingsRow: UserSettingsRow | null = null;
+    setProfileError(null);
+
     try {
       const supabase = createClient();
-      const { data, error } = await profilesService.getById(
-        supabase,
-        authUser.id,
-      );
-      if (!error) profileRow = data;
+      const [{ data: pData, error: pErr }, { data: sData, error: sErr }] =
+        await Promise.all([
+          profilesService.getById(supabase, authUser.id),
+          userSettingsService.getByUserId(supabase, authUser.id),
+        ]);
+      if (pErr) setProfileError(pErr.message);
+      else profileRow = pData;
+      if (!sErr) settingsRow = sData;
+
+      if (profileRow || settingsRow) {
+        await runProfileSettingsBridge(
+          supabase,
+          authUser.id,
+          profileRow,
+          settingsRow,
+          authUser.email,
+        );
+        const [{ data: p2 }, { data: s2 }] = await Promise.all([
+          profilesService.getById(supabase, authUser.id),
+          userSettingsService.getByUserId(supabase, authUser.id),
+        ]);
+        if (p2) profileRow = p2;
+        if (s2) settingsRow = s2;
+      }
+
+      if (profileRow) {
+        mirrorSupabaseProfileToSocial(
+          profileRow,
+          profileRow.full_name ?? local?.fullName,
+        );
+      }
     } catch {
       // Offline / missing env — onboarding status stays incomplete until profile loads.
     }
 
-    const next = buildSessionProfile(authUser, profileRow, local);
+    const next = buildSessionProfile(
+      authUser,
+      profileRow,
+      local,
+      settingsRow,
+    );
     persistUser(next);
     setUser(next);
+    setProfile(profileRow);
+    setUserSettings(settingsRow);
+    applyDeviceSettings(settingsRow);
     setOnboarding(storage.getOnboarding() ?? defaultOnboarding());
     setNutritionPlanState(storage.getNutritionPlan());
     return next;
   }, []);
+
+  const refreshProfile = useCallback(async () => {
+    const supabase = createClient();
+    const { data } = await authService.getUser(supabase);
+    if (data.user) await hydrateFromAuthUser(data.user);
+  }, [hydrateFromAuthUser]);
 
   useEffect(() => {
     let cancelled = false;
@@ -321,6 +415,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Clear only the session overlay — keep onboarding/nutrition/social local data.
     storage.clearUser();
     setUser(null);
+    setProfile(null);
+    setUserSettings(null);
+    setProfileError(null);
   }, []);
 
   const updateOnboarding = useCallback((patch: Partial<OnboardingData>) => {
@@ -383,35 +480,68 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  const updateUser = useCallback((patch: Partial<UserProfile>) => {
-    setUser((prev) => {
-      if (!prev) return prev;
-      const next = { ...prev, ...patch };
-      persistUser(next);
+  const updateUser = useCallback(
+    (
+      patch: Partial<UserProfile>,
+      options?: { syncRemote?: boolean },
+    ) => {
+      const syncRemote = options?.syncRemote !== false;
+
+      setUser((prev) => {
+        if (!prev) return prev;
+        const next = { ...prev, ...patch };
+        persistUser(next);
+        return next;
+      });
 
       if (patch.fullName !== undefined) {
-        void (async () => {
-          try {
-            const supabase = createClient();
-            await profilesService.updateOwn(supabase, prev.id, {
+        setProfile((row) =>
+          row ? { ...row, full_name: patch.fullName ?? row.full_name } : row,
+        );
+      }
+
+      if (
+        !syncRemote ||
+        (patch.fullName === undefined &&
+          patch.measurementSystem === undefined)
+      ) {
+        return;
+      }
+
+      void (async () => {
+        try {
+          const supabase = createClient();
+          const local = storage.getUser();
+          if (!local) return;
+          if (patch.fullName !== undefined) {
+            await profilesService.updateOwn(supabase, local.id, {
               full_name: patch.fullName,
             });
             await authService.updateMetadata(supabase, {
               full_name: patch.fullName,
             });
-          } catch {
-            // Local overlay still updated.
           }
-        })();
-      }
-
-      return next;
-    });
-  }, []);
+          if (patch.measurementSystem !== undefined) {
+            await userSettingsService.updatePreferredUnits(
+              supabase,
+              local.id,
+              patch.measurementSystem,
+            );
+          }
+        } catch {
+          // Local overlay still updated.
+        }
+      })();
+    },
+    [],
+  );
 
   const value = useMemo(
     () => ({
       user,
+      profile,
+      userSettings,
+      profileError,
       onboarding,
       nutritionPlan,
       registerDraft,
@@ -430,9 +560,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       markPricingSeen,
       setPlan,
       updateUser,
+      refreshProfile,
     }),
     [
       user,
+      profile,
+      userSettings,
+      profileError,
       onboarding,
       nutritionPlan,
       registerDraft,
@@ -451,6 +585,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       markPricingSeen,
       setPlan,
       updateUser,
+      refreshProfile,
     ],
   );
 

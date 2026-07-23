@@ -1,21 +1,27 @@
 import type { User } from "@supabase/supabase-js";
-import type { PlanTier, UserProfile } from "@/lib/types";
+import type { PlanTier, UserProfile, MeasurementSystem } from "@/lib/types";
 import type { Database } from "@/lib/supabase/database.types";
 
 type ProfileRow = Database["public"]["Tables"]["profiles"]["Row"];
+type UserSettingsRow = Database["public"]["Tables"]["user_settings"]["Row"];
 
 /**
- * Build the app's UserProfile from Supabase Auth + profiles row.
+ * Build the app's UserProfile from Supabase Auth + profiles + user_settings.
  * Onboarding completion comes from profiles.onboarding_completed — never localStorage.
  */
 export function buildSessionProfile(
   authUser: User,
   profile: ProfileRow | null,
   local: UserProfile | null,
+  settings?: UserSettingsRow | null,
 ): UserProfile {
   const sameLocal = local?.id === authUser.id ? local : null;
   const planFromDb = profile?.plan as PlanTier | undefined;
   const onboardingComplete = Boolean(profile?.onboarding_completed);
+
+  const unitsFromSettings = settings?.preferred_units as
+    | MeasurementSystem
+    | undefined;
 
   return {
     id: authUser.id,
@@ -27,7 +33,8 @@ export function buildSessionProfile(
     emailVerified: Boolean(authUser.email_confirmed_at) || true,
     dateOfBirth: sameLocal?.dateOfBirth ?? "",
     country: sameLocal?.country ?? "",
-    measurementSystem: sameLocal?.measurementSystem ?? "metric",
+    measurementSystem:
+      unitsFromSettings ?? sameLocal?.measurementSystem ?? "metric",
     // Prefer DB plan when present; keep local demo override otherwise.
     plan: planFromDb ?? sameLocal?.plan ?? "free",
     createdAt:
@@ -48,4 +55,17 @@ function displayNameFromAuth(user: User): string {
   if (fromMeta) return fromMeta;
   const email = user.email ?? "";
   return email.split("@")[0] || "Athlete";
+}
+
+/** Map DB theme preference to the app's light/dark ThemeProvider. */
+export function resolveAppTheme(
+  preference: Database["public"]["Enums"]["theme_preference"] | null | undefined,
+): "light" | "dark" {
+  if (preference === "light" || preference === "dark") return preference;
+  if (typeof window !== "undefined") {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  }
+  return "dark";
 }

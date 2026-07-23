@@ -16,7 +16,7 @@ import { settingsPrefs } from "@/lib/storage/settingsPrefs";
 import type { MeasurementSystem } from "@/lib/types";
 
 export default function PreferencesPage() {
-  const { user, updateUser, setPlan } = useAuth();
+  const { user, updateUser, setPlan, userSettings, refreshProfile } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { toast } = useToast();
   const { t, locale, setLocale, languages } = useAppTranslation([
@@ -39,12 +39,37 @@ export default function PreferencesPage() {
   useEffect(() => {
     if (!user) return;
     setEmail(user.email);
-    setMeasurement(user.measurementSystem);
+    setMeasurement(
+      (userSettings?.preferred_units as MeasurementSystem | undefined) ??
+        user.measurementSystem,
+    );
     setTwoFa(settingsPrefs.getTwoFa());
-    setLanguage(locale);
-  }, [user, locale]);
+    setLanguage(userSettings?.language || locale);
+  }, [user, locale, userSettings]);
 
   if (!user) return null;
+
+  async function persistPreferenceSettings(next?: {
+    measurement?: MeasurementSystem;
+    language?: string;
+    theme?: "light" | "dark";
+  }) {
+    try {
+      const { createClient } = await import("@/lib/supabase/client");
+      const { userSettingsService } = await import(
+        "@/lib/services/userSettings"
+      );
+      const supabase = createClient();
+      await userSettingsService.updateOwn(supabase, user!.id, {
+        preferred_units: next?.measurement ?? measurement,
+        language: next?.language ?? language,
+        theme: next?.theme ?? theme,
+      });
+      await refreshProfile();
+    } catch {
+      /* local still updated */
+    }
+  }
 
   function applySave(nextEmail?: string) {
     updateUser({
@@ -56,7 +81,7 @@ export default function PreferencesPage() {
     return true;
   }
 
-  function saveChanges() {
+  async function saveChanges() {
     const nextEmail = email.trim().toLowerCase();
     if (!nextEmail || !nextEmail.includes("@")) {
       toast(t("common:errors.invalidEmail"), "error");
@@ -90,6 +115,7 @@ export default function PreferencesPage() {
 
     setSaving(true);
     applySave();
+    await persistPreferenceSettings();
     setSaving(false);
     toast(t("common:success.settingsSaved"), "success");
   }
@@ -108,6 +134,7 @@ export default function PreferencesPage() {
         return;
       }
       applySave(pendingEmail);
+      await persistPreferenceSettings();
       setConfirmEmailOpen(false);
       setPendingEmail(null);
       toast(t("common:success.emailUpdated"), "success");
@@ -130,6 +157,7 @@ export default function PreferencesPage() {
         return;
       }
       applySave();
+      await persistPreferenceSettings();
       setConfirmPasswordOpen(false);
       setCurrentPassword("");
       setNewPassword("");
@@ -139,6 +167,21 @@ export default function PreferencesPage() {
       toast(t("common:errors.generic"), "error");
     }
     setSaving(false);
+  }
+
+  function onLanguageChange(next: string) {
+    setLanguage(next);
+    setLocale(next);
+    void persistPreferenceSettings({ language: next });
+    window.setTimeout(() => {
+      toast(t("common:success.languageUpdated"), "success");
+    }, 50);
+  }
+
+  function onToggleTheme() {
+    const next = theme === "dark" ? "light" : "dark";
+    toggleTheme();
+    void persistPreferenceSettings({ theme: next });
   }
 
   return (
@@ -161,14 +204,7 @@ export default function PreferencesPage() {
             <select
               id="app-language"
               value={language}
-              onChange={(e) => {
-                const next = e.target.value;
-                setLanguage(next);
-                setLocale(next);
-                window.setTimeout(() => {
-                  toast(t("common:success.languageUpdated"), "success");
-                }, 50);
-              }}
+              onChange={(e) => onLanguageChange(e.target.value)}
               className="h-12 w-full rounded-2xl border border-border bg-background px-3 text-base outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
             >
               {languages.map((lang) => (
@@ -211,7 +247,7 @@ export default function PreferencesPage() {
                 {theme === "dark" ? t("settings:dark") : t("settings:light")}
               </p>
             </div>
-            <Button variant="secondary" size="sm" onClick={toggleTheme}>
+            <Button variant="secondary" size="sm" onClick={onToggleTheme}>
               {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
               {t("common:buttons.toggle")}
             </Button>
@@ -326,7 +362,7 @@ export default function PreferencesPage() {
             fullWidth
             size="lg"
             loading={saving}
-            onClick={saveChanges}
+            onClick={() => void saveChanges()}
           >
             {t("common:buttons.saveChanges")}
           </Button>

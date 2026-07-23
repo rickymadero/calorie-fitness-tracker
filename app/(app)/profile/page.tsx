@@ -21,14 +21,34 @@ import { useAppTranslation } from "@/components/providers/LanguageProvider";
 type ProfileTab = "workouts" | "prs";
 
 export default function ProfilePage() {
-  const { user } = useAuth();
+  const { user, profile: authProfile } = useAuth();
   const { myProfile, ensureMyProfile, followersOf, followingOf, ready } =
     useSocial();
   const { tick, postsByAuthor, authorStats } = usePosts();
   const { t } = useAppTranslation(["common", "profile"]);
   const [tab, setTab] = useState<ProfileTab>("workouts");
 
-  const profile = myProfile ?? (ready ? ensureMyProfile() : null);
+  const socialProfile = myProfile ?? (ready ? ensureMyProfile() : null);
+  const profile = socialProfile
+    ? {
+        ...socialProfile,
+        displayName:
+          authProfile?.full_name?.trim() ||
+          socialProfile.displayName ||
+          user?.fullName ||
+          "",
+        username: authProfile?.username || socialProfile.username,
+        bio: authProfile?.bio ?? socialProfile.bio,
+        avatarUrl:
+          (authProfile?.avatar_url &&
+          /^https?:\/\//i.test(authProfile.avatar_url)
+            ? authProfile.avatar_url
+            : null) || socialProfile.avatarUrl,
+        visibility: authProfile?.is_private
+          ? ("private" as const)
+          : socialProfile.visibility,
+      }
+    : null;
 
   const posts = useMemo(() => {
     void tick;
