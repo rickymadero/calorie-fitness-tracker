@@ -20,6 +20,7 @@ export default function PricingPage() {
   const { t } = useAppTranslation("pricing");
   const [billing, setBilling] = useState<"monthly" | "annual">("annual");
 
+  // Pricing stays available after onboarding so Free users can upgrade from Explore/Pro tools.
   useEffect(() => {
     if (!isReady) return;
     if (!user) {
@@ -28,9 +29,7 @@ export default function PricingPage() {
     }
     if (!user.onboardingComplete) {
       router.replace("/onboarding");
-      return;
     }
-    router.replace("/feed");
   }, [user, isReady, router]);
 
   const freeFeatures = useMemo(() => {
@@ -43,7 +42,7 @@ export default function PricingPage() {
     return Array.isArray(raw) ? (raw as string[]) : [];
   }, [t]);
 
-  if (!isReady || !user) return <PageLoader />;
+  if (!isReady || !user || !user.onboardingComplete) return <PageLoader />;
 
   const monthlyPrice = 12.99;
   const annualMonthly = 7.99;
