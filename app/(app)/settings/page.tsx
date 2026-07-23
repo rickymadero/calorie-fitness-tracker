@@ -108,7 +108,7 @@ export default function EditProfilePage() {
     return clean;
   }
 
-  function saveChanges() {
+  async function saveChanges() {
     const clean = validateUsername();
     if (!clean) return;
 
@@ -125,6 +125,20 @@ export default function EditProfilePage() {
       instagramUsername: instagram.replace(/^@/, "").trim() || undefined,
       showInstagram,
     });
+    try {
+      const { createClient } = await import("@/lib/supabase/client");
+      const { profilesService } = await import("@/lib/services/profiles");
+      const supabase = createClient();
+      await profilesService.updateOwn(supabase, user!.id, {
+        username: clean,
+        full_name: fullName.trim() || user!.fullName,
+        bio: bio.slice(0, 160) || null,
+        avatar_url: avatarUrl.startsWith("http") ? avatarUrl : null,
+        is_private: visibility === "private",
+      });
+    } catch {
+      // Local profile still saved.
+    }
     setSaving(false);
     toast(t("common:success.settingsSaved"), "success");
     router.push("/profile");

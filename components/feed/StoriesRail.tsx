@@ -14,7 +14,7 @@ import type { DualStory, FeedStoryGroup } from "@/lib/types/stories";
 export function StoriesRail() {
   const { user } = useAuth();
   const { getCard } = useSocial();
-  const { tick, listFeedGroups, ready } = useStories();
+  const { tick, listFeedGroups, ready, viewStories, refresh } = useStories();
   const { t } = useAppTranslation(["feed", "common"]);
   const [viewer, setViewer] = useState<{
     stories: DualStory[];
@@ -36,6 +36,18 @@ export function StoriesRail() {
     setViewer({ stories: group.stories, startIndex });
   }
 
+  function closeViewer() {
+    if (viewer) {
+      // Closing the ring marks the whole group seen (multi-segment seeds included).
+      viewStories(viewer.stories.map((s) => s.id));
+      refresh();
+    }
+    setViewer(null);
+  }
+
+  const ringUnseen = "bg-gradient-to-tr from-accent to-bronze";
+  const ringSeen = "bg-white/30";
+
   return (
     <>
       <div className="hide-scrollbar -mx-1 flex gap-3 overflow-x-auto px-1 pb-1">
@@ -47,10 +59,8 @@ export function StoriesRail() {
             className="flex w-[72px] shrink-0 flex-col items-center gap-1.5"
           >
             <span
-              className={`relative flex h-[68px] w-[68px] items-center justify-center rounded-full p-[2px] ${
-                selfGroup!.hasUnseen
-                  ? "bg-gradient-to-tr from-accent to-bronze"
-                  : "bg-border"
+              className={`relative flex h-[68px] w-[68px] items-center justify-center rounded-full p-[2.5px] ${
+                selfGroup!.hasUnseen ? ringUnseen : ringSeen
               }`}
             >
               <span className="flex h-full w-full items-center justify-center rounded-full bg-background p-[2px]">
@@ -98,10 +108,8 @@ export function StoriesRail() {
               className="flex w-[72px] shrink-0 flex-col items-center gap-1.5"
             >
               <span
-                className={`flex h-[68px] w-[68px] items-center justify-center rounded-full p-[2px] ${
-                  g.hasUnseen
-                    ? "bg-gradient-to-tr from-accent to-bronze"
-                    : "bg-border"
+                className={`flex h-[68px] w-[68px] items-center justify-center rounded-full p-[2.5px] ${
+                  g.hasUnseen ? ringUnseen : ringSeen
                 }`}
               >
                 <span className="flex h-full w-full items-center justify-center rounded-full bg-background p-[2px]">
@@ -120,7 +128,7 @@ export function StoriesRail() {
         <StoryViewer
           stories={viewer.stories}
           startIndex={viewer.startIndex}
-          onClose={() => setViewer(null)}
+          onClose={closeViewer}
         />
       )}
     </>

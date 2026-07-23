@@ -14,6 +14,8 @@ import { socialStorage } from "@/lib/storage/social";
 import { SEED_STORIES } from "@/lib/mock/seedStories";
 
 const KEY = "evolve.stories";
+/** Compact key — views must not rewrite the large stories blob (quota fails silently). */
+const VIEWS_KEY = "evolve.storyViews";
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 function canUse() {
@@ -22,6 +24,43 @@ function canUse() {
 
 function uid(prefix: string) {
   return `${prefix}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function readViews(): StoryView[] {
+  if (!canUse()) return [];
+  try {
+    const raw = localStorage.getItem(VIEWS_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as StoryView[];
+      return Array.isArray(parsed) ? parsed : [];
+    }
+    // One-time migrate out of the main stories blob
+    const mainRaw = localStorage.getItem(KEY);
+    if (!mainRaw) return [];
+    const store = JSON.parse(mainRaw) as StoriesStore;
+    const migrated = Array.isArray(store.views) ? store.views : [];
+    if (migrated.length > 0) {
+      localStorage.setItem(VIEWS_KEY, JSON.stringify(migrated));
+      store.views = [];
+      try {
+        localStorage.setItem(KEY, JSON.stringify(store));
+      } catch {
+        /* main blob may already be over quota — views still live in VIEWS_KEY */
+      }
+    }
+    return migrated;
+  } catch {
+    return [];
+  }
+}
+
+function writeViews(views: StoryView[]) {
+  if (!canUse()) return;
+  try {
+    localStorage.setItem(VIEWS_KEY, JSON.stringify(views));
+  } catch (err) {
+    console.error("evolve.storyViews: write failed", err);
+  }
 }
 
 function freshSeedStories(): DualStory[] {
@@ -265,7 +304,7 @@ export const storiesStorage = {
     }
 
     const viewed = new Set(
-      store.views
+      readViews()
         .filter((v) => v.viewerId === viewerId)
         .map((v) => v.storyId),
     );
@@ -317,24 +356,50 @@ export const storiesStorage = {
       );
   },
 
+  /**
+   * Persist that `viewerId` saw this story (including own stories).
+   * Returns the new view, or null if already recorded.
+   */
   recordView(storyId: string, viewerId: string): StoryView | null {
-    const store = read();
-    const story = store.stories.find((s) => s.id === storyId);
-    if (!story || !canViewStory(story, viewerId)) return null;
-    if (story.userId === viewerId) return null;
-    const existing = store.views.find(
-      (v) => v.storyId === storyId && v.viewerId === viewerId,
-    );
-    if (existing) return existing;
+    const views = readViews();
+    if (views.some((v) => v.storyId === storyId && v.viewerId === viewerId)) {
+      return null;
+    }
     const view: StoryView = {
       id: uid("sview"),
       storyId,
       viewerId,
       viewedAt: new Date().toISOString(),
     };
-    store.views.push(view);
-    write(store);
+    views.push(view);
+    writeViews(views);
     return view;
+  },
+
+  /** Mark many stories seen in one write. Returns true if anything new was stored. */
+  recordViews(storyIds: string[], viewerId: string): boolean {
+    if (!storyIds.length) return false;
+    const views = readViews();
+    const seen = new Set(
+      views
+        .filter((v) => v.viewerId === viewerId)
+        .map((v) => v.storyId),
+    );
+    let changed = false;
+    const now = new Date().toISOString();
+    for (const storyId of storyIds) {
+      if (seen.has(storyId)) continue;
+      views.push({
+        id: uid("sview"),
+        storyId,
+        viewerId,
+        viewedAt: now,
+      });
+      seen.add(storyId);
+      changed = true;
+    }
+    if (changed) writeViews(views);
+    return changed;
   },
 
   react(
@@ -416,7 +481,7 @@ export const storiesStorage = {
     const store = read();
     const s = store.stories.find((x) => x.id === storyId);
     if (!s || s.userId !== ownerId) return [];
-    return store.views.filter((v) => v.storyId === storyId);
+    return readViews().filter((v) => v.storyId === storyId);
   },
 
   muteUser(viewerId: string, mutedId: string) {

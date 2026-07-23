@@ -19,18 +19,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     }
     if (!user.onboardingComplete) {
       router.replace("/onboarding");
-      return;
-    }
-    if (!user.introSeen) {
-      router.replace("/intro");
-      return;
-    }
-    if (!user.pricingSeen) {
-      router.replace("/pricing");
     }
   }, [user, isReady, router]);
 
-  if (!isReady || !user || !user.onboardingComplete || !user.introSeen || !user.pricingSeen) {
+  if (!isReady || !user || !user.onboardingComplete) {
     return <PageLoader />;
   }
 

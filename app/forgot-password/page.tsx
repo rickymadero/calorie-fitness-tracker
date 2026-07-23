@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
+import { createClient } from "@/lib/supabase/client";
+import { authService } from "@/lib/services/auth";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
@@ -16,15 +18,35 @@ export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!email.includes("@")) return;
+    setError("");
+    if (!email.includes("@")) {
+      setError(t("errors.invalidEmail"));
+      return;
+    }
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
+    try {
+      const supabase = createClient();
+      const redirectTo = `${window.location.origin}/auth/callback?next=/auth/reset-password`;
+      const { error: resetError } = await authService.resetPasswordForEmail(
+        supabase,
+        email.trim(),
+        redirectTo,
+      );
+      if (resetError) {
+        setError(resetError.message);
+        setLoading(false);
+        return;
+      }
+      setSent(true);
+      toast(t("forgotPassword.toastSent", { ns: "auth" }), "success");
+    } catch {
+      setError(t("errors.generic"));
+    }
     setLoading(false);
-    setSent(true);
-    toast(t("forgotPassword.toastSent", { ns: "auth" }), "success");
   }
 
   return (
@@ -56,6 +78,7 @@ export default function ForgotPasswordPage() {
               placeholder={t("emailPlaceholder", { ns: "auth" })}
               required
             />
+            {error && <p className="text-sm text-red-400">{error}</p>}
             <Button type="submit" fullWidth size="lg" loading={loading}>
               {t("forgotPassword.sendLink", { ns: "auth" })}
             </Button>

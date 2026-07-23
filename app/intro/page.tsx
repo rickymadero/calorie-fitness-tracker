@@ -37,6 +37,7 @@ export default function IntroPage() {
     if (!isReady) return;
     if (!user) router.replace("/");
     else if (!user.onboardingComplete) router.replace("/onboarding");
+    else router.replace("/feed");
   }, [user, isReady, router]);
 
   const features = useMemo(

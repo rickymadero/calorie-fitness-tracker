@@ -12,7 +12,6 @@ import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { getPostAuthPath } from "@/lib/auth/routes";
-import { storage } from "@/lib/storage";
 
 const easeReveal = [0.16, 1, 0.3, 1] as const;
 
@@ -72,25 +71,41 @@ export function AuthDivider({ label }: { label?: string }) {
   );
 }
 
-/** Self-contained Instagram demo sign-in — reuses existing demo auth so nothing breaks. */
+/**
+ * Placeholder social entry — uses a dedicated Supabase email/password account
+ * until Instagram OAuth is configured. Tries sign-in, then sign-up once.
+ */
 export function InstagramContinueButton({ label }: { label?: string }) {
   const { toast } = useToast();
-  const { login } = useAuth();
+  const { login, register } = useAuth();
   const router = useRouter();
   const { t } = useAppTranslation("auth");
   const [busy, setBusy] = useState(false);
 
   async function demoSocial() {
     setBusy(true);
-    const result = await login("instagram.demo@evolve.app", "evolve-social-demo");
+    const email = "instagram.demo@evolve.app";
+    const password = "evolve-social-demo";
+    let result = await login(email, password);
+    if (!result.ok) {
+      const created = await register({
+        fullName: "Instagram Demo",
+        email,
+        password,
+      });
+      if (created.ok) {
+        result = created;
+      } else {
+        result = await login(email, password);
+      }
+    }
     setBusy(false);
     if (!result.ok) {
       toast(result.error || t("signInFailed"), "error");
       return;
     }
     toast(t("signedInInstagram"), "success");
-    const user = storage.getUser();
-    router.push(getPostAuthPath(user));
+    router.push(getPostAuthPath(result.user ?? null));
   }
 
   return (

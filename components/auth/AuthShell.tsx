@@ -11,7 +11,6 @@ import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { getPostAuthPath } from "@/lib/auth/routes";
-import { storage } from "@/lib/storage";
 
 function GoogleIcon({ size = 18 }: { size?: number }) {
   return (
@@ -131,22 +130,30 @@ export function SocialAuthButtons({
   layout?: "grid" | "instagram-first";
 }) {
   const { toast } = useToast();
-  const { login } = useAuth();
+  const { login, register } = useAuth();
   const router = useRouter();
   const { t } = useAppTranslation("auth");
   const [busy, setBusy] = useState<string | null>(null);
 
   async function demoSocial(provider: string, email: string) {
     setBusy(provider);
-    const result = await login(email, "evolve-social-demo");
+    const password = "evolve-social-demo";
+    let result = await login(email, password);
+    if (!result.ok) {
+      const created = await register({
+        fullName: `${provider} Demo`,
+        email,
+        password,
+      });
+      result = created.ok ? created : await login(email, password);
+    }
     setBusy(null);
     if (!result.ok) {
       toast(result.error || t("signInFailed"), "error");
       return;
     }
     toast(t("signedInWith", { provider }), "success");
-    const user = storage.getUser();
-    router.push(getPostAuthPath(user));
+    router.push(getPostAuthPath(result.user ?? null));
   }
 
   const instagram = (

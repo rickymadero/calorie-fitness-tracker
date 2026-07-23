@@ -94,25 +94,51 @@ export default function PreferencesPage() {
     toast(t("common:success.settingsSaved"), "success");
   }
 
-  function confirmEmailChange() {
+  async function confirmEmailChange() {
     if (!pendingEmail) return;
     setSaving(true);
-    applySave(pendingEmail);
+    try {
+      const { createClient } = await import("@/lib/supabase/client");
+      const { authService } = await import("@/lib/services/auth");
+      const supabase = createClient();
+      const { error } = await authService.updateEmail(supabase, pendingEmail);
+      if (error) {
+        toast(error.message, "error");
+        setSaving(false);
+        return;
+      }
+      applySave(pendingEmail);
+      setConfirmEmailOpen(false);
+      setPendingEmail(null);
+      toast(t("common:success.emailUpdated"), "success");
+    } catch {
+      toast(t("common:errors.generic"), "error");
+    }
     setSaving(false);
-    setConfirmEmailOpen(false);
-    setPendingEmail(null);
-    toast(t("common:success.emailUpdated"), "success");
   }
 
-  function confirmPasswordChange() {
+  async function confirmPasswordChange() {
     setSaving(true);
-    applySave();
+    try {
+      const { createClient } = await import("@/lib/supabase/client");
+      const { authService } = await import("@/lib/services/auth");
+      const supabase = createClient();
+      const { error } = await authService.updatePassword(supabase, newPassword);
+      if (error) {
+        toast(error.message, "error");
+        setSaving(false);
+        return;
+      }
+      applySave();
+      setConfirmPasswordOpen(false);
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      toast(t("common:success.passwordUpdated"), "success");
+    } catch {
+      toast(t("common:errors.generic"), "error");
+    }
     setSaving(false);
-    setConfirmPasswordOpen(false);
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-    toast(t("common:success.passwordUpdated"), "success");
   }
 
   return (

@@ -14,7 +14,7 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { getPostAuthPath } from "@/lib/auth/routes";
-import { storage } from "@/lib/storage";
+import Link from "next/link";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -45,8 +45,7 @@ export default function LoginPage() {
       return;
     }
     toast(t("success.welcomeBack"), "success");
-    const user = storage.getUser();
-    router.push(getPostAuthPath(user));
+    router.push(getPostAuthPath(result.user ?? null));
   }
 
   return (
@@ -68,6 +67,11 @@ export default function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="••••••••"
         />
+        <p className="text-right text-xs text-white/45">
+          <Link href="/forgot-password" className="text-accent hover:text-accent/80">
+            {t("forgotPrompt", { ns: "auth" })}
+          </Link>
+        </p>
         {error && <p className="text-sm text-red-400">{error}</p>}
         <Button type="submit" fullWidth size="lg" loading={loading} className="mt-2">
           {t("signIn", { ns: "auth" })}

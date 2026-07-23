@@ -91,9 +91,11 @@ export function ProfileOverflowMenu() {
 
   function handleLogout() {
     setOpen(false);
-    logout();
-    toast(t("success.signedOut"), "info");
-    router.push("/");
+    void (async () => {
+      await logout();
+      toast(t("success.signedOut"), "info");
+      router.push("/");
+    })();
   }
 
   const items: {

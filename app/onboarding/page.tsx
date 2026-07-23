@@ -53,6 +53,8 @@ export default function OnboardingPage() {
   const [goals, setGoals] = useState<string[]>([]);
   const [usernameError, setUsernameError] = useState("");
 
+  const [finishing, setFinishing] = useState(false);
+
   useEffect(() => {
     if (!isReady) return;
     if (!user) {
@@ -75,6 +77,7 @@ export default function OnboardingPage() {
   }, [isReady, user, router, ensureMyProfile]);
 
   if (!isReady || !user) return <PageLoader />;
+  if (user.onboardingComplete) return <PageLoader />;
 
   function toggleFavorite(w: WorkoutInterest) {
     setFavorites((prev) =>
@@ -106,9 +109,15 @@ export default function OnboardingPage() {
     setStep(1);
   }
 
-  function finish() {
+  async function finish() {
+    if (finishing) return;
+    setFinishing(true);
+
+    const fullName = displayName.trim() || user!.fullName;
+    const cleanBio = bio.slice(0, 160);
+
     updateUser({
-      fullName: displayName.trim() || user!.fullName,
+      fullName,
       measurementSystem: units,
     });
     updateOnboarding({
@@ -126,16 +135,46 @@ export default function OnboardingPage() {
       dietType: "none",
     });
     updateMyProfile({
-      displayName: displayName.trim() || user!.fullName,
+      displayName: fullName,
       username,
-      bio: bio.slice(0, 160),
+      bio: cleanBio,
       favoriteWorkouts: favorites,
       fitnessGoals: goals,
       visibility: "public",
     });
+
+    try {
+      const { createClient } = await import("@/lib/supabase/client");
+      const { profilesService } = await import("@/lib/services/profiles");
+      const supabase = createClient();
+      const { data, error } = await profilesService.completeOnboarding(
+        supabase,
+        user!.id,
+        {
+          username,
+          fullName,
+          bio: cleanBio || null,
+          isPrivate: false,
+          preferredUnits: units,
+        },
+      );
+      if (error || !data?.onboarding_completed) {
+        toast(
+          error?.message || t("errors.generic"),
+          "error",
+        );
+        setFinishing(false);
+        return;
+      }
+    } catch {
+      toast(t("errors.generic"), "error");
+      setFinishing(false);
+      return;
+    }
+
     completeOnboarding();
     toast(t("onboarding.welcome", { ns: "auth" }), "success");
-    router.push("/intro");
+    router.replace("/feed");
   }
 
   const unitOptions = [
@@ -288,7 +327,7 @@ export default function OnboardingPage() {
               <Button variant="outline" onClick={() => setStep(1)}>
                 {t("buttons.back")}
               </Button>
-              <Button fullWidth size="lg" onClick={finish}>
+              <Button fullWidth size="lg" onClick={() => void finish()} loading={finishing}>
                 {t("onboarding.enter", { ns: "auth" })}
               </Button>
             </div>

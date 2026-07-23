@@ -22,7 +22,15 @@ export default function PricingPage() {
 
   useEffect(() => {
     if (!isReady) return;
-    if (!user) router.replace("/");
+    if (!user) {
+      router.replace("/");
+      return;
+    }
+    if (!user.onboardingComplete) {
+      router.replace("/onboarding");
+      return;
+    }
+    router.replace("/feed");
   }, [user, isReady, router]);
 
   const freeFeatures = useMemo(() => {

@@ -28,6 +28,8 @@ interface StoriesContextValue {
   listFeedGroups: () => FeedStoryGroup[];
   createStory: (input: CreateStoryInput) => DualStory | null;
   viewStory: (storyId: string) => void;
+  /** Mark every story in an opened group as seen (ring turns muted). */
+  viewStories: (storyIds: string[]) => void;
   react: (storyId: string, kind: StoryReactionKind) => void;
   reply: (storyId: string, body: string, peerUserId: string) => boolean;
   deleteStory: (storyId: string) => boolean;
@@ -79,8 +81,13 @@ export function StoriesProvider({ children }: { children: React.ReactNode }) {
       },
       viewStory: (storyId) => {
         if (!viewerId) return;
-        storiesStorage.recordView(storyId, viewerId);
-        refresh();
+        // Only refresh when a new view is stored — avoids a viewStory↔tick loop
+        // while the viewer is open (new viewStory identity each tick).
+        if (storiesStorage.recordView(storyId, viewerId)) refresh();
+      },
+      viewStories: (storyIds) => {
+        if (!viewerId) return;
+        if (storiesStorage.recordViews(storyIds, viewerId)) refresh();
       },
       react: (storyId, kind) => {
         if (!viewerId) return;

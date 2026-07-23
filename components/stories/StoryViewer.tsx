@@ -80,10 +80,11 @@ export function StoryViewer({
     setConfirmDelete(false);
   }, [index]);
 
+  // recordView is a no-op after the first write, so this does not loop on tick.
   useEffect(() => {
     if (!story) return;
     viewStory(story.id);
-  }, [story?.id, viewStory]);
+  }, [story, viewStory]);
 
   useEffect(() => {
     const prev = document.body.style.overflow;

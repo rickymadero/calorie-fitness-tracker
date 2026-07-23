@@ -11,7 +11,15 @@ const KEYS = {
   nutritionPlan: "evolve.nutritionPlan",
   registerDraft: "evolve.registerDraft",
   theme: "evolve.theme",
+  /** Non-destructive flag: leftover localStorage demo data may need a future migration. */
+  localDataBridge: "evolve.localDataBridge",
 } as const;
+
+export type LocalDataBridge = {
+  pending: boolean;
+  previousUserId?: string;
+  notedAt: string;
+};
 
 function canUseStorage() {
   return typeof window !== "undefined";
@@ -63,6 +71,23 @@ export const storage = {
   setTheme: (theme: "light" | "dark") => {
     if (!canUseStorage()) return;
     localStorage.setItem(KEYS.theme, theme);
+  },
+
+  getLocalDataBridge: () => getJSON<LocalDataBridge>(KEYS.localDataBridge),
+  setLocalDataBridge: (bridge: LocalDataBridge) =>
+    setJSON(KEYS.localDataBridge, bridge),
+  clearLocalDataBridge: () => remove(KEYS.localDataBridge),
+
+  /**
+   * Mark leftover demo localStorage when Auth user id differs from stored profile.
+   * Does not delete any app data.
+   */
+  noteAuthIdMismatch: (previousUserId: string) => {
+    setJSON(KEYS.localDataBridge, {
+      pending: true,
+      previousUserId,
+      notedAt: new Date().toISOString(),
+    } satisfies LocalDataBridge);
   },
 
   clearAll: () => {

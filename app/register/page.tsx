@@ -13,9 +13,10 @@ import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
+import { getPostAuthPath } from "@/lib/auth/routes";
 
 export default function RegisterPage() {
-  const { updateRegisterDraft, completeRegistration, clearRegisterDraft } = useAuth();
+  const { register, clearRegisterDraft } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const { t } = useAppTranslation(["common", "auth"]);
@@ -41,13 +42,15 @@ export default function RegisterPage() {
       return;
     }
     setLoading(true);
-    updateRegisterDraft({ fullName, email, password });
-    await new Promise((r) => setTimeout(r, 500));
-    completeRegistration();
-    clearRegisterDraft();
+    const result = await register({ fullName, email, password });
     setLoading(false);
+    if (!result.ok) {
+      setError(result.error || t("errors.generic"));
+      return;
+    }
+    clearRegisterDraft();
     toast(t("success.accountCreated"), "success");
-    router.push("/onboarding");
+    router.push(getPostAuthPath(result.user ?? null));
   }
 
   return (
