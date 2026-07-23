@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   Camera,
@@ -24,6 +24,8 @@ import { usePosts } from "@/components/posts/PostsProvider";
 import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
+import { weekStatsFromActivities } from "@/lib/activities/statsFromActivities";
+import type { WeekStats } from "@/lib/activities/statsFromActivities";
 
 const MEASUREMENT_KEYS = ["chest", "waist", "hips", "arms"] as const;
 const MEASUREMENT_VALUES: Record<(typeof MEASUREMENT_KEYS)[number], string> = {
@@ -57,16 +59,51 @@ export default function ProgressPage() {
       ? "lb"
       : "kg";
 
-  const stats = useMemo(() => {
+  const localStats = useMemo(() => {
     void tick;
     if (!user) {
       return {
         days: [],
         totals: { workouts: 0, minutes: 0, distanceKm: 0, calories: 0 },
-      };
+      } satisfies WeekStats;
     }
     return weekStats(user.id);
   }, [tick, user, weekStats]);
+
+  const [remoteStats, setRemoteStats] = useState<WeekStats | null>(null);
+
+  useEffect(() => {
+    if (!user?.id) {
+      setRemoteStats(null);
+      return;
+    }
+    let cancelled = false;
+    void (async () => {
+      try {
+        const { createClient } = await import("@/lib/supabase/client");
+        const { activitiesService } = await import("@/lib/services/activities");
+        const supabase = createClient();
+        const { data } = await activitiesService.getCurrentUserActivities(
+          supabase,
+          user.id,
+          { limit: 100, offset: 0 },
+        );
+        if (cancelled) return;
+        if (data && data.length > 0) {
+          setRemoteStats(weekStatsFromActivities(data));
+        } else {
+          setRemoteStats(null);
+        }
+      } catch {
+        if (!cancelled) setRemoteStats(null);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id, tick]);
+
+  const stats = remoteStats ?? localStats;
 
   const maxMinutes = Math.max(1, ...stats.days.map((d) => d.minutes));
 

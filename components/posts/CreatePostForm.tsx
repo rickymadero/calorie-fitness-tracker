@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
 import { usePosts } from "@/components/posts/PostsProvider";
+import { useAuth } from "@/components/auth/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import type { ActivityType, PostVisibility } from "@/lib/types/posts";
+import { syncLocalPostActivity } from "@/lib/activities/syncLocalActivity";
 
 const TYPE_IDS: ActivityType[] = [
   "running",
@@ -52,6 +54,7 @@ export function ActivityTypePicker({
 
 export function CreatePostForm() {
   const { createPost } = usePosts();
+  const { user } = useAuth();
   const { toast } = useToast();
   const { t } = useAppTranslation(["posts", "common"]);
   const router = useRouter();
@@ -141,7 +144,7 @@ export function CreatePostForm() {
     toast(t("common:errors.pickMedia"), "error");
   }
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!title.trim()) {
       toast(t("toast.needTitle"), "error");
@@ -160,18 +163,29 @@ export function CreatePostForm() {
       durationMin: durationMin ? Number(durationMin) : undefined,
       gymSummary: needsGym ? gymSummary.trim() || undefined : undefined,
     });
-    setSaving(false);
     if (!post) {
+      setSaving(false);
       toast(t("toast.publishFail"), "error");
       return;
     }
+
+    // Dual-write activity to Supabase; keep local post. Soft-fail if offline.
+    if (user?.id) {
+      try {
+        await syncLocalPostActivity(user.id, post);
+      } catch {
+        /* local post already saved */
+      }
+    }
+
+    setSaving(false);
     toast(t("toast.published"), "success");
     router.push(`/posts/${post.id}`);
   }
 
   return (
     <Card>
-      <form onSubmit={submit} className="space-y-5">
+      <form onSubmit={(e) => void submit(e)} className="space-y-5">
         <div>
           <p className="mb-2 text-sm font-medium">{t("activityType")}</p>
           <ActivityTypePicker value={type} onChange={setType} />

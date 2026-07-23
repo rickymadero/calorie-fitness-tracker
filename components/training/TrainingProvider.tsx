@@ -160,6 +160,17 @@ export function TrainingProvider({ children }: { children: React.ReactNode }) {
     const merged = [...recs, ...trainingStorage.getAdjustments()].slice(0, 30);
     trainingStorage.setAdjustments(merged);
     setAdjustments(merged);
+
+    // Dual-write strength activity to Supabase (local session kept).
+    const dayName = trainingStorage
+      .getPlans()
+      .flatMap((p) => p.days)
+      .find((d) => d.id === session.dayId)?.name;
+    void import("@/lib/activities/syncLocalActivity").then(
+      ({ syncLocalSessionActivity }) =>
+        syncLocalSessionActivity(session.userId, session, dayName),
+    );
+
     return recs;
   }, []);
 

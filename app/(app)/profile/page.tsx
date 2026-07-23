@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -17,6 +17,8 @@ import { ProfilePrList } from "@/components/social/ProfilePrs";
 import { FeedList } from "@/components/feed/FeedComponents";
 import { ProfileOverflowMenu } from "@/components/profile/ProfileOverflowMenu";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
+import { authorStatsFromActivities } from "@/lib/activities/statsFromActivities";
+import type { AuthorActivityStats } from "@/lib/activities/statsFromActivities";
 
 type ProfileTab = "workouts" | "prs";
 
@@ -56,11 +58,48 @@ export default function ProfilePage() {
     return postsByAuthor(user.id, 20);
   }, [tick, user, postsByAuthor]);
 
-  const stats = useMemo(() => {
+  const localStats = useMemo(() => {
     void tick;
     if (!user) return null;
     return authorStats(user.id);
   }, [tick, user, authorStats]);
+
+  const [remoteStats, setRemoteStats] = useState<AuthorActivityStats | null>(
+    null,
+  );
+
+  useEffect(() => {
+    if (!user?.id) {
+      setRemoteStats(null);
+      return;
+    }
+    let cancelled = false;
+    void (async () => {
+      try {
+        const { createClient } = await import("@/lib/supabase/client");
+        const { activitiesService } = await import("@/lib/services/activities");
+        const supabase = createClient();
+        const { data } = await activitiesService.getCurrentUserActivities(
+          supabase,
+          user.id,
+          { limit: 200, offset: 0 },
+        );
+        if (cancelled) return;
+        if (data && data.length > 0) {
+          setRemoteStats(authorStatsFromActivities(data));
+        } else {
+          setRemoteStats(null);
+        }
+      } catch {
+        if (!cancelled) setRemoteStats(null);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id, tick]);
+
+  const stats = remoteStats ?? localStats;
 
   const followerCount = profile ? followersOf(profile.userId).length : 0;
   const followingCount = profile ? followingOf(profile.userId).length : 0;
