@@ -666,6 +666,7 @@ export default function FoodPage() {
           remainingCalories={remaining}
           onClose={() => setBarcodeOpen(false)}
           onLog={(food, mealType) => logFood(food, mealType)}
+          onMealTypeChange={setActiveMeal}
         />
 
         <Modal

@@ -36,6 +36,9 @@ import { foodLogStorage } from "@/lib/storage/foodLog";
 import type { FoodItem } from "@/lib/types";
 
 type ExploreTab = "foryou" | "workouts" | "nutrition" | "tools" | "pro";
+type MealType = "breakfast" | "lunch" | "dinner" | "snack";
+
+const MEAL_TYPES: MealType[] = ["breakfast", "lunch", "dinner", "snack"];
 
 type FeatureKey =
   | "basicLogging"
@@ -213,7 +216,10 @@ export default function ExplorePage() {
   const router = useRouter();
   const [tab, setTab] = useState<ExploreTab>("foryou");
   const [scannerOpen, setScannerOpen] = useState(false);
+  const [scanMeal, setScanMeal] = useState<MealType>("lunch");
   const isPro = user?.plan === "pro";
+  const showScanMealPicker =
+    tab === "foryou" || tab === "nutrition" || tab === "pro";
   const calorieTarget = nutritionPlan?.dailyCalorieTarget ?? 2200;
   const todayTotals = user
     ? foodLogStorage.dayTotals(foodLogStorage.listDay(user.id))
@@ -264,11 +270,9 @@ export default function ExplorePage() {
     [],
   );
 
-  function handleScannerLog(
-    food: FoodItem,
-    mealType: "breakfast" | "lunch" | "dinner" | "snack",
-  ) {
+  function handleScannerLog(food: FoodItem, mealType: MealType) {
     if (!user) return;
+    setScanMeal(mealType);
     foodLogStorage.add(user.id, mealType, food);
     setScannerOpen(false);
     toast(
@@ -301,6 +305,30 @@ export default function ExplorePage() {
       </div>
 
       <div className="mt-5 min-w-0 max-w-full">
+        {showScanMealPicker && (
+          <div className="mb-4">
+            <p className="mb-2 text-xs font-medium text-muted">
+              {t("food:scanner.logTo")}
+            </p>
+            <div className="grid grid-cols-4 gap-2">
+              {MEAL_TYPES.map((m) => (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => setScanMeal(m)}
+                  className={`min-h-11 rounded-xl px-2 text-xs font-medium capitalize transition ${
+                    scanMeal === m
+                      ? "bg-accent text-accent-fg"
+                      : "border border-border bg-card text-muted hover:text-foreground"
+                  }`}
+                >
+                  {t(`common:meal.${m}`)}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {tab === "foryou" && (
           <ToolList
             items={forYou}
@@ -359,10 +387,11 @@ export default function ExplorePage() {
       <BarcodeScanner
         open={scannerOpen}
         isPro={Boolean(isPro)}
-        mealType="lunch"
+        mealType={scanMeal}
         remainingCalories={remainingCalories}
         onClose={() => setScannerOpen(false)}
         onLog={handleScannerLog}
+        onMealTypeChange={setScanMeal}
       />
     </div>
   );

@@ -52,6 +52,8 @@ interface BarcodeScannerProps {
   remainingCalories: number;
   onClose: () => void;
   onLog: (food: FoodItem, mealType: MealType) => void;
+  /** Persist meal choice so parent defaults survive reopen */
+  onMealTypeChange?: (mealType: MealType) => void;
 }
 
 const SERVING_OPTIONS = [0.5, 1, 1.5, 2, 3];
@@ -63,6 +65,7 @@ export function BarcodeScanner({
   remainingCalories,
   onClose,
   onLog,
+  onMealTypeChange,
 }: BarcodeScannerProps) {
   const { toast } = useToast();
   const { t } = useAppTranslation(["food", "common"]);
@@ -516,7 +519,10 @@ export function BarcodeScanner({
                           <button
                             key={m}
                             type="button"
-                            onClick={() => setMealType(m)}
+                            onClick={() => {
+                              setMealType(m);
+                              onMealTypeChange?.(m);
+                            }}
                             className={`rounded-xl py-2 text-xs capitalize ${
                               mealType === m
                                 ? "bg-accent text-accent-fg font-semibold"

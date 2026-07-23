@@ -12,8 +12,8 @@ export default function NewPostPage() {
       <PageHeader
         title={t("posts:newTitle")}
         subtitle={t("posts:newSubtitle")}
-        backHref="/explore"
-        backLabel={t("common:nav.evofit")}
+        backHref="/feed"
+        backLabel={t("common:nav.feed")}
       />
       <div className="mt-5">
         <CreatePostForm />
