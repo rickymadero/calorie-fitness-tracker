@@ -64,5 +64,6 @@
     "unavailable": "地图不可用",
     "open": "打开完整路线",
     "loadFail": "无法加载地图"
-  }
+  },
+  "viewAllComments": "查看全部 {{count}} 条评论"
 }

@@ -64,5 +64,6 @@
     "unavailable": "Harita kullanılamıyor",
     "open": "Tam rotayı aç",
     "loadFail": "Harita yüklenemedi"
-  }
+  },
+  "viewAllComments": "{{count}} yorumun tümünü gör"
 }

@@ -64,5 +64,6 @@
     "unavailable": "マップを利用できません",
     "open": "ルート全体を開く",
     "loadFail": "マップを読み込めませんでした"
-  }
+  },
+  "viewAllComments": "{{count}}件のコメントをすべて表示"
 }

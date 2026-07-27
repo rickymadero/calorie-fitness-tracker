@@ -84,6 +84,11 @@ export interface WorkoutPost {
   splits?: SplitKm[];
   likesCount: number;
   commentsCount: number;
+  /**
+   * Up to 2 most recent top-level comments for feed cards.
+   * Always set for Supabase-backed posts (may be empty).
+   */
+  commentPreview?: PostCommentPreview[];
 }
 
 export interface PostLike {
@@ -100,6 +105,18 @@ export interface PostComment {
   parentId?: string;
   body: string;
   createdAt: string;
+}
+
+/** Compact feed preview row (username/avatar when RLS allows). */
+export interface PostCommentPreview {
+  id: string;
+  postId: string;
+  authorId: string;
+  body: string;
+  createdAt: string;
+  username?: string | null;
+  displayName?: string | null;
+  avatarUrl?: string | null;
 }
 
 export interface SavedActivity {

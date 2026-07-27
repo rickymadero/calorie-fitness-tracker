@@ -68,6 +68,19 @@ export default function PostDetailPage({
 
   const post = cached;
 
+  useEffect(() => {
+    if (!post || typeof window === "undefined") return;
+    if (window.location.hash !== "#comments") return;
+    // Defer until after loaders/layout so the comments card exists.
+    const timer = window.setTimeout(() => {
+      document.getElementById("comments")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 50);
+    return () => window.clearTimeout(timer);
+  }, [post]);
+
   if (deleting) {
     return <PageLoader />;
   }
@@ -358,7 +371,7 @@ export default function PostDetailPage({
         </Card>
       )}
 
-      <Card className="mt-4">
+      <Card id="comments" className="mt-4 scroll-mt-24">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-display text-lg font-semibold">
             {t("section.comments", { ns: "posts" })}

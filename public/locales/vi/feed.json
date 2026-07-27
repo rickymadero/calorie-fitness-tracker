@@ -64,5 +64,6 @@
     "unavailable": "Không có bản đồ",
     "open": "Mở toàn bộ tuyến",
     "loadFail": "Không tải được bản đồ"
-  }
+  },
+  "viewAllComments": "Xem tất cả {{count}} bình luận"
 }

@@ -69,8 +69,55 @@ const FEED_SELECT = `
     maximum_heart_rate
   ),
   likes(count),
-  comments(count)
+  comments(count),
+  preview_comments:comments (
+    id,
+    body,
+    created_at,
+    user_id,
+    parent_comment_id,
+    profiles (
+      username,
+      avatar_url,
+      full_name
+    )
+  )
 `;
+
+/**
+ * One feed query: aggregate comment count + 2 newest top-level comments
+ * (with commenter profile when RLS allows). Avoids N+1 per post.
+ */
+function withCommentPreviewEmbed<
+  T extends {
+    order: (
+      column: string,
+      options?: {
+        ascending?: boolean;
+        referencedTable?: string;
+        foreignTable?: string;
+      },
+    ) => T;
+    limit: (
+      count: number,
+      options?: { referencedTable?: string; foreignTable?: string },
+    ) => T;
+    or: (
+      filters: string,
+      options?: { referencedTable?: string; foreignTable?: string },
+    ) => T;
+  },
+>(query: T): T {
+  return query
+    .order("created_at", {
+      referencedTable: "preview_comments",
+      ascending: false,
+    })
+    .limit(2, { referencedTable: "preview_comments" })
+    .or("parent_comment_id.is.null", {
+      referencedTable: "preview_comments",
+    });
+}
 
 function toServiceError(
   error: {
@@ -276,9 +323,9 @@ export const postsService = {
     data: WorkoutPost | null;
     error: PostsServiceError | null;
   }> {
-    const { data, error } = await client
-      .from("posts")
-      .select(FEED_SELECT)
+    const { data, error } = await withCommentPreviewEmbed(
+      client.from("posts").select(FEED_SELECT),
+    )
       .eq("id", id)
       .maybeSingle();
     if (error) {
@@ -310,9 +357,9 @@ export const postsService = {
     const limit = opts.limit ?? 20;
     const offset = opts.offset ?? 0;
 
-    const { data, error } = await client
-      .from("posts")
-      .select(FEED_SELECT)
+    const { data, error } = await withCommentPreviewEmbed(
+      client.from("posts").select(FEED_SELECT),
+    )
       .order("created_at", { ascending: false })
       .range(offset, offset + limit - 1);
 
@@ -356,9 +403,9 @@ export const postsService = {
   ) {
     const limit = opts?.limit ?? 20;
     const offset = opts?.offset ?? 0;
-    const { data, error } = await client
-      .from("posts")
-      .select(FEED_SELECT)
+    const { data, error } = await withCommentPreviewEmbed(
+      client.from("posts").select(FEED_SELECT),
+    )
       .eq("user_id", authorId)
       .order("created_at", { ascending: false })
       .range(offset, offset + limit - 1);
@@ -674,10 +721,9 @@ export const postsService = {
     const ids = (bookmarks ?? []).map((b) => b.post_id);
     if (ids.length === 0) return { data: [], error: null };
 
-    const { data: posts, error: postsError } = await client
-      .from("posts")
-      .select(FEED_SELECT)
-      .in("id", ids);
+    const { data: posts, error: postsError } = await withCommentPreviewEmbed(
+      client.from("posts").select(FEED_SELECT),
+    ).in("id", ids);
 
     if (postsError) {
       return {

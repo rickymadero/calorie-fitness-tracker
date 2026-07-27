@@ -64,5 +64,6 @@
     "unavailable": "地圖無法使用",
     "open": "開啟完整路線",
     "loadFail": "無法載入地圖"
-  }
+  },
+  "viewAllComments": "查看全部 {{count}} 則留言"
 }

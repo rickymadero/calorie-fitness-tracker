@@ -230,28 +230,63 @@ function GymBody({ post }: { post: WorkoutPost }) {
   );
 }
 
-function CommentPreview({ postId }: { postId: string }) {
+function CommentPreview({ post }: { post: WorkoutPost }) {
   const { commentsFor, tick } = usePosts();
   const { getCard } = useSocial();
+  const { t } = useAppTranslation(["feed"]);
   void tick;
-  const comments = commentsFor(postId)
-    .filter((c) => !c.parentId)
-    .slice(-2);
-  if (comments.length === 0) return null;
+
+  // Supabase feed rows always set commentPreview (possibly []). Avoid
+  // commentsFor() here — that lazy-loads every comment and causes N+1.
+  const fromPost = post.commentPreview;
+  const preview =
+    fromPost !== undefined
+      ? fromPost
+      : commentsFor(post.id)
+          .filter((c) => !c.parentId)
+          .slice(-2)
+          .map((c) => {
+            const a = getCard(c.authorId);
+            return {
+              id: c.id,
+              postId: c.postId,
+              authorId: c.authorId,
+              body: c.body,
+              createdAt: c.createdAt,
+              username: a?.profile.username ?? null,
+              displayName: a?.profile.displayName ?? null,
+              avatarUrl: a?.profile.avatarUrl ?? null,
+            };
+          });
+
+  const count = post.commentsCount ?? 0;
+  if (count === 0 && preview.length === 0) return null;
+
   return (
-    <div className="mt-3 space-y-1.5 border-t border-border pt-3">
-      {comments.map((c) => {
+    <div className="mt-2.5 space-y-1">
+      {count > 2 && (
+        <Link
+          href={`/posts/${post.id}#comments`}
+          className="block text-xs font-medium text-muted hover:text-foreground"
+        >
+          {t("viewAllComments", { count })}
+        </Link>
+      )}
+      {preview.map((c) => {
         const a = getCard(c.authorId);
-        const uname = a?.profile.username ?? "athlete";
+        const uname =
+          c.username?.trim() ||
+          a?.profile.username ||
+          "athlete";
         return (
-          <p key={c.id} className="line-clamp-2 text-xs leading-relaxed">
+          <p key={c.id} className="text-xs leading-relaxed text-foreground/85">
             <Link
               href={`/social/u/${uname}`}
               className="font-semibold text-foreground"
             >
               @{uname}
             </Link>{" "}
-            <span className="text-muted">{c.body}</span>
+            <span className="font-normal">{c.body}</span>
           </p>
         );
       })}
@@ -440,14 +475,14 @@ export function PostCard({
           />
         )}
 
-        <CommentPreview postId={post.id} />
+        <CommentPreview post={post} />
       </div>
 
       <div className="mt-3 flex items-center justify-between gap-2 border-t border-border px-2 py-1">
         <div className="flex items-center gap-0.5">
           <LikeButton postId={post.id} likesCount={post.likesCount} />
           <Link
-            href={`/posts/${post.id}`}
+            href={`/posts/${post.id}#comments`}
             className="evolve-press inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 text-sm font-medium text-muted hover:text-foreground"
           >
             <MessageCircle size={18} />

@@ -64,5 +64,6 @@
     "unavailable": "지도를 사용할 수 없음",
     "open": "전체 경로 열기",
     "loadFail": "지도를 불러올 수 없음"
-  }
+  },
+  "viewAllComments": "댓글 {{count}}개 모두 보기"
 }

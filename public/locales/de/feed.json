@@ -64,5 +64,6 @@
     "unavailable": "Karte nicht verfügbar",
     "open": "Volle Route öffnen",
     "loadFail": "Karte konnte nicht geladen werden"
-  }
+  },
+  "viewAllComments": "Alle {{count}} Kommentare ansehen"
 }

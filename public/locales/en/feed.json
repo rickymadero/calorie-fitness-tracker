@@ -64,5 +64,6 @@
     "unavailable": "Map unavailable",
     "open": "Open full route",
     "loadFail": "Map could not load"
-  }
+  },
+  "viewAllComments": "View all {{count}} comments"
 }

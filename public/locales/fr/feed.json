@@ -64,5 +64,6 @@
     "unavailable": "Carte indisponible",
     "open": "Ouvrir l'itinéraire complet",
     "loadFail": "Impossible de charger la carte"
-  }
+  },
+  "viewAllComments": "Voir les {{count}} commentaires"
 }

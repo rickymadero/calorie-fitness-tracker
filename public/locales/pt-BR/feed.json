@@ -64,5 +64,6 @@
     "unavailable": "Mapa indisponível",
     "open": "Abrir rota completa",
     "loadFail": "Não foi possível carregar o mapa"
-  }
+  },
+  "viewAllComments": "Ver todos os {{count}} comentários"
 }

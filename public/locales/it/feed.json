@@ -64,5 +64,6 @@
     "unavailable": "Mappa non disponibile",
     "open": "Apri percorso completo",
     "loadFail": "Impossibile caricare la mappa"
-  }
+  },
+  "viewAllComments": "Vedi tutti i {{count}} commenti"
 }

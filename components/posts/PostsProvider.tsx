@@ -16,6 +16,10 @@ import { postsStorage } from "@/lib/storage/posts";
 import { syncLocalPostToSupabase } from "@/lib/posts/syncLocalPost";
 import { pruneStalePostIdMappings } from "@/lib/posts/pruneStalePostIdMap";
 import {
+  nextCommentPreview,
+  removeFromCommentPreview,
+} from "@/lib/posts/mapRemoteToLocal";
+import {
   isSeedAuthorId,
   isSeedPostId,
   isSupabasePostId,
@@ -24,6 +28,7 @@ import {
 import type {
   CreatePostInput,
   PostComment,
+  PostCommentPreview,
   WorkoutPost,
 } from "@/lib/types/posts";
 import { SEED_POSTS } from "@/lib/mock/seedPosts";
@@ -118,7 +123,7 @@ function demoSeedFeed(): WorkoutPost[] {
 }
 
 export function PostsProvider({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [tick, setTick] = useState(0);
   const refresh = useCallback(() => setTick((t) => t + 1), []);
 
@@ -183,6 +188,7 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
         setRemotePosts([]);
         setLikedIds(new Set());
         setSavedIds(new Set());
+        setCommentsByPost({});
         setFeedStatus("ready");
         setFeedError(null);
         setFeedHasMore(false);
@@ -455,6 +461,8 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
             ...post,
             id: sync.supabasePostId,
             ...(overlay ?? {}),
+            commentsCount: post.commentsCount ?? 0,
+            commentPreview: [],
           };
           setRemotePosts((prev) => {
             if (prev.some((p) => p.id === sync.supabasePostId)) return prev;
@@ -737,6 +745,18 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
           body: body.trim(),
           createdAt: new Date().toISOString(),
         };
+        const previewRow: PostCommentPreview | null = parentId
+          ? null
+          : {
+              id: optimistic.id,
+              postId: remoteId,
+              authorId: user.id,
+              body: optimistic.body,
+              createdAt: optimistic.createdAt,
+              username: profile?.username ?? null,
+              displayName: profile?.full_name ?? user.fullName ?? null,
+              avatarUrl: profile?.avatar_url ?? null,
+            };
         setCommentsByPost((prev) => ({
           ...prev,
           [remoteId]: [...(prev[remoteId] ?? []), optimistic],
@@ -744,7 +764,13 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
         setRemotePosts((prev) =>
           prev.map((p) =>
             p.id === remoteId
-              ? { ...p, commentsCount: (p.commentsCount ?? 0) + 1 }
+              ? {
+                  ...p,
+                  commentsCount: (p.commentsCount ?? 0) + 1,
+                  commentPreview: previewRow
+                    ? nextCommentPreview(p.commentPreview, previewRow)
+                    : p.commentPreview,
+                }
               : p,
           ),
         );
@@ -774,6 +800,10 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
                     ? {
                         ...p,
                         commentsCount: Math.max(0, (p.commentsCount ?? 1) - 1),
+                        commentPreview: removeFromCommentPreview(
+                          p.commentPreview,
+                          optimistic.id,
+                        ),
                       }
                     : p,
                 ),
@@ -781,21 +811,46 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
               refresh();
               return;
             }
+            const confirmed: PostComment = {
+              id: data.id,
+              postId: data.post_id,
+              authorId: data.user_id,
+              parentId: data.parent_comment_id ?? undefined,
+              body: data.body,
+              createdAt: data.created_at,
+            };
             setCommentsByPost((prev) => ({
               ...prev,
               [remoteId]: (prev[remoteId] ?? []).map((c) =>
-                c.id === optimistic.id
-                  ? {
-                      id: data.id,
-                      postId: data.post_id,
-                      authorId: data.user_id,
-                      parentId: data.parent_comment_id ?? undefined,
-                      body: data.body,
-                      createdAt: data.created_at,
-                    }
-                  : c,
+                c.id === optimistic.id ? confirmed : c,
               ),
             }));
+            if (!parentId) {
+              const confirmedPreview: PostCommentPreview = {
+                id: confirmed.id,
+                postId: confirmed.postId,
+                authorId: confirmed.authorId,
+                body: confirmed.body,
+                createdAt: confirmed.createdAt,
+                username: profile?.username ?? null,
+                displayName: profile?.full_name ?? user.fullName ?? null,
+                avatarUrl: profile?.avatar_url ?? null,
+              };
+              setRemotePosts((prev) =>
+                prev.map((p) =>
+                  p.id === remoteId
+                    ? {
+                        ...p,
+                        commentPreview: nextCommentPreview(
+                          p.commentPreview,
+                          confirmedPreview,
+                          { removeId: optimistic.id },
+                        ),
+                      }
+                    : p,
+                ),
+              );
+            }
             refresh();
           } catch {
             setCommentsByPost((prev) => ({
@@ -804,6 +859,20 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
                 (c) => c.id !== optimistic.id,
               ),
             }));
+            setRemotePosts((prev) =>
+              prev.map((p) =>
+                p.id === remoteId
+                  ? {
+                      ...p,
+                      commentsCount: Math.max(0, (p.commentsCount ?? 1) - 1),
+                      commentPreview: removeFromCommentPreview(
+                        p.commentPreview,
+                        optimistic.id,
+                      ),
+                    }
+                  : p,
+              ),
+            );
             refresh();
           }
         })();
@@ -819,8 +888,19 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
             break;
           }
         }
+        if (!targetPostId) {
+          for (const p of remotePosts) {
+            if (p.commentPreview?.some((c) => c.id === commentId)) {
+              targetPostId = p.id;
+              break;
+            }
+          }
+        }
         if (targetPostId && isSupabasePostId(commentId)) {
           const prevList = commentsByPost[targetPostId] ?? [];
+          const prevPost = remotePosts.find((p) => p.id === targetPostId);
+          const prevPreview = prevPost?.commentPreview;
+          const prevCount = prevPost?.commentsCount ?? 0;
           setCommentsByPost((prev) => ({
             ...prev,
             [targetPostId!]: prevList.filter((c) => c.id !== commentId),
@@ -831,6 +911,10 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
                 ? {
                     ...p,
                     commentsCount: Math.max(0, (p.commentsCount ?? 1) - 1),
+                    commentPreview: removeFromCommentPreview(
+                      p.commentPreview,
+                      commentId,
+                    ),
                   }
                 : p,
             ),
@@ -848,6 +932,17 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
                   ...prev,
                   [targetPostId!]: prevList,
                 }));
+                setRemotePosts((prev) =>
+                  prev.map((p) =>
+                    p.id === targetPostId
+                      ? {
+                          ...p,
+                          commentsCount: prevCount,
+                          commentPreview: prevPreview,
+                        }
+                      : p,
+                  ),
+                );
                 refresh();
               }
             } catch {
@@ -855,6 +950,17 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
                 ...prev,
                 [targetPostId!]: prevList,
               }));
+              setRemotePosts((prev) =>
+                prev.map((p) =>
+                  p.id === targetPostId
+                    ? {
+                        ...p,
+                        commentsCount: prevCount,
+                        commentPreview: prevPreview,
+                      }
+                    : p,
+                ),
+              );
               refresh();
             }
           })();
@@ -870,6 +976,7 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
   }, [
     tick,
     user,
+    profile,
     refresh,
     feedStatus,
     feedError,

@@ -6,6 +6,7 @@ import {
 import { persistableImageUrl } from "@/lib/posts/postIdMap";
 import type {
   ActivityType,
+  PostCommentPreview,
   PostVisibility,
   WorkoutPost,
 } from "@/lib/types/posts";
@@ -29,11 +30,68 @@ export type ActivitySummary = Pick<
   | "maximum_heart_rate"
 >;
 
+export type PreviewCommentEmbed = {
+  id: string;
+  body: string;
+  created_at: string;
+  user_id: string;
+  parent_comment_id: string | null;
+  profiles?: {
+    username: string | null;
+    avatar_url: string | null;
+    full_name: string | null;
+  } | null;
+};
+
 export type FeedPostRow = DbPost & {
   activities?: ActivitySummary | ActivitySummary[] | null;
   likes?: { count: number }[] | null;
   comments?: { count: number }[] | null;
+  preview_comments?: PreviewCommentEmbed[] | null;
 };
+
+/** Map nested preview embed → chronological (oldest of the two first). */
+export function mapPreviewComments(
+  row: FeedPostRow,
+): PostCommentPreview[] {
+  const raw = row.preview_comments ?? [];
+  return [...raw]
+    .filter((c) => !c.parent_comment_id)
+    .sort((a, b) => a.created_at.localeCompare(b.created_at))
+    .slice(-2)
+    .map((c) => ({
+      id: c.id,
+      postId: row.id,
+      authorId: c.user_id,
+      body: c.body,
+      createdAt: c.created_at,
+      username: c.profiles?.username ?? null,
+      displayName: c.profiles?.full_name ?? null,
+      avatarUrl: c.profiles?.avatar_url ?? null,
+    }));
+}
+
+/** Keep feed preview at most 2 top-level comments, chronological. */
+export function nextCommentPreview(
+  current: PostCommentPreview[] | undefined,
+  next: PostCommentPreview,
+  opts?: { removeId?: string },
+): PostCommentPreview[] {
+  const without = (current ?? []).filter(
+    (c) => c.id !== next.id && c.id !== opts?.removeId,
+  );
+  return [...without, next]
+    .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+    .slice(-2);
+}
+
+export function removeFromCommentPreview(
+  current: PostCommentPreview[] | undefined,
+  commentId: string,
+): PostCommentPreview[] | undefined {
+  if (!current) return current;
+  return current.filter((c) => c.id !== commentId);
+}
 
 /** Reverse DB activity_type → local ActivityType for feed cards. */
 export function mapDbActivityTypeToLocal(
@@ -176,6 +234,7 @@ export function mapRemotePostToWorkoutPost(
     likesCount: countFromEmbed(row.likes) || overlay?.likesCount || 0,
     commentsCount:
       countFromEmbed(row.comments) || overlay?.commentsCount || 0,
+    commentPreview: mapPreviewComments(row),
   };
 }
 
