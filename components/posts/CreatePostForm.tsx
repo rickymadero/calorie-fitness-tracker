@@ -10,7 +10,6 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import type { ActivityType, PostVisibility } from "@/lib/types/posts";
-import { syncLocalPostActivity } from "@/lib/activities/syncLocalActivity";
 
 const TYPE_IDS: ActivityType[] = [
   "running",
@@ -53,7 +52,7 @@ export function ActivityTypePicker({
 }
 
 export function CreatePostForm() {
-  const { createPost } = usePosts();
+  const { createPostAsync } = usePosts();
   const { user } = useAuth();
   const { toast } = useToast();
   const { t } = useAppTranslation(["posts", "common"]);
@@ -150,37 +149,44 @@ export function CreatePostForm() {
       toast(t("toast.needTitle"), "error");
       return;
     }
-    setSaving(true);
-    const post = createPost({
-      type,
-      title: title.trim(),
-      caption: caption.trim(),
-      occurredAt: new Date().toISOString(),
-      visibility,
-      photoUrl,
-      videoUrl,
-      distanceKm: distanceKm ? Number(distanceKm) : undefined,
-      durationMin: durationMin ? Number(durationMin) : undefined,
-      gymSummary: needsGym ? gymSummary.trim() || undefined : undefined,
-    });
-    if (!post) {
-      setSaving(false);
+    if (!user?.id) {
       toast(t("toast.publishFail"), "error");
       return;
     }
-
-    // Dual-write activity to Supabase; keep local post. Soft-fail if offline.
-    if (user?.id) {
-      try {
-        await syncLocalPostActivity(user.id, post);
-      } catch {
-        /* local post already saved */
+    setSaving(true);
+    try {
+      const { post, supabasePostId, error } = await createPostAsync({
+        type,
+        title: title.trim(),
+        caption: caption.trim(),
+        occurredAt: new Date().toISOString(),
+        visibility,
+        photoUrl,
+        videoUrl,
+        distanceKm: distanceKm ? Number(distanceKm) : undefined,
+        durationMin: durationMin ? Number(durationMin) : undefined,
+        gymSummary: needsGym ? gymSummary.trim() || undefined : undefined,
+      });
+      if (!post) {
+        toast(error || t("toast.publishFail"), "error");
+        setSaving(false);
+        return;
       }
-    }
 
+      // Keep form values on soft remote failure; local fallback already saved.
+      if (error && !supabasePostId) {
+        toast(error, "error");
+        setSaving(false);
+        router.push(`/posts/${post.id}`);
+        return;
+      }
+
+      toast(t("toast.published"), "success");
+      router.push(`/posts/${supabasePostId ?? post.id}`);
+    } catch {
+      toast(t("toast.publishFail"), "error");
+    }
     setSaving(false);
-    toast(t("toast.published"), "success");
-    router.push(`/posts/${post.id}`);
   }
 
   return (

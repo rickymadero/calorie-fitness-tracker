@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Trash2, Share2, Bookmark, ChevronLeft } from "lucide-react";
@@ -14,6 +14,7 @@ import { CommentThread } from "@/components/posts/CommentThread";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { PageLoader } from "@/components/ui/Spinner";
 import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import {
@@ -28,17 +29,52 @@ export default function PostDetailPage({
 }) {
   const { postId } = use(params);
   const { user } = useAuth();
-  const { tick, getPost, deletePost, hasSaved, toggleSave } = usePosts();
+  const {
+    tick,
+    getPost,
+    ensurePost,
+    deletePostAsync,
+    hasSaved,
+    toggleSave,
+    feedStatus,
+  } = usePosts();
   const { getCard } = useSocial();
   const { toast } = useToast();
   const { t } = useAppTranslation(["common", "posts", "feed"]);
   const router = useRouter();
   const [shareOpen, setShareOpen] = useState(false);
+  const [remoteAttempted, setRemoteAttempted] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
-  const post = useMemo(() => {
+  const cached = useMemo(() => {
     void tick;
     return getPost(postId);
   }, [tick, postId, getPost]);
+
+  useEffect(() => {
+    // Skip refetch while deleting — otherwise ensurePost can resurrect the
+    // post into feed state before the server delete finishes.
+    if (cached || deleting) {
+      return;
+    }
+    let cancelled = false;
+    void ensurePost(postId).finally(() => {
+      if (!cancelled) setRemoteAttempted(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [postId, cached, ensurePost, deleting]);
+
+  const post = cached;
+
+  if (deleting) {
+    return <PageLoader />;
+  }
+
+  if (!post && !remoteAttempted && feedStatus !== "error") {
+    return <PageLoader />;
+  }
 
   if (!post) {
     return (
@@ -186,11 +222,19 @@ export default function PostDetailPage({
             <Button
               size="sm"
               variant="ghost"
+              disabled={deleting}
               onClick={() => {
-                if (deletePost(post.id)) {
-                  toast(t("toast.deleted", { ns: "posts" }), "info");
-                  router.push("/feed");
-                }
+                void (async () => {
+                  setDeleting(true);
+                  const ok = await deletePostAsync(post.id);
+                  if (ok) {
+                    toast(t("toast.deleted", { ns: "posts" }), "info");
+                    router.replace("/feed");
+                    return;
+                  }
+                  setDeleting(false);
+                  toast(t("common:errors.generic"), "error");
+                })();
               }}
             >
               <Trash2 size={14} />

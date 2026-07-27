@@ -33,6 +33,7 @@ import {
 } from "@/lib/auth/sessionProfile";
 import { runProfileSettingsBridge } from "@/lib/auth/profileSettingsBridge";
 import { runActivitiesBridge } from "@/lib/auth/activitiesBridge";
+import { runPostsBridge } from "@/lib/auth/postsBridge";
 import { mirrorSupabaseProfileToSocial } from "@/lib/auth/mirrorSocialProfile";
 import { settingsPrefs } from "@/lib/storage/settingsPrefs";
 import { i18n, STORAGE_KEY as LANGUAGE_KEY } from "@/lib/i18n/i18n";
@@ -180,9 +181,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         );
       }
 
-      // One-time: local post activities + gym sessions → Supabase (keeps localStorage).
+      // One-time: activities first (posts need activity ID map), then posts.
       if (profileRow?.onboarding_completed) {
         await runActivitiesBridge(supabase, authUser.id);
+        await runPostsBridge(supabase, authUser.id);
       }
     } catch {
       // Offline / missing env — onboarding status stays incomplete until profile loads.

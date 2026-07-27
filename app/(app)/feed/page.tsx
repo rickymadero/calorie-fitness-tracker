@@ -16,7 +16,14 @@ import { useSwipeToMessages } from "@/components/nav/swipeGestures";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 
 export default function FeedPage() {
-  const { tick, homeFeed } = usePosts();
+  const {
+    tick,
+    homeFeed,
+    feedStatus,
+    feedError,
+    feedHasMore,
+    loadMoreFeed,
+  } = usePosts();
   const { ready, suggestedPeople } = useSocial();
   const { tick: msgTick, unreadTotal } = useMessages();
   const { t } = useAppTranslation(["common", "feed"]);
@@ -38,7 +45,9 @@ export default function FeedPage() {
     return unreadTotal();
   }, [msgTick, unreadTotal]);
 
-  if (!ready) return <FeedSkeleton />;
+  if (!ready || feedStatus === "loading" || feedStatus === "idle") {
+    return <FeedSkeleton />;
+  }
 
   return (
     <div>
@@ -69,6 +78,10 @@ export default function FeedPage() {
         <SuggestedPeopleRow people={suggestions} />
       </div>
 
+      {feedError && (
+        <p className="mt-4 text-center text-sm text-red-400">{feedError}</p>
+      )}
+
       <div className="mt-5">
         <FeedList
           posts={feedPosts}
@@ -85,6 +98,16 @@ export default function FeedPage() {
             </div>
           }
         />
+        {feedHasMore && (
+          <div className="mt-4 flex justify-center">
+            <Button
+              variant="outline"
+              onClick={() => void loadMoreFeed()}
+            >
+              Load more
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

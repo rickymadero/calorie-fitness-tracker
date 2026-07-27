@@ -71,7 +71,32 @@ export const activitiesService = {
     if (invalid) {
       return { data: null, error: { message: invalid } };
     }
-    return client.from("activities").insert(row).select("*").single();
+    // Avoid INSERT…RETURNING: activities_select uses can_view_activity(id),
+    // which re-queries activities and fails PostgREST representation.
+    const id = crypto.randomUUID();
+    const { error, status } = await client
+      .from("activities")
+      .insert({ ...row, id });
+    if (error) {
+      return {
+        data: null,
+        error: { ...error, status },
+      };
+    }
+    const { data, error: fetchError, status: fetchStatus } = await client
+      .from("activities")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+    if (fetchError || !data) {
+      return {
+        data: null,
+        error: fetchError
+          ? { ...fetchError, status: fetchStatus }
+          : { message: "Activity inserted but could not be reloaded" },
+      };
+    }
+    return { data, error: null };
   },
 
   async getActivityById(client: EvolveClient, id: string) {
