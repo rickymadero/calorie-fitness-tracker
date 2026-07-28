@@ -18,6 +18,7 @@ import {
 } from "@/lib/mock/data";
 import { ProGate } from "@/components/pro/ProGate";
 import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
+import { useTrackExploreFeature } from "@/lib/explore/useTrackExploreFeature";
 
 const VIBE_IDS = [
   "all",
@@ -54,6 +55,15 @@ export default function PlansPage() {
   const { t } = useAppTranslation(["plans", "common"]);
   const [vibe, setVibe] = useState<(typeof VIBE_IDS)[number]>("all");
   const [dayIndex, setDayIndex] = useState(0);
+  // Plans page is meal planning — rank it under meals (and plans) for Pro For You.
+  useTrackExploreFeature(
+    user?.plan === "pro" ? user.id : undefined,
+    "meals",
+  );
+  useTrackExploreFeature(
+    user?.plan === "pro" ? user.id : undefined,
+    "plans",
+  );
 
   const filteredSuggestions = useMemo(() => {
     if (vibe === "all") return MEAL_SUGGESTIONS;

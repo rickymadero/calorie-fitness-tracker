@@ -34,6 +34,12 @@ import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { foodLogStorage } from "@/lib/storage/foodLog";
 import type { FoodItem } from "@/lib/types";
 import { pricingHref } from "@/lib/auth/pricingReturn";
+import { useLocalizedPricing } from "@/lib/pricing/useLocalizedPricing";
+import {
+  exploreUsageStorage,
+  sortToolsByUsage,
+  type ExploreFeatureUsageKey,
+} from "@/lib/storage/exploreUsage";
 
 type ExploreTab = "foryou" | "workouts" | "nutrition" | "tools" | "pro";
 type MealType = "breakfast" | "lunch" | "dinner" | "snack";
@@ -86,9 +92,11 @@ function SectionCard({
   pro,
   isProUser,
   onOpenScanner,
+  onSelect,
 }: ToolCard & {
   isProUser: boolean;
   onOpenScanner?: () => void;
+  onSelect?: (feature: FeatureKey) => void;
 }) {
   const { t } = useAppTranslation(["common", "explore"]);
   const isScanner = feature === "scanner";
@@ -131,7 +139,10 @@ function SectionCard({
     return (
       <button
         type="button"
-        onClick={onOpenScanner}
+        onClick={() => {
+          onSelect?.(feature);
+          onOpenScanner();
+        }}
         className="evolve-card-lift flex min-h-[88px] w-full min-w-0 max-w-full gap-3 rounded-2xl border border-border bg-card p-4 text-left shadow-apex"
       >
         {content}
@@ -142,6 +153,9 @@ function SectionCard({
   return (
     <Link
       href={destination}
+      onClick={() => {
+        if (!locked) onSelect?.(feature);
+      }}
       className="evolve-card-lift flex min-h-[88px] w-full min-w-0 max-w-full gap-3 rounded-2xl border border-border bg-card p-4 shadow-apex"
     >
       {content}
@@ -153,11 +167,32 @@ function ToolList({
   items,
   isProUser,
   onOpenScanner,
+  onSelect,
+  flat,
 }: {
   items: ToolCard[];
   isProUser: boolean;
   onOpenScanner?: () => void;
+  onSelect?: (feature: FeatureKey) => void;
+  /** Single ordered list (no Free/Pro section split) — used for personalized For You. */
+  flat?: boolean;
 }) {
+  if (flat) {
+    return (
+      <div className="grid min-w-0 max-w-full gap-3">
+        {items.map((item) => (
+          <SectionCard
+            key={`flat-${item.feature}-${item.href}`}
+            {...item}
+            isProUser={isProUser}
+            onOpenScanner={onOpenScanner}
+            onSelect={onSelect}
+          />
+        ))}
+      </div>
+    );
+  }
+
   const free = items.filter((i) => !i.pro);
   const pro = items.filter((i) => i.pro);
   return (
@@ -171,6 +206,7 @@ function ToolList({
               {...item}
               isProUser={isProUser}
               onOpenScanner={onOpenScanner}
+              onSelect={onSelect}
             />
           ))}
         </>
@@ -184,6 +220,7 @@ function ToolList({
               {...item}
               isProUser={isProUser}
               onOpenScanner={onOpenScanner}
+              onSelect={onSelect}
             />
           ))}
         </>
@@ -212,30 +249,55 @@ const PRO_CATALOG: ToolCard[] = [
 export default function ExplorePage() {
   const { user, nutritionPlan } = useAuth();
   const { toast } = useToast();
-  const { t } = useAppTranslation(["common", "explore", "feed", "food"]);
+  const { t } = useAppTranslation(["common", "explore", "feed", "food", "pricing"]);
   const router = useRouter();
   const [tab, setTab] = useState<ExploreTab>("foryou");
   const [scannerOpen, setScannerOpen] = useState(false);
   const [scanMeal, setScanMeal] = useState<MealType>("lunch");
+  const [usageTick, setUsageTick] = useState(0);
   const isPro = user?.plan === "pro";
+  const pricing = useLocalizedPricing();
   const showScanMealPicker =
     tab === "foryou" || tab === "nutrition" || tab === "pro";
+  const proHeroTitle = isPro
+    ? t("explore:proHero.onPro")
+    : t("explore:proHero.titleWithPrice", {
+        brand: t("explore:proHero.title"),
+        price: pricing.formattedAnnualMonthly,
+        perMonth: t("pricing:perMonth"),
+      });
   const calorieTarget = nutritionPlan?.dailyCalorieTarget ?? 2200;
   const todayTotals = user
     ? foodLogStorage.dayTotals(foodLogStorage.listDay(user.id))
     : { calories: 0 };
   const remainingCalories = Math.max(0, calorieTarget - todayTotals.calories);
 
-  const forYou = useMemo<ToolCard[]>(
-    () => [
+  function recordFeature(feature: FeatureKey) {
+    if (!user?.id || !isPro) return;
+    exploreUsageStorage.record(user.id, feature as ExploreFeatureUsageKey);
+    setUsageTick((n) => n + 1);
+  }
+
+  const forYou = useMemo<ToolCard[]>(() => {
+    const base: ToolCard[] = [
       { href: "/posts/new", feature: "basicLogging", icon: Activity },
       { href: "/progress", feature: "basicStats", icon: TrendingUp },
       { href: "/plans", feature: "plans", icon: Dumbbell, pro: true },
       { href: "/food", feature: "macros", icon: Flame, pro: true },
       { href: "/food?scan=1", feature: "scanner", icon: ScanLine, pro: true },
-    ],
-    [],
-  );
+    ];
+    if (!isPro || !user?.id) return base;
+
+    // Pro For You: include nutrition tools and rank by how often this user opens them.
+    const proPool: ToolCard[] = [
+      ...base,
+      { href: "/plans", feature: "meals", icon: Utensils, pro: true },
+      { href: "/recipes", feature: "recipes", icon: Sparkles, pro: true },
+    ];
+    void usageTick;
+    const scores = exploreUsageStorage.getScores(user.id);
+    return sortToolsByUsage(proPool, scores);
+  }, [isPro, user?.id, usageTick]);
 
   const workouts = useMemo<ToolCard[]>(
     () => [
@@ -331,31 +393,40 @@ export default function ExplorePage() {
           <ToolList
             items={forYou}
             isProUser={isPro}
+            flat={isPro}
+            onSelect={recordFeature}
             onOpenScanner={() => setScannerOpen(true)}
           />
         )}
         {tab === "workouts" && (
-          <ToolList items={workouts} isProUser={isPro} />
+          <ToolList
+            items={workouts}
+            isProUser={isPro}
+            onSelect={recordFeature}
+          />
         )}
         {tab === "nutrition" && (
           <ToolList
             items={nutrition}
             isProUser={isPro}
+            onSelect={recordFeature}
             onOpenScanner={() => setScannerOpen(true)}
           />
         )}
-        {tab === "tools" && <ToolList items={tools} isProUser={isPro} />}
+        {tab === "tools" && (
+          <ToolList
+            items={tools}
+            isProUser={isPro}
+            onSelect={recordFeature}
+          />
+        )}
 
         {tab === "pro" && (
           <div className="space-y-3">
             <div className="rounded-2xl border border-border bg-card p-4 shadow-apex">
               <div className="flex items-center gap-2">
                 <Crown size={18} className="text-accent" />
-                <p className="font-display font-semibold">
-                  {isPro
-                    ? t("explore:proHero.onPro")
-                    : t("explore:proHero.title")}
-                </p>
+                <p className="font-display font-semibold">{proHeroTitle}</p>
               </div>
               <p className="mt-2 text-sm text-muted">
                 {t("explore:proHero.body")}
@@ -375,6 +446,7 @@ export default function ExplorePage() {
                 key={item.feature}
                 {...item}
                 isProUser={isPro}
+                onSelect={recordFeature}
                 onOpenScanner={() => setScannerOpen(true)}
               />
             ))}

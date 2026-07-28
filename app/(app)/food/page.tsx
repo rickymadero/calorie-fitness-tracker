@@ -30,6 +30,7 @@ import { foodLogStorage } from "@/lib/storage/foodLog";
 import type { FoodCategory, FoodItem, LoggedMeal } from "@/lib/types";
 import { ProGate } from "@/components/pro/ProGate";
 import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
+import { useTrackExploreFeature } from "@/lib/explore/useTrackExploreFeature";
 
 const MEAL_TYPES = ["breakfast", "lunch", "dinner", "snack"] as const;
 const FOOD_FILTER_IDS = [
@@ -93,6 +94,11 @@ export default function FoodPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isPro = user?.plan === "pro";
+  useTrackExploreFeature(isPro ? user?.id : undefined, "macros");
+  useTrackExploreFeature(
+    isPro && searchParams.get("scan") === "1" ? user?.id : undefined,
+    "scanner",
+  );
 
   const [tab, setTab] = useState<FoodTab>("diary");
   const [selectedDate, setSelectedDate] = useState(foodLogStorage.todayKey());

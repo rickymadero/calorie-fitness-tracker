@@ -18,6 +18,7 @@ import { ProGate } from "@/components/pro/ProGate";
 import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
 import { RecipeImage } from "@/components/recipes/RecipeImage";
 import { pricingHref } from "@/lib/auth/pricingReturn";
+import { useTrackExploreFeature } from "@/lib/explore/useTrackExploreFeature";
 
 const FILTER_IDS = [
   "all",
@@ -49,6 +50,7 @@ export default function RecipesPage() {
   const router = useRouter();
   const { t } = useAppTranslation(["recipes", "common", "plans"]);
   const isPro = user?.plan === "pro";
+  useTrackExploreFeature(isPro ? user?.id : undefined, "recipes");
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<(typeof FILTER_IDS)[number]>("all");
 
