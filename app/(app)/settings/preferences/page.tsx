@@ -14,6 +14,8 @@ import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { settingsPrefs } from "@/lib/storage/settingsPrefs";
 import type { MeasurementSystem } from "@/lib/types";
+import { pricingHref } from "@/lib/auth/pricingReturn";
+import { useLocalizedPricing } from "@/lib/pricing/useLocalizedPricing";
 
 export default function PreferencesPage() {
   const { user, updateUser, setPlan, userSettings, refreshProfile } = useAuth();
@@ -22,7 +24,9 @@ export default function PreferencesPage() {
   const { t, locale, setLocale, languages } = useAppTranslation([
     "common",
     "settings",
+    "pricing",
   ]);
+  const pricing = useLocalizedPricing();
 
   const [email, setEmail] = useState("");
   const [measurement, setMeasurement] = useState<MeasurementSystem>("metric");
@@ -326,19 +330,34 @@ export default function PreferencesPage() {
             <p className="mt-2 text-sm text-muted">
               {t("settings:subscriptionBody")}
             </p>
-            <div className="mt-3">
+            {user.plan !== "pro" && (
+              <p className="mt-2 text-sm font-medium">
+                {pricing.formattedAnnualMonthly} {t("pricing:perMonth")}
+                <span className="ml-2 text-xs font-normal text-muted">
+                  {t("pricing:billedAnnualShort")}
+                </span>
+              </p>
+            )}
+            <div className="mt-3 flex flex-col gap-2">
               {user.plan !== "pro" ? (
-                <Button
-                  fullWidth
-                  size="sm"
-                  onClick={() => {
-                    setPlan("pro");
-                    toast(t("common:success.upgradedPro"), "success");
-                  }}
-                >
-                  <Crown size={14} />
-                  {t("common:buttons.upgradePro")}
-                </Button>
+                <>
+                  <Button
+                    fullWidth
+                    size="sm"
+                    onClick={() => {
+                      setPlan("pro");
+                      toast(t("common:success.upgradedPro"), "success");
+                    }}
+                  >
+                    <Crown size={14} />
+                    {t("common:buttons.upgradePro")}
+                  </Button>
+                  <Link href={pricingHref("/settings/preferences")}>
+                    <Button fullWidth size="sm" variant="outline">
+                      {t("common:proGate.viewPlans")}
+                    </Button>
+                  </Link>
+                </>
               ) : (
                 <Button
                   fullWidth

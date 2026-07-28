@@ -12,8 +12,9 @@
   },
   "proHero": {
     "onPro": "Pro üyesin",
-    "title": "Evolve Pro · Ayda 9,99$",
-    "body": "Sonsuza kadar ücretsiz: temel antrenman kaydı, EvoFit'i keşfetme ve temel istatistikler. Pro; takip, planlar, tarayıcılar, analitik ve daha fazlasını açar."
+    "title": "Evolve Pro",
+    "body": "Sonsuza kadar ücretsiz: temel antrenman kaydı, EvoFit'i keşfetme ve temel istatistikler. Pro; takip, planlar, tarayıcılar, analitik ve daha fazlasını açar.",
+    "titleWithPrice": "{{brand}} · {{price}}{{perMonth}}"
   },
   "features": {
     "basicLogging": {

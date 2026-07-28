@@ -12,8 +12,9 @@
   },
   "proHero": {
     "onPro": "Vous êtes en Pro",
-    "title": "Evolve Pro · 9,99 $/mois",
-    "body": "Gratuit pour toujours : suivi de base des séances, exploration d'EvoFit et statistiques de base. Pro débloque le suivi, les plans, les scanners, les analyses et plus encore."
+    "title": "Evolve Pro",
+    "body": "Gratuit pour toujours : suivi de base des séances, exploration d'EvoFit et statistiques de base. Pro débloque le suivi, les plans, les scanners, les analyses et plus encore.",
+    "titleWithPrice": "{{brand}} · {{price}}{{perMonth}}"
   },
   "features": {
     "basicLogging": {

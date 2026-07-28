@@ -7,7 +7,7 @@
   "savePercent": "{{pct}}% बचाएं",
   "freeTitle": "फ्री",
   "freeBody": "बेहतर आदतें बनाना शुरू करने के लिए आपको जो कुछ भी चाहिए।",
-  "freePrice": "$0",
+  "freePrice": "0",
   "forever": "/ हमेशा के लिए",
   "startFree": "मुफ़्त में शुरू करें",
   "proTitle": "Pro",
@@ -31,7 +31,6 @@
     "सीमित सेव्ड मील्स"
   ],
   "proFeatures": [
-    "पूरे एक्सरसाइज़ डेमोंस्ट्रेशन वीडियो",
     "विस्तृत तकनीक और सुरक्षा कोचिंग",
     "पर्सनलाइज़्ड वर्कआउट प्लान + एडमिन असाइनमेंट",
     "परफॉर्मेंस के आधार पर वर्कआउट प्लान समायोजन",
@@ -48,5 +47,23 @@
     "एडवांस्ड रिकवरी सुझाव",
     "कोई विज्ञापन नहीं",
     "प्रायोरिटी सपोर्ट"
-  ]
+  ],
+  "billedMonthly": "Billed monthly",
+  "billedAnnualShort": "Billed annually",
+  "monthlyEquivalent": "Monthly equivalent",
+  "pricingRegion": "Pricing region",
+  "changeRegion": "Change region",
+  "taxesMayApply": "Taxes may apply.",
+  "currency": "Currency",
+  "regionSourceAuto": "Auto-detected",
+  "regionSourceManual": "Selected by you",
+  "regions": {
+    "MX": "Mexico",
+    "US": "United States",
+    "CA": "Canada",
+    "GB": "United Kingdom",
+    "EU": "Eurozone",
+    "LATAM": "Latin America",
+    "DEFAULT": "International"
+  }
 }

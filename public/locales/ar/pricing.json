@@ -7,7 +7,7 @@
   "savePercent": "وفّر {{pct}}%",
   "freeTitle": "مجاني",
   "freeBody": "كل ما تحتاجه للبدء في بناء عادات أفضل.",
-  "freePrice": "0$",
+  "freePrice": "0",
   "forever": "/ للأبد",
   "startFree": "البدء مجانًا",
   "proTitle": "Pro",
@@ -31,7 +31,6 @@
     "وجبات محفوظة محدودة"
   ],
   "proFeatures": [
-    "مقاطع فيديو كاملة لتوضيح التمارين",
     "تدريب مفصل على التقنية والسلامة",
     "خطط تمرين مخصصة + تكليفات إدارية",
     "تعديلات خطة التمرين بناءً على الأداء",
@@ -48,5 +47,23 @@
     "توصيات تعافٍ متقدمة",
     "بلا إعلانات",
     "دعم ذو أولوية"
-  ]
+  ],
+  "billedMonthly": "Billed monthly",
+  "billedAnnualShort": "Billed annually",
+  "monthlyEquivalent": "Monthly equivalent",
+  "pricingRegion": "Pricing region",
+  "changeRegion": "Change region",
+  "taxesMayApply": "Taxes may apply.",
+  "currency": "Currency",
+  "regionSourceAuto": "Auto-detected",
+  "regionSourceManual": "Selected by you",
+  "regions": {
+    "MX": "Mexico",
+    "US": "United States",
+    "CA": "Canada",
+    "GB": "United Kingdom",
+    "EU": "Eurozone",
+    "LATAM": "Latin America",
+    "DEFAULT": "International"
+  }
 }

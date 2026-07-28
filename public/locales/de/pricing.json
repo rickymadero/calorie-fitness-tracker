@@ -7,7 +7,7 @@
   "savePercent": "Spare {{pct}}%",
   "freeTitle": "Kostenlos",
   "freeBody": "Alles, was du brauchst, um bessere Gewohnheiten aufzubauen.",
-  "freePrice": "0 $",
+  "freePrice": "0",
   "forever": "/ für immer",
   "startFree": "Kostenlos starten",
   "proTitle": "Pro",
@@ -31,7 +31,6 @@
     "Begrenzt gespeicherte Mahlzeiten"
   ],
   "proFeatures": [
-    "Vollständige Übungsvideos",
     "Detaillierte Technik & Sicherheit",
     "Personalisierte Pläne + Admin-Zuweisungen",
     "Plananpassung nach Leistung",
@@ -48,5 +47,23 @@
     "Erweiterte Erholungsempfehlungen",
     "Keine Werbung",
     "Prioritäts-Support"
-  ]
+  ],
+  "billedMonthly": "Billed monthly",
+  "billedAnnualShort": "Billed annually",
+  "monthlyEquivalent": "Monthly equivalent",
+  "pricingRegion": "Pricing region",
+  "changeRegion": "Change region",
+  "taxesMayApply": "Taxes may apply.",
+  "currency": "Currency",
+  "regionSourceAuto": "Auto-detected",
+  "regionSourceManual": "Selected by you",
+  "regions": {
+    "MX": "Mexico",
+    "US": "United States",
+    "CA": "Canada",
+    "GB": "United Kingdom",
+    "EU": "Eurozone",
+    "LATAM": "Latin America",
+    "DEFAULT": "International"
+  }
 }

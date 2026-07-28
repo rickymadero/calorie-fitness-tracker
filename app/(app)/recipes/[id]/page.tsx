@@ -13,6 +13,7 @@ import { getRecipeById, scaleRecipe } from "@/lib/mock/recipes";
 import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
 import { RecipeImage } from "@/components/recipes/RecipeImage";
 import { pricingHref } from "@/lib/auth/pricingReturn";
+import { useLocalizedPricing } from "@/lib/pricing/useLocalizedPricing";
 
 export default function RecipeDetailPage({
   params,
@@ -23,7 +24,8 @@ export default function RecipeDetailPage({
   const { user } = useAuth();
   const { toast } = useToast();
   const router = useRouter();
-  const { t } = useAppTranslation(["recipes", "common"]);
+  const { t } = useAppTranslation(["recipes", "common", "pricing"]);
+  const pricing = useLocalizedPricing();
   const isPro = user?.plan === "pro";
   const base = getRecipeById(id);
   const [servings, setServings] = useState(base?.servings || 1);
@@ -147,6 +149,13 @@ export default function RecipeDetailPage({
           <p className="mt-2 text-sm text-muted">
             {t("lockedBody")}
           </p>
+          <p className="mt-3 font-display text-lg font-semibold">
+            {pricing.formattedAnnualMonthly}{" "}
+            <span className="text-sm font-medium text-muted">
+              {t("pricing:perMonth")}
+            </span>
+          </p>
+          <p className="mt-1 text-xs text-muted">{t("pricing:billedAnnualShort")}</p>
           <Button
             className="mt-4"
             onClick={() => router.push(pricingHref(`/recipes/${recipe.id}`))}

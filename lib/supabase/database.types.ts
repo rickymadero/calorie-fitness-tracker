@@ -762,6 +762,8 @@ export type Database = {
           created_at: string
           language: string
           preferred_units: Database["public"]["Enums"]["preferred_units"]
+          pricing_region: string | null
+          pricing_region_source: string | null
           theme: Database["public"]["Enums"]["theme_preference"]
           updated_at: string
           user_id: string
@@ -770,6 +772,8 @@ export type Database = {
           created_at?: string
           language?: string
           preferred_units?: Database["public"]["Enums"]["preferred_units"]
+          pricing_region?: string | null
+          pricing_region_source?: string | null
           theme?: Database["public"]["Enums"]["theme_preference"]
           updated_at?: string
           user_id: string
@@ -778,6 +782,8 @@ export type Database = {
           created_at?: string
           language?: string
           preferred_units?: Database["public"]["Enums"]["preferred_units"]
+          pricing_region?: string | null
+          pricing_region_source?: string | null
           theme?: Database["public"]["Enums"]["theme_preference"]
           updated_at?: string
           user_id?: string

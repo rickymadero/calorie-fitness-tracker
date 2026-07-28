@@ -12,8 +12,9 @@
   },
   "proHero": {
     "onPro": "你已是 Pro 用户",
-    "title": "Evolve Pro · $9.99/月",
-    "body": "永久免费：基础训练记录、EvoFit 发现内容和基础统计数据。Pro 解锁追踪、计划、扫描器、数据分析等更多功能。"
+    "title": "Evolve Pro",
+    "body": "永久免费：基础训练记录、EvoFit 发现内容和基础统计数据。Pro 解锁追踪、计划、扫描器、数据分析等更多功能。",
+    "titleWithPrice": "{{brand}} · {{price}}{{perMonth}}"
   },
   "features": {
     "basicLogging": {

@@ -8,11 +8,13 @@ import { Badge } from "@/components/ui/Badge";
 import type { ExerciseDefinition } from "@/lib/types/training";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { pricingHref } from "@/lib/auth/pricingReturn";
+import { useLocalizedPricing } from "@/lib/pricing/useLocalizedPricing";
 
 export function ProDemoGate({ onClose }: { onClose?: () => void }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { t } = useAppTranslation(["workouts", "common"]);
+  const { t } = useAppTranslation(["workouts", "common", "pricing"]);
+  const pricing = useLocalizedPricing();
   return (
     <div className="rounded-apex-lg border border-accent/40 bg-card p-6 text-center shadow-apex-lg">
       {onClose && (
@@ -35,6 +37,15 @@ export function ProDemoGate({ onClose }: { onClose?: () => void }) {
       </h3>
       <p className="mt-3 text-sm text-muted">
         {t("demo.gateBody")}
+      </p>
+      <p className="mt-3 font-display text-lg font-semibold">
+        {pricing.formattedAnnualMonthly}{" "}
+        <span className="text-sm font-medium text-muted">
+          {t("perMonth", { ns: "pricing" })}
+        </span>
+      </p>
+      <p className="mt-1 text-xs text-muted">
+        {t("billedAnnualShort", { ns: "pricing" })}
       </p>
       <Button
         className="mt-6"

@@ -12,8 +12,9 @@
   },
   "proHero": {
     "onPro": "你已是 Pro 會員",
-    "title": "Evolve Pro · $9.99/月",
-    "body": "永久免費：基本訓練記錄、探索 EvoFit 及基本統計數據。Pro 解鎖追蹤、計劃、掃描器、數據分析與更多功能。"
+    "title": "Evolve Pro",
+    "body": "永久免費：基本訓練記錄、探索 EvoFit 及基本統計數據。Pro 解鎖追蹤、計劃、掃描器、數據分析與更多功能。",
+    "titleWithPrice": "{{brand}} · {{price}}{{perMonth}}"
   },
   "features": {
     "basicLogging": {

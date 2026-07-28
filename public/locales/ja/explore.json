@@ -12,8 +12,9 @@
   },
   "proHero": {
     "onPro": "Pro会員です",
-    "title": "Evolve Pro · $9.99/月",
-    "body": "永久無料：基本のワークアウト記録、EvoFitの探索、基本統計。Proではトラッキング、プラン、スキャナー、分析などが利用できます。"
+    "title": "Evolve Pro",
+    "body": "永久無料：基本のワークアウト記録、EvoFitの探索、基本統計。Proではトラッキング、プラン、スキャナー、分析などが利用できます。",
+    "titleWithPrice": "{{brand}} · {{price}}{{perMonth}}"
   },
   "features": {
     "basicLogging": {

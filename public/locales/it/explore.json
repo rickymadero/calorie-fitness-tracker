@@ -12,8 +12,9 @@
   },
   "proHero": {
     "onPro": "Hai già Pro",
-    "title": "Evolve Pro · 9,99 $/mese",
-    "body": "Gratis per sempre: registrazione base degli allenamenti, esplorazione di EvoFit e statistiche di base. Pro sblocca monitoraggio, piani, scanner, analisi e altro."
+    "title": "Evolve Pro",
+    "body": "Gratis per sempre: registrazione base degli allenamenti, esplorazione di EvoFit e statistiche di base. Pro sblocca monitoraggio, piani, scanner, analisi e altro.",
+    "titleWithPrice": "{{brand}} · {{price}}{{perMonth}}"
   },
   "features": {
     "basicLogging": {

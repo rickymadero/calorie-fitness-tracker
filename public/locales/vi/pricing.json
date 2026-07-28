@@ -7,7 +7,7 @@
   "savePercent": "Tiết kiệm {{pct}}%",
   "freeTitle": "Free",
   "freeBody": "Tất cả những gì bạn cần để bắt đầu xây dựng thói quen tốt hơn.",
-  "freePrice": "$0",
+  "freePrice": "0",
   "forever": "/ mãi mãi",
   "startFree": "Bắt đầu Free",
   "proTitle": "Pro",
@@ -31,7 +31,6 @@
     "Bữa ăn đã lưu giới hạn"
   ],
   "proFeatures": [
-    "Video trình diễn bài tập đầy đủ",
     "Huấn luyện kỹ thuật & an toàn chi tiết",
     "Kế hoạch tập cá nhân hóa + phân công quản trị",
     "Điều chỉnh kế hoạch theo hiệu suất",
@@ -48,5 +47,23 @@
     "Gợi ý phục hồi nâng cao",
     "Không quảng cáo",
     "Hỗ trợ ưu tiên"
-  ]
+  ],
+  "billedMonthly": "Billed monthly",
+  "billedAnnualShort": "Billed annually",
+  "monthlyEquivalent": "Monthly equivalent",
+  "pricingRegion": "Pricing region",
+  "changeRegion": "Change region",
+  "taxesMayApply": "Taxes may apply.",
+  "currency": "Currency",
+  "regionSourceAuto": "Auto-detected",
+  "regionSourceManual": "Selected by you",
+  "regions": {
+    "MX": "Mexico",
+    "US": "United States",
+    "CA": "Canada",
+    "GB": "United Kingdom",
+    "EU": "Eurozone",
+    "LATAM": "Latin America",
+    "DEFAULT": "International"
+  }
 }

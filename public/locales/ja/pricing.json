@@ -7,7 +7,7 @@
   "savePercent": "{{pct}}%お得",
   "freeTitle": "Free",
   "freeBody": "より良い習慣を始めるために必要なすべての機能。",
-  "freePrice": "$0",
+  "freePrice": "0",
   "forever": "/ 永久",
   "startFree": "無料で始める",
   "proTitle": "Pro",
@@ -31,7 +31,6 @@
     "Limited saved meals"
   ],
   "proFeatures": [
-    "Full exercise demonstration videos",
     "Detailed technique & safety coaching",
     "Personalized workout plans + admin assignments",
     "Workout plan adjustments from performance",
@@ -48,5 +47,23 @@
     "Advanced recovery recommendations",
     "No advertisements",
     "Priority support"
-  ]
+  ],
+  "billedMonthly": "Billed monthly",
+  "billedAnnualShort": "Billed annually",
+  "monthlyEquivalent": "Monthly equivalent",
+  "pricingRegion": "Pricing region",
+  "changeRegion": "Change region",
+  "taxesMayApply": "Taxes may apply.",
+  "currency": "Currency",
+  "regionSourceAuto": "Auto-detected",
+  "regionSourceManual": "Selected by you",
+  "regions": {
+    "MX": "Mexico",
+    "US": "United States",
+    "CA": "Canada",
+    "GB": "United Kingdom",
+    "EU": "Eurozone",
+    "LATAM": "Latin America",
+    "DEFAULT": "International"
+  }
 }

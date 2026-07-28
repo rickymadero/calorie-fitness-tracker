@@ -12,8 +12,9 @@
   },
   "proHero": {
     "onPro": "Du hast Pro",
-    "title": "Evolve Pro · 9,99 $/Monat",
-    "body": "Für immer kostenlos: einfaches Trainingstracking, EvoFit entdecken und einfache Statistiken. Pro schaltet Tracking, Pläne, Scanner, Analysen und mehr frei."
+    "title": "Evolve Pro",
+    "body": "Für immer kostenlos: einfaches Trainingstracking, EvoFit entdecken und einfache Statistiken. Pro schaltet Tracking, Pläne, Scanner, Analysen und mehr frei.",
+    "titleWithPrice": "{{brand}} · {{price}}{{perMonth}}"
   },
   "features": {
     "basicLogging": {

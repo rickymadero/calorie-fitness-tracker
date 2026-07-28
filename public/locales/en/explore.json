@@ -12,8 +12,9 @@
   },
   "proHero": {
     "onPro": "You're on Pro",
-    "title": "Evolve Pro · $9.99/mo",
-    "body": "Free forever: basic workout logging, exploring EvoFit, and basic stats. Pro unlocks tracking, plans, scanners, analytics, and more."
+    "title": "Evolve Pro",
+    "body": "Free forever: basic workout logging, exploring EvoFit, and basic stats. Pro unlocks tracking, plans, scanners, analytics, and more.",
+    "titleWithPrice": "{{brand}} · {{price}}{{perMonth}}"
   },
   "features": {
     "basicLogging": {

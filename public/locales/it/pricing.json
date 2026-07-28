@@ -7,7 +7,7 @@
   "savePercent": "Risparmia {{pct}}%",
   "freeTitle": "Gratuito",
   "freeBody": "Tutto ciò che ti serve per iniziare a costruire abitudini migliori.",
-  "freePrice": "0 $",
+  "freePrice": "0",
   "forever": "/ per sempre",
   "startFree": "Inizia gratis",
   "proTitle": "Pro",
@@ -31,7 +31,6 @@
     "Pasti salvati limitati"
   ],
   "proFeatures": [
-    "Video completi di dimostrazione degli esercizi",
     "Tecnica dettagliata e coaching sulla sicurezza",
     "Piani di allenamento personalizzati + assegnazioni admin",
     "Aggiustamenti del piano in base alle prestazioni",
@@ -48,5 +47,23 @@
     "Consigli avanzati sul recupero",
     "Nessuna pubblicità",
     "Supporto prioritario"
-  ]
+  ],
+  "billedMonthly": "Billed monthly",
+  "billedAnnualShort": "Billed annually",
+  "monthlyEquivalent": "Monthly equivalent",
+  "pricingRegion": "Pricing region",
+  "changeRegion": "Change region",
+  "taxesMayApply": "Taxes may apply.",
+  "currency": "Currency",
+  "regionSourceAuto": "Auto-detected",
+  "regionSourceManual": "Selected by you",
+  "regions": {
+    "MX": "Mexico",
+    "US": "United States",
+    "CA": "Canada",
+    "GB": "United Kingdom",
+    "EU": "Eurozone",
+    "LATAM": "Latin America",
+    "DEFAULT": "International"
+  }
 }

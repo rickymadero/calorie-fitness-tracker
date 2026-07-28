@@ -27,6 +27,7 @@ import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
 import { weekStatsFromActivities } from "@/lib/activities/statsFromActivities";
 import type { WeekStats } from "@/lib/activities/statsFromActivities";
 import { pricingHref } from "@/lib/auth/pricingReturn";
+import { useLocalizedPricing } from "@/lib/pricing/useLocalizedPricing";
 
 const MEASUREMENT_KEYS = ["chest", "waist", "hips", "arms"] as const;
 const MEASUREMENT_VALUES: Record<(typeof MEASUREMENT_KEYS)[number], string> = {
@@ -47,7 +48,8 @@ export default function ProgressPage() {
   const { user, onboarding, updateOnboarding, setPlan } = useAuth();
   const { tick, weekStats } = usePosts();
   const { toast } = useToast();
-  const { t } = useAppTranslation(["progress", "common"]);
+  const { t } = useAppTranslation(["progress", "common", "pricing"]);
+  const pricing = useLocalizedPricing();
   const [weightOpen, setWeightOpen] = useState(false);
   const [measureOpen, setMeasureOpen] = useState(false);
   const [photoOpen, setPhotoOpen] = useState(false);
@@ -270,6 +272,13 @@ export default function ProgressPage() {
           <p className="mx-auto mt-2 max-w-md text-sm text-muted">
             {t("basic.unlockBody")}
           </p>
+          <p className="mt-3 font-display text-lg font-semibold">
+            {pricing.formattedAnnualMonthly}{" "}
+            <span className="text-sm font-medium text-muted">
+              {t("pricing:perMonth")}
+            </span>
+          </p>
+          <p className="mt-1 text-xs text-muted">{t("pricing:billedAnnualShort")}</p>
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             <Button
               onClick={() => {

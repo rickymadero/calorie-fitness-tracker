@@ -9,6 +9,7 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
 import { pricingHref } from "@/lib/auth/pricingReturn";
+import { useLocalizedPricing } from "@/lib/pricing/useLocalizedPricing";
 
 export function ProGate({
   children,
@@ -19,7 +20,8 @@ export function ProGate({
 }) {
   const { user, setPlan } = useAuth();
   const pathname = usePathname();
-  const { t } = useAppTranslation("common");
+  const { t } = useAppTranslation(["common", "pricing"]);
+  const pricing = useLocalizedPricing();
   const isPro = user?.plan === "pro";
   const featureLabel = feature || t("proGate.defaultFeature");
 
@@ -39,6 +41,13 @@ export function ProGate({
           <p className="mt-2 text-sm text-muted">
             {t("proGate.body", { feature: featureLabel })}
           </p>
+          <p className="mt-3 font-display text-lg font-semibold">
+            {pricing.formattedAnnualMonthly}{" "}
+            <span className="text-sm font-medium text-muted">
+              {t("pricing:perMonth")}
+            </span>
+          </p>
+          <p className="mt-1 text-xs text-muted">{t("pricing:billedAnnualShort")}</p>
           <div className="mt-6 flex flex-wrap justify-center gap-2">
             <Button
               onClick={() => {

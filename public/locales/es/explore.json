@@ -12,8 +12,9 @@
   },
   "proHero": {
     "onPro": "Ya tienes Pro",
-    "title": "Evolve Pro · $9.99/mes",
-    "body": "Gratis para siempre: registro básico de entrenamientos, explorar EvoFit y estadísticas básicas. Pro desbloquea seguimiento, planes, escáneres, análisis y más."
+    "title": "Evolve Pro",
+    "body": "Gratis para siempre: registro básico de entrenamientos, explorar EvoFit y estadísticas básicas. Pro desbloquea seguimiento, planes, escáneres, análisis y más.",
+    "titleWithPrice": "{{brand}} · {{price}}{{perMonth}}"
   },
   "features": {
     "basicLogging": {

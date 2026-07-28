@@ -7,7 +7,7 @@
   "savePercent": "Ahorra {{pct}}%",
   "freeTitle": "Gratis",
   "freeBody": "Todo lo que necesitas para empezar a crear mejores hábitos.",
-  "freePrice": "$0",
+  "freePrice": "0",
   "forever": "/ para siempre",
   "startFree": "Empezar gratis",
   "proTitle": "Pro",
@@ -31,7 +31,6 @@
     "Comidas guardadas limitadas"
   ],
   "proFeatures": [
-    "Vídeos completos de demostración",
     "Técnica detallada y seguridad",
     "Planes personalizados + asignaciones admin",
     "Ajustes del plan según rendimiento",
@@ -48,5 +47,23 @@
     "Recomendaciones avanzadas de recuperación",
     "Sin anuncios",
     "Soporte prioritario"
-  ]
+  ],
+  "billedMonthly": "Facturado mensualmente",
+  "billedAnnualShort": "Facturado anualmente",
+  "monthlyEquivalent": "Equivalente mensual",
+  "pricingRegion": "Región de precios",
+  "changeRegion": "Cambiar región",
+  "taxesMayApply": "Pueden aplicarse impuestos.",
+  "currency": "Moneda",
+  "regionSourceAuto": "Detectada automáticamente",
+  "regionSourceManual": "Seleccionada por ti",
+  "regions": {
+    "MX": "México",
+    "US": "Estados Unidos",
+    "CA": "Canadá",
+    "GB": "Reino Unido",
+    "EU": "Zona euro",
+    "LATAM": "Latinoamérica",
+    "DEFAULT": "Internacional"
+  }
 }

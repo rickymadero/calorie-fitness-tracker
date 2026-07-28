@@ -7,7 +7,7 @@
   "savePercent": "Économisez {{pct}} %",
   "freeTitle": "Gratuit",
   "freeBody": "Tout ce qu'il vous faut pour commencer à créer de meilleures habitudes.",
-  "freePrice": "0 $",
+  "freePrice": "0",
   "forever": "/ pour toujours",
   "startFree": "Commencer gratuitement",
   "proTitle": "Pro",
@@ -31,7 +31,6 @@
     "Repas enregistrés limités"
   ],
   "proFeatures": [
-    "Vidéos de démonstration complètes",
     "Technique et sécurité détaillées",
     "Plans personnalisés + affectations admin",
     "Ajustements selon les performances",
@@ -48,5 +47,23 @@
     "Récupération avancée",
     "Sans publicité",
     "Support prioritaire"
-  ]
+  ],
+  "billedMonthly": "Billed monthly",
+  "billedAnnualShort": "Billed annually",
+  "monthlyEquivalent": "Monthly equivalent",
+  "pricingRegion": "Pricing region",
+  "changeRegion": "Change region",
+  "taxesMayApply": "Taxes may apply.",
+  "currency": "Currency",
+  "regionSourceAuto": "Auto-detected",
+  "regionSourceManual": "Selected by you",
+  "regions": {
+    "MX": "Mexico",
+    "US": "United States",
+    "CA": "Canada",
+    "GB": "United Kingdom",
+    "EU": "Eurozone",
+    "LATAM": "Latin America",
+    "DEFAULT": "International"
+  }
 }

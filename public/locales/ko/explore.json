@@ -12,8 +12,9 @@
   },
   "proHero": {
     "onPro": "Pro 이용 중입니다",
-    "title": "Evolve Pro · $9.99/월",
-    "body": "영구 무료: 기본 운동 기록, EvoFit 탐색, 기본 통계. Pro는 트래킹, 플랜, 스캐너, 분석 등 더 많은 기능을 제공합니다."
+    "title": "Evolve Pro",
+    "body": "영구 무료: 기본 운동 기록, EvoFit 탐색, 기본 통계. Pro는 트래킹, 플랜, 스캐너, 분석 등 더 많은 기능을 제공합니다.",
+    "titleWithPrice": "{{brand}} · {{price}}{{perMonth}}"
   },
   "features": {
     "basicLogging": {

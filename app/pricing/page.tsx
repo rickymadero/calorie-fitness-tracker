@@ -13,6 +13,8 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { safeReturnPath } from "@/lib/auth/pricingReturn";
+import { formatPlanPrice } from "@/lib/pricing/formatPlanPrice";
+import { useLocalizedPricing } from "@/lib/pricing/useLocalizedPricing";
 
 export default function PricingPage() {
   const { user, isReady, markPricingSeen, setPlan } = useAuth();
@@ -21,6 +23,7 @@ export default function PricingPage() {
   const { toast } = useToast();
   const { t } = useAppTranslation("pricing");
   const [billing, setBilling] = useState<"monthly" | "annual">("annual");
+  const pricing = useLocalizedPricing();
 
   const returnTo = useMemo(
     () => safeReturnPath(searchParams.get("next")),
@@ -53,9 +56,10 @@ export default function PricingPage() {
 
   if (!isReady || !user || !user.onboardingComplete) return <PageLoader />;
 
-  const monthlyPrice = 12.99;
-  const annualMonthly = 7.99;
-  const savings = Math.round((1 - annualMonthly / monthlyPrice) * 100);
+  const displayPrice =
+    billing === "annual"
+      ? pricing.formattedAnnualMonthly
+      : pricing.formattedMonthly;
 
   function finishPlanChoice() {
     markPricingSeen();
@@ -123,7 +127,7 @@ export default function PricingPage() {
             >
               {t("annual")}
               <span className="ml-2 text-xs opacity-80">
-                {t("savePercent", { pct: savings })}
+                {t("savePercent", { pct: pricing.savingsPct })}
               </span>
             </button>
           </div>
@@ -140,7 +144,11 @@ export default function PricingPage() {
               </h2>
               <p className="mt-1 text-sm text-muted">{t("freeBody")}</p>
               <p className="mt-6 font-display text-4xl font-bold">
-                {t("freePrice")}
+                {formatPlanPrice({
+                  amount: 0,
+                  currency: pricing.currency,
+                  displayLocale: pricing.displayLocale,
+                })}
                 <span className="text-base font-medium text-muted">
                   {" "}
                   {t("forever")}
@@ -187,7 +195,7 @@ export default function PricingPage() {
               </h2>
               <p className="mt-1 text-sm text-muted">{t("proBody")}</p>
               <p className="mt-6 font-display text-4xl font-bold">
-                ${billing === "annual" ? annualMonthly : monthlyPrice}
+                {displayPrice}
                 <span className="text-base font-medium text-muted">
                   {" "}
                   {t("perMonth")}
@@ -195,9 +203,13 @@ export default function PricingPage() {
               </p>
               {billing === "annual" && (
                 <p className="mt-1 text-xs text-muted">
-                  {t("billedAnnual", { pct: savings })}
+                  {t("billedAnnual", { pct: pricing.savingsPct })}
                 </p>
               )}
+              {billing === "monthly" && (
+                <p className="mt-1 text-xs text-muted">{t("billedMonthly")}</p>
+              )}
+              <p className="mt-1 text-xs text-muted">{t("taxesMayApply")}</p>
               <ul className="mt-6 flex-1 space-y-3">
                 {proFeatures.map((f) => (
                   <li key={f} className="flex items-start gap-3 text-sm">

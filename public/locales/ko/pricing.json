@@ -7,7 +7,7 @@
   "savePercent": "{{pct}}% 절약",
   "freeTitle": "Free",
   "freeBody": "더 나은 습관을 시작하기에 필요한 모든 것.",
-  "freePrice": "$0",
+  "freePrice": "0",
   "forever": "/ 평생",
   "startFree": "Free로 시작",
   "proTitle": "Pro",
@@ -31,7 +31,6 @@
     "제한된 저장 식사"
   ],
   "proFeatures": [
-    "전체 운동 시연 영상",
     "상세 기술 및 안전 코칭",
     "맞춤 운동 플랜 + 관리자 배정",
     "성과 기반 플랜 조정",
@@ -48,5 +47,23 @@
     "고급 회복 추천",
     "광고 없음",
     "우선 지원"
-  ]
+  ],
+  "billedMonthly": "Billed monthly",
+  "billedAnnualShort": "Billed annually",
+  "monthlyEquivalent": "Monthly equivalent",
+  "pricingRegion": "Pricing region",
+  "changeRegion": "Change region",
+  "taxesMayApply": "Taxes may apply.",
+  "currency": "Currency",
+  "regionSourceAuto": "Auto-detected",
+  "regionSourceManual": "Selected by you",
+  "regions": {
+    "MX": "Mexico",
+    "US": "United States",
+    "CA": "Canada",
+    "GB": "United Kingdom",
+    "EU": "Eurozone",
+    "LATAM": "Latin America",
+    "DEFAULT": "International"
+  }
 }

@@ -12,8 +12,9 @@
   },
   "proHero": {
     "onPro": "Bạn đang dùng Pro",
-    "title": "Evolve Pro · $9.99/tháng",
-    "body": "Miễn phí mãi mãi: ghi buổi tập cơ bản, khám phá EvoFit và thống kê cơ bản. Pro mở khóa theo dõi, kế hoạch, máy quét, phân tích và hơn thế nữa."
+    "title": "Evolve Pro",
+    "body": "Miễn phí mãi mãi: ghi buổi tập cơ bản, khám phá EvoFit và thống kê cơ bản. Pro mở khóa theo dõi, kế hoạch, máy quét, phân tích và hơn thế nữa.",
+    "titleWithPrice": "{{brand}} · {{price}}{{perMonth}}"
   },
   "features": {
     "basicLogging": {
