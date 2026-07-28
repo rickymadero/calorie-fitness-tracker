@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Check, Sparkles } from "lucide-react";
 import { EvolveLogo } from "@/components/ui/EvolveLogo";
@@ -12,13 +12,22 @@ import { PageLoader } from "@/components/ui/Spinner";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
+import { safeReturnPath } from "@/lib/auth/pricingReturn";
 
 export default function PricingPage() {
   const { user, isReady, markPricingSeen, setPlan } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
   const { t } = useAppTranslation("pricing");
   const [billing, setBilling] = useState<"monthly" | "annual">("annual");
+
+  const returnTo = useMemo(
+    () => safeReturnPath(searchParams.get("next")),
+    [searchParams],
+  );
+  // First-time pricing funnel vs upgrading from inside the app.
+  const returningUpgrade = Boolean(user?.pricingSeen);
 
   // Pricing stays available after onboarding so Free users can upgrade from Explore/Pro tools.
   useEffect(() => {
@@ -48,21 +57,29 @@ export default function PricingPage() {
   const annualMonthly = 7.99;
   const savings = Math.round((1 - annualMonthly / monthlyPrice) * 100);
 
-  function goDashboard() {
+  function finishPlanChoice() {
     markPricingSeen();
-    router.push("/feed");
+    if (returnTo) {
+      router.replace(returnTo);
+      return;
+    }
+    if (returningUpgrade) {
+      router.back();
+      return;
+    }
+    router.replace("/feed");
   }
 
   function startFree() {
     setPlan("free");
     toast(t("toastFree"), "success");
-    goDashboard();
+    finishPlanChoice();
   }
 
   function startPro(trial?: boolean) {
     setPlan("pro");
     toast(trial ? t("toastTrial") : t("toastPro"), "success");
-    goDashboard();
+    finishPlanChoice();
   }
 
   return (
@@ -72,7 +89,7 @@ export default function PricingPage() {
           <EvolveLogo size="sm" />
           <button
             type="button"
-            onClick={goDashboard}
+            onClick={finishPlanChoice}
             className="text-sm text-muted hover:text-foreground"
           >
             {t("skip")}

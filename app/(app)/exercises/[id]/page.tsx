@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Modal } from "@/components/ui/Modal";
-import { ExerciseDemoPlayer, ProDemoGate } from "@/components/training/ExerciseDemo";
+import { ProDemoGate } from "@/components/training/ExerciseDemo";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
@@ -25,7 +25,6 @@ export default function ExerciseDetailPage({
   const { t } = useAppTranslation(["workouts", "common"]);
   const isPro = user?.plan === "pro";
   const exercise = getExerciseById(id);
-  const [showProGate, setShowProGate] = useState(false);
   const [replaceOpen, setReplaceOpen] = useState(false);
   const replacements = exercise ? getReplacementExercises(exercise.id) : [];
 
@@ -52,9 +51,6 @@ export default function ExerciseDetailPage({
           <div className="flex flex-wrap gap-2">
             <Badge className="capitalize">{exercise.primaryMuscle}</Badge>
             <Badge className="capitalize">{exercise.difficulty}</Badge>
-            {exercise.isProDemo && (
-              <Badge variant="accent">{t("exercises.proDemo")}</Badge>
-            )}
           </div>
           <h1 className="mt-2 font-display text-3xl font-bold tracking-tight">
             {exercise.name}
@@ -78,119 +74,96 @@ export default function ExerciseDetailPage({
         </div>
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-5">
-        <div className="lg:col-span-3">
-          <ExerciseDemoPlayer exercise={exercise} isPro={Boolean(isPro)} />
-          {!isPro && (
-            <button
-              type="button"
-              className="mt-3 text-sm text-accent-dim underline dark:text-accent"
-              onClick={() => setShowProGate(true)}
-            >
-              {t("exercises.whyLocked")}
-            </button>
-          )}
-        </div>
-
-        <div className="space-y-4 lg:col-span-2">
-          <Card>
-            <h2 className="font-display font-semibold">
-              {t("exercises.targetMuscles")}
-            </h2>
-            <p className="mt-2 text-sm capitalize">
-              {t("exercises.primary", { muscle: exercise.primaryMuscle })}
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <Card>
+          <h2 className="font-display font-semibold">
+            {t("exercises.targetMuscles")}
+          </h2>
+          <p className="mt-2 text-sm capitalize">
+            {t("exercises.primary", { muscle: exercise.primaryMuscle })}
+          </p>
+          {exercise.secondaryMuscles.length > 0 && (
+            <p className="mt-1 text-sm capitalize text-muted">
+              {t("exercises.secondary", {
+                list: exercise.secondaryMuscles.join(", "),
+              })}
             </p>
-            {exercise.secondaryMuscles.length > 0 && (
-              <p className="mt-1 text-sm capitalize text-muted">
-                {t("exercises.secondary", {
-                  list: exercise.secondaryMuscles.join(", "),
-                })}
-              </p>
-            )}
-          </Card>
-
-          <Card>
-            <h2 className="font-display font-semibold">
-              {t("exercises.basicInstructions")}
-            </h2>
-            <ol className="mt-3 list-decimal space-y-2 pl-4 text-sm text-muted">
-              {exercise.instructions.map((step) => (
-                <li key={step}>{step}</li>
-              ))}
-            </ol>
-          </Card>
-
-          {isPro ? (
-            <>
-              <Card>
-                <h2 className="font-display font-semibold">
-                  {t("exercises.startingPosition")}
-                </h2>
-                <p className="mt-2 text-sm text-muted">{exercise.startingPosition}</p>
-                <h3 className="mt-4 text-sm font-semibold">
-                  {t("exercises.execution")}
-                </h3>
-                <p className="mt-1 text-sm text-muted">{exercise.execution}</p>
-                <h3 className="mt-4 text-sm font-semibold">
-                  {t("exercises.breathing")}
-                </h3>
-                <p className="mt-1 text-sm text-muted">{exercise.breathing}</p>
-              </Card>
-              <Card>
-                <h2 className="font-display font-semibold">
-                  {t("exercises.postureCues")}
-                </h2>
-                <ul className="mt-2 space-y-1 text-sm text-muted">
-                  {exercise.postureCues.map((c) => (
-                    <li key={c}>• {c}</li>
-                  ))}
-                </ul>
-              </Card>
-              <Card>
-                <h2 className="font-display font-semibold">
-                  {t("exercises.commonMistakes")}
-                </h2>
-                <ul className="mt-2 space-y-1 text-sm text-muted">
-                  {exercise.commonMistakes.map((c) => (
-                    <li key={c}>• {c}</li>
-                  ))}
-                </ul>
-                <h3 className="mt-4 text-sm font-semibold">{t("exercises.safety")}</h3>
-                <ul className="mt-2 space-y-1 text-sm text-muted">
-                  {exercise.safetyTips.map((c) => (
-                    <li key={c}>• {c}</li>
-                  ))}
-                </ul>
-              </Card>
-              <Card>
-                <h2 className="font-display font-semibold">
-                  {t("exercises.variations")}
-                </h2>
-                <p className="mt-2 text-sm text-muted">
-                  <strong>{t("exercises.easier")}</strong>{" "}
-                  {exercise.beginnerModification}
-                </p>
-                <p className="mt-2 text-sm text-muted">
-                  <strong>{t("exercises.harder")}</strong>{" "}
-                  {exercise.advancedVariation}
-                </p>
-              </Card>
-            </>
-          ) : (
-            <Card className="border-accent/30">
-              <ProDemoGate />
-            </Card>
           )}
-        </div>
-      </div>
+        </Card>
 
-      <Modal
-        open={showProGate}
-        onClose={() => setShowProGate(false)}
-        title={t("exercises.proDemoModalTitle")}
-      >
-        <ProDemoGate onClose={() => setShowProGate(false)} />
-      </Modal>
+        <Card>
+          <h2 className="font-display font-semibold">
+            {t("exercises.basicInstructions")}
+          </h2>
+          <ol className="mt-3 list-decimal space-y-2 pl-4 text-sm text-muted">
+            {exercise.instructions.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
+          </ol>
+        </Card>
+
+        {isPro ? (
+          <>
+            <Card className="sm:col-span-2">
+              <h2 className="font-display font-semibold">
+                {t("exercises.startingPosition")}
+              </h2>
+              <p className="mt-2 text-sm text-muted">{exercise.startingPosition}</p>
+              <h3 className="mt-4 text-sm font-semibold">
+                {t("exercises.execution")}
+              </h3>
+              <p className="mt-1 text-sm text-muted">{exercise.execution}</p>
+              <h3 className="mt-4 text-sm font-semibold">
+                {t("exercises.breathing")}
+              </h3>
+              <p className="mt-1 text-sm text-muted">{exercise.breathing}</p>
+            </Card>
+            <Card>
+              <h2 className="font-display font-semibold">
+                {t("exercises.postureCues")}
+              </h2>
+              <ul className="mt-2 space-y-1 text-sm text-muted">
+                {exercise.postureCues.map((c) => (
+                  <li key={c}>• {c}</li>
+                ))}
+              </ul>
+            </Card>
+            <Card>
+              <h2 className="font-display font-semibold">
+                {t("exercises.commonMistakes")}
+              </h2>
+              <ul className="mt-2 space-y-1 text-sm text-muted">
+                {exercise.commonMistakes.map((c) => (
+                  <li key={c}>• {c}</li>
+                ))}
+              </ul>
+              <h3 className="mt-4 text-sm font-semibold">{t("exercises.safety")}</h3>
+              <ul className="mt-2 space-y-1 text-sm text-muted">
+                {exercise.safetyTips.map((c) => (
+                  <li key={c}>• {c}</li>
+                ))}
+              </ul>
+            </Card>
+            <Card className="sm:col-span-2">
+              <h2 className="font-display font-semibold">
+                {t("exercises.variations")}
+              </h2>
+              <p className="mt-2 text-sm text-muted">
+                <strong>{t("exercises.easier")}</strong>{" "}
+                {exercise.beginnerModification}
+              </p>
+              <p className="mt-2 text-sm text-muted">
+                <strong>{t("exercises.harder")}</strong>{" "}
+                {exercise.advancedVariation}
+              </p>
+            </Card>
+          </>
+        ) : (
+          <Card className="border-accent/30 sm:col-span-2">
+            <ProDemoGate />
+          </Card>
+        )}
+      </div>
 
       <Modal
         open={replaceOpen}

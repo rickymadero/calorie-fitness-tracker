@@ -11,7 +11,6 @@ import {
   ScanLine,
   Flame,
   Activity,
-  BookOpen,
   TrendingUp,
   Target,
   History,
@@ -34,6 +33,7 @@ import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { foodLogStorage } from "@/lib/storage/foodLog";
 import type { FoodItem } from "@/lib/types";
+import { pricingHref } from "@/lib/auth/pricingReturn";
 
 type ExploreTab = "foryou" | "workouts" | "nutrition" | "tools" | "pro";
 type MealType = "breakfast" | "lunch" | "dinner" | "snack";
@@ -46,7 +46,6 @@ type FeatureKey =
   | "plans"
   | "macros"
   | "scanner"
-  | "formGuides"
   | "history"
   | "library"
   | "goals"
@@ -94,7 +93,9 @@ function SectionCard({
   const { t } = useAppTranslation(["common", "explore"]);
   const isScanner = feature === "scanner";
   const locked = Boolean(pro && !isProUser && !isScanner);
-  const destination = locked ? "/pricing" : href;
+  const destination = locked
+    ? pricingHref(href)
+    : href;
 
   const content = (
     <>
@@ -198,7 +199,6 @@ const PRO_CATALOG: ToolCard[] = [
   { href: "/progress", feature: "analytics", icon: TrendingUp, pro: true },
   { href: "/plans", feature: "meals", icon: Utensils, pro: true },
   { href: "/progress", feature: "body", icon: Activity, pro: true },
-  { href: "/exercises", feature: "formGuides", icon: BookOpen, pro: true },
   { href: "/workouts", feature: "history", icon: History, pro: true },
   { href: "/settings/help", feature: "support", icon: LifeBuoy, pro: true },
   { href: "/pricing", feature: "adFree", icon: Ban, pro: true },
@@ -233,7 +233,6 @@ export default function ExplorePage() {
       { href: "/plans", feature: "plans", icon: Dumbbell, pro: true },
       { href: "/food", feature: "macros", icon: Flame, pro: true },
       { href: "/food?scan=1", feature: "scanner", icon: ScanLine, pro: true },
-      { href: "/exercises", feature: "formGuides", icon: BookOpen, pro: true },
     ],
     [],
   );
@@ -242,7 +241,6 @@ export default function ExplorePage() {
     () => [
       { href: "/posts/new", feature: "basicLogging", icon: Activity },
       { href: "/workouts", feature: "plans", icon: Dumbbell, pro: true },
-      { href: "/exercises", feature: "formGuides", icon: BookOpen, pro: true },
       { href: "/workouts", feature: "history", icon: History, pro: true },
       { href: "/profile/saved", feature: "library", icon: Bookmark, pro: true },
       { href: "/plans", feature: "goals", icon: Target, pro: true },
@@ -363,7 +361,7 @@ export default function ExplorePage() {
                 {t("explore:proHero.body")}
               </p>
               {!isPro && (
-                <Link href="/pricing" className="mt-3 inline-block">
+                <Link href={pricingHref("/explore")} className="mt-3 inline-block">
                   <Button size="sm">
                     <Crown size={14} />
                     {t("common:buttons.upgradePro")}

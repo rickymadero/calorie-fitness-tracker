@@ -26,6 +26,7 @@ import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
 import { weekStatsFromActivities } from "@/lib/activities/statsFromActivities";
 import type { WeekStats } from "@/lib/activities/statsFromActivities";
+import { pricingHref } from "@/lib/auth/pricingReturn";
 
 const MEASUREMENT_KEYS = ["chest", "waist", "hips", "arms"] as const;
 const MEASUREMENT_VALUES: Record<(typeof MEASUREMENT_KEYS)[number], string> = {
@@ -279,7 +280,7 @@ export default function ProgressPage() {
               <Crown size={16} />
               {t("proGate.upgradeDemo", { ns: "common" })}
             </Button>
-            <Link href="/pricing">
+            <Link href={pricingHref("/progress")}>
               <Button variant="outline">
                 {t("proGate.viewPlans", { ns: "common" })}
               </Button>

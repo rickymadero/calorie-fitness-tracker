@@ -17,6 +17,7 @@ import { useTraining } from "@/components/training/TrainingProvider";
 import { ProGate } from "@/components/pro/ProGate";
 import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
 import { RecipeImage } from "@/components/recipes/RecipeImage";
+import { pricingHref } from "@/lib/auth/pricingReturn";
 
 const FILTER_IDS = [
   "all",
@@ -111,7 +112,7 @@ export default function RecipesPage() {
             </p>
           </div>
           {!isPro && (
-            <Button size="sm" onClick={() => router.push("/pricing")}>
+            <Button size="sm" onClick={() => router.push(pricingHref("/recipes"))}>
               <Crown size={14} />
               {t("unlockProMeals")}
             </Button>

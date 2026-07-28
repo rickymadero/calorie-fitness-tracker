@@ -1,6 +1,7 @@
 import type { Recipe, WeeklyMealPlan } from "@/lib/types/recipes";
+import { EXPANDED_RECIPES } from "@/lib/mock/recipesExpanded";
 
-export const RECIPES: Recipe[] = [
+const CORE_RECIPES: Recipe[] = [
   {
     id: "r1",
     name: "High-Protein Overnight Oats",
@@ -179,18 +180,21 @@ export const RECIPES: Recipe[] = [
   },
 ];
 
+/** Full Evolve recipe library — core staples + large expanded catalog. */
+export const RECIPES: Recipe[] = [...CORE_RECIPES, ...EXPANDED_RECIPES];
+
 export const SAMPLE_WEEKLY_MEAL_PLAN: WeeklyMealPlan = {
   id: "wmp1",
   name: "Balanced training week",
   isPro: true,
   days: [
-    { day: "Monday", recipeIds: ["r1", "r2", "r5"] },
-    { day: "Tuesday", recipeIds: ["r6", "r3", "r2"] },
-    { day: "Wednesday", recipeIds: ["r1", "r2", "r5"] },
-    { day: "Thursday", recipeIds: ["r6", "r3", "r4"] },
-    { day: "Friday", recipeIds: ["r1", "r2", "r5"] },
-    { day: "Saturday", recipeIds: ["r6", "r3", "r2"] },
-    { day: "Sunday", recipeIds: ["r1", "r5", "r4"] },
+    { day: "Monday", recipeIds: ["r1", "r2", "r5", "r4"] },
+    { day: "Tuesday", recipeIds: ["r6", "r3", "r12", "r47"] },
+    { day: "Wednesday", recipeIds: ["r1", "r17", "r27", "r50"] },
+    { day: "Thursday", recipeIds: ["r9", "r14", "r32", "r48"] },
+    { day: "Friday", recipeIds: ["r11", "r20", "r35", "r44"] },
+    { day: "Saturday", recipeIds: ["r7", "r22", "r40", "r51"] },
+    { day: "Sunday", recipeIds: ["r8", "r16", "r29", "r46"] },
   ],
 };
 
@@ -251,5 +255,5 @@ export function recommendRecipes(input: {
     );
   }
 
-  return list.slice(0, 4);
+  return list.slice(0, 8);
 }

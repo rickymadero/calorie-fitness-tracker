@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ChevronLeft, Crown } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
+import { pricingHref } from "@/lib/auth/pricingReturn";
 
 export function ProGate({
   children,
@@ -16,6 +18,7 @@ export function ProGate({
   feature?: string;
 }) {
   const { user, setPlan } = useAuth();
+  const pathname = usePathname();
   const { t } = useAppTranslation("common");
   const isPro = user?.plan === "pro";
   const featureLabel = feature || t("proGate.defaultFeature");
@@ -51,7 +54,7 @@ export function ProGate({
                 {t("nav.evofit")}
               </Button>
             </Link>
-            <Link href="/pricing">
+            <Link href={pricingHref(pathname)}>
               <Button variant="ghost">{t("proGate.viewPlans")}</Button>
             </Link>
           </div>

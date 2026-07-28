@@ -1,7 +1,6 @@
 "use client";
 
 import { use, useMemo, useState } from "react";
-import Link from "next/link";
 import { Crown, ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -13,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { getRecipeById, scaleRecipe } from "@/lib/mock/recipes";
 import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
 import { RecipeImage } from "@/components/recipes/RecipeImage";
+import { pricingHref } from "@/lib/auth/pricingReturn";
 
 export default function RecipeDetailPage({
   params,
@@ -147,7 +147,10 @@ export default function RecipeDetailPage({
           <p className="mt-2 text-sm text-muted">
             {t("lockedBody")}
           </p>
-          <Button className="mt-4" onClick={() => router.push("/pricing")}>
+          <Button
+            className="mt-4"
+            onClick={() => router.push(pricingHref(`/recipes/${recipe.id}`))}
+          >
             {t("buttons.upgradePro", { ns: "common" })}
           </Button>
         </Card>

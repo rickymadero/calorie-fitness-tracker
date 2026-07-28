@@ -18,7 +18,6 @@ import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { PageLoader } from "@/components/ui/Spinner";
-import { ExerciseDemoPlayer } from "@/components/training/ExerciseDemo";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useTraining } from "@/components/training/TrainingProvider";
 import { useToast } from "@/components/providers/ToastProvider";
@@ -285,8 +284,6 @@ export default function WorkoutSessionPage({
           }}
         />
       </div>
-
-      <ExerciseDemoPlayer exercise={exercise} isPro={Boolean(isPro)} compact />
 
       <Card className="mt-4">
         <div className="grid grid-cols-3 gap-3 text-center">

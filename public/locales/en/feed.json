@@ -28,8 +28,8 @@
     "volume": "Volume"
   },
   "share": {
-    "title": "Broadcast session",
-    "body": "A one-of-a-kind Evolve card — live signal, your identity, one hero number. Made for Stories.",
+    "title": "Evolve Signal",
+    "body": "Your Evolve badge for Stories — premium signal, hero number, tracked with Evolve.",
     "building": "Building share card…",
     "toInstagram": "Post to Instagram Stories",
     "toApps": "Share image (WhatsApp, Messages…)",
@@ -54,7 +54,19 @@
     "toAppsShort": "Apps",
     "saveShort": "Save",
     "linkShort": "Link",
-    "captionShort": "Caption"
+    "captionShort": "Caption",
+    "templateLabel": "Template",
+    "templateCore": "Signal Core",
+    "templateMinimal": "Minimal Proof",
+    "titleField": "Title",
+    "heroLabel": "Hero metric",
+    "atmosphereLabel": "Atmosphere",
+    "showDate": "Date",
+    "showUsername": "Username",
+    "showLocation": "Location",
+    "showRouteContext": "Subtle route context",
+    "proAtmosphere": "Upgrade to Pro to unlock this atmosphere.",
+    "proTemplate": "Minimal Proof is a Pro template."
   },
   "setsLabel": "{{n}} sets",
   "moreExercises": "+{{n}} more exercises",

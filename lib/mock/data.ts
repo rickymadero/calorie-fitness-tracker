@@ -5,6 +5,8 @@ import type {
   WorkoutSession,
 } from "@/lib/types";
 import { HOUSEHOLD_FOODS } from "./householdFoods";
+import { HOUSEHOLD_FOODS_EXTRA } from "./householdFoodsExtra";
+import { BRANDED_FOODS_EXTRA } from "./brandedFoodsExtra";
 
 export const MOTIVATIONAL_QUOTES = [
   "One day or day one. You decide.",
@@ -688,8 +690,13 @@ const BRANDED_FOODS: FoodItem[] = [
   },
 ];
 
-/** Full catalog: branded/chain items + household groceries (500+) */
-export const FOODS: FoodItem[] = [...BRANDED_FOODS, ...HOUSEHOLD_FOODS];
+/** Full catalog: branded/chain items + household groceries (large inventory) */
+export const FOODS: FoodItem[] = [
+  ...BRANDED_FOODS,
+  ...BRANDED_FOODS_EXTRA,
+  ...HOUSEHOLD_FOODS,
+  ...HOUSEHOLD_FOODS_EXTRA,
+];
 
 export type MealPlanSuggestion = {
   id: string;
