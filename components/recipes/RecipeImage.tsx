@@ -1,33 +1,41 @@
 "use client";
 
 import { useState } from "react";
-
-/** Reliable meal fallback if a remote URL 404s or fails to load. */
-export const RECIPE_IMAGE_FALLBACK =
-  "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80";
+import { Utensils } from "lucide-react";
 
 export function RecipeImage({
   src,
   alt = "",
   className,
 }: {
-  src: string;
+  src?: string | null;
   alt?: string;
   className?: string;
 }) {
-  const [current, setCurrent] = useState(src);
+  const [failed, setFailed] = useState(false);
+  const showPhoto = Boolean(src) && !failed;
+
+  if (!showPhoto) {
+    return (
+      <div
+        className={`flex items-center justify-center bg-muted-bg text-muted ${className ?? ""}`}
+        role="img"
+        aria-label={alt || "Recipe"}
+      >
+        <Utensils size={28} strokeWidth={1.5} aria-hidden />
+      </div>
+    );
+  }
 
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={current}
+      src={src!}
       alt={alt}
       className={className}
       loading="lazy"
       decoding="async"
-      onError={() => {
-        if (current !== RECIPE_IMAGE_FALLBACK) setCurrent(RECIPE_IMAGE_FALLBACK);
-      }}
+      onError={() => setFailed(true)}
     />
   );
 }

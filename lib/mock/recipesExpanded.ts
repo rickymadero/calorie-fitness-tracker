@@ -5,7 +5,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r7",
     "name": "Protein Pancakes",
-    "imageUrl": "https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 10,
     "difficulty": "easy",
@@ -84,7 +84,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r8",
     "name": "Egg White Veggie Omelette",
-    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 8,
     "cookMinutes": 8,
     "difficulty": "easy",
@@ -162,7 +162,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r9",
     "name": "Peanut Butter Banana Toast",
-    "imageUrl": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 5,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -238,7 +238,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r10",
     "name": "Cottage Cheese Berry Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 5,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -314,7 +314,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r11",
     "name": "Avocado Toast + Eggs",
-    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 8,
     "difficulty": "easy",
@@ -391,7 +391,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r12",
     "name": "Turkey Breakfast Burrito",
-    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 12,
     "cookMinutes": 12,
     "difficulty": "medium",
@@ -470,7 +470,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r13",
     "name": "Chia Protein Pudding",
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 8,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -545,7 +545,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r14",
     "name": "Smoked Salmon Bagel Plate",
-    "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -623,7 +623,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r15",
     "name": "Steel-Cut Oats + Whey",
-    "imageUrl": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 5,
     "cookMinutes": 20,
     "difficulty": "easy",
@@ -701,7 +701,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r16",
     "name": "Breakfast Tofu Scramble",
-    "imageUrl": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 10,
     "difficulty": "easy",
@@ -779,7 +779,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r17",
     "name": "Apple Cinnamon Protein Oatmeal",
-    "imageUrl": "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 8,
     "cookMinutes": 10,
     "difficulty": "easy",
@@ -857,7 +857,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r18",
     "name": "Breakfast Quinoa Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 15,
     "difficulty": "easy",
@@ -932,7 +932,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r19",
     "name": "Grilled Chicken Caesar Salad",
-    "imageUrl": "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -1009,7 +1009,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r20",
     "name": "Tuna Poke Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 0,
     "difficulty": "medium",
@@ -1086,7 +1086,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r21",
     "name": "Turkey Chili Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 35,
     "difficulty": "medium",
@@ -1162,7 +1162,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r22",
     "name": "Chickpea Mediterranean Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 20,
     "difficulty": "easy",
@@ -1239,7 +1239,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r23",
     "name": "Chicken Teriyaki Rice Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 20,
     "difficulty": "medium",
@@ -1317,7 +1317,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r24",
     "name": "Lean Beef Lettuce Wraps",
-    "imageUrl": "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 10,
     "difficulty": "medium",
@@ -1393,7 +1393,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r25",
     "name": "Shrimp Quinoa Salad",
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 10,
     "difficulty": "easy",
@@ -1470,7 +1470,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r26",
     "name": "BBQ Chicken Sweet Potato",
-    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc7f3d?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 35,
     "difficulty": "easy",
@@ -1546,7 +1546,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r27",
     "name": "Falafel Plate + Tzatziki",
-    "imageUrl": "https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 15,
     "difficulty": "medium",
@@ -1624,7 +1624,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r28",
     "name": "Steak Fajita Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 15,
     "difficulty": "medium",
@@ -1699,7 +1699,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r29",
     "name": "Turkey Club Wrap Light",
-    "imageUrl": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -1776,7 +1776,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r30",
     "name": "Miso Salmon + Broccoli",
-    "imageUrl": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 15,
     "difficulty": "medium",
@@ -1854,7 +1854,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r31",
     "name": "Lentil Power Soup",
-    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 30,
     "difficulty": "easy",
@@ -1931,7 +1931,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r32",
     "name": "Chicken Pesto Pasta Light",
-    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 15,
     "difficulty": "medium",
@@ -2010,7 +2010,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r33",
     "name": "Herb Baked Cod + Asparagus",
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 18,
     "difficulty": "easy",
@@ -2088,7 +2088,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r34",
     "name": "Turkey Meatballs + Zoodles",
-    "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 20,
     "difficulty": "medium",
@@ -2166,7 +2166,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r35",
     "name": "Chicken Stir-Fry + Brown Rice",
-    "imageUrl": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 15,
     "difficulty": "medium",
@@ -2243,7 +2243,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r36",
     "name": "Bison Burger Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 12,
     "difficulty": "medium",
@@ -2317,7 +2317,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r37",
     "name": "Eggplant Parmesan Light",
-    "imageUrl": "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 30,
     "difficulty": "medium",
@@ -2395,7 +2395,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r38",
     "name": "Garlic Shrimp + Cauli Rice",
-    "imageUrl": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 12,
     "difficulty": "easy",
@@ -2473,7 +2473,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r39",
     "name": "Pork Tenderloin + Veggies",
-    "imageUrl": "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 25,
     "difficulty": "medium",
@@ -2548,7 +2548,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r40",
     "name": "Black Bean Enchilada Bake",
-    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 25,
     "cookMinutes": 35,
     "difficulty": "medium",
@@ -2626,7 +2626,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r41",
     "name": "Grilled Lamb Chops + Salad",
-    "imageUrl": "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 12,
     "difficulty": "medium",
@@ -2702,7 +2702,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r42",
     "name": "Tofu Coconut Curry",
-    "imageUrl": "https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 25,
     "difficulty": "medium",
@@ -2780,7 +2780,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r43",
     "name": "Chicken Shawarma Plate",
-    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 25,
     "difficulty": "medium",
@@ -2858,7 +2858,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r44",
     "name": "Seared Tuna + Sesame Greens",
-    "imageUrl": "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 8,
     "difficulty": "medium",
@@ -2936,7 +2936,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r45",
     "name": "Stuffed Peppers Turkey",
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 35,
     "difficulty": "medium",
@@ -3011,7 +3011,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r46",
     "name": "Mushroom Risotto Light",
-    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc7f3d?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 30,
     "difficulty": "hard",
@@ -3087,7 +3087,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r47",
     "name": "Greek Yogurt Parfait",
-    "imageUrl": "https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 5,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -3163,7 +3163,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r48",
     "name": "Protein Energy Bites",
-    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -3240,7 +3240,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r49",
     "name": "Tuna Rice Cakes",
-    "imageUrl": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 5,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -3317,7 +3317,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r50",
     "name": "Edamame Sea Salt",
-    "imageUrl": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 5,
     "cookMinutes": 5,
     "difficulty": "easy",
@@ -3396,7 +3396,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r51",
     "name": "Apple + Almond Butter",
-    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 5,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -3472,7 +3472,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r52",
     "name": "Pre-Workout Toast + Honey",
-    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 5,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -3548,7 +3548,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r53",
     "name": "Recovery Chocolate Milk",
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 2,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -3624,7 +3624,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r54",
     "name": "Cottage Cheese + Pineapple",
-    "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 5,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -3700,7 +3700,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r55",
     "name": "Rice Cake PB2 Stack",
-    "imageUrl": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 5,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -3776,7 +3776,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r56",
     "name": "Hard-Boiled Eggs + Hot Sauce",
-    "imageUrl": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 10,
     "difficulty": "easy",
@@ -3854,7 +3854,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r57",
     "name": "Protein Mug Cake",
-    "imageUrl": "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 5,
     "cookMinutes": 2,
     "difficulty": "easy",
@@ -3933,7 +3933,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r58",
     "name": "Hummus + Veggie Sticks",
-    "imageUrl": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -4010,7 +4010,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r59",
     "name": "Chicken Meal-Prep Boxes",
-    "imageUrl": "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 25,
     "cookMinutes": 30,
     "difficulty": "medium",
@@ -4086,7 +4086,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r60",
     "name": "Beef and Broccoli Prep",
-    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 20,
     "difficulty": "medium",
@@ -4163,7 +4163,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r61",
     "name": "Vegan Buddha Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 15,
     "difficulty": "easy",
@@ -4239,7 +4239,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r62",
     "name": "Keto Chicken Alfredo Zoodles",
-    "imageUrl": "https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 15,
     "difficulty": "medium",
@@ -4317,7 +4317,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r63",
     "name": "Mediterranean Grain Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 20,
     "difficulty": "easy",
@@ -4393,7 +4393,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r64",
     "name": "Spicy Tofu Noodle Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 15,
     "difficulty": "medium",
@@ -4472,7 +4472,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r65",
     "name": "Turkey Taco Salad",
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 15,
     "difficulty": "easy",
@@ -4549,7 +4549,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r66",
     "name": "Baked Chicken Thighs + Potatoes",
-    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc7f3d?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 40,
     "difficulty": "easy",
@@ -4624,7 +4624,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r67",
     "name": "White Fish Tacos Light",
-    "imageUrl": "https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 12,
     "difficulty": "medium",
@@ -4701,7 +4701,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r68",
     "name": "Spinach Feta Stuffed Chicken",
-    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 25,
     "difficulty": "medium",
@@ -4779,7 +4779,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r69",
     "name": "Overnight Protein French Toast",
-    "imageUrl": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 10,
     "difficulty": "easy",
@@ -4858,7 +4858,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r70",
     "name": "Berry Protein Smoothie Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 8,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -4935,7 +4935,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r71",
     "name": "Kimchi Fried Rice + Egg",
-    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 12,
     "difficulty": "easy",
@@ -5012,7 +5012,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r72",
     "name": "Caprese Chicken Cap",
-    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 20,
     "difficulty": "easy",
@@ -5090,7 +5090,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r73",
     "name": "Sweet Potato Black Bean Tacos",
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 20,
     "difficulty": "easy",
@@ -5167,7 +5167,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r74",
     "name": "Protein Waffles + Berries",
-    "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 10,
     "difficulty": "easy",
@@ -5245,7 +5245,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r75",
     "name": "Chicken Tortilla Soup",
-    "imageUrl": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 30,
     "difficulty": "easy",
@@ -5322,7 +5322,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r76",
     "name": "Seared Scallops + Greens",
-    "imageUrl": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 8,
     "difficulty": "hard",
@@ -5399,7 +5399,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r77",
     "name": "Matcha Protein Latte Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 8,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -5475,7 +5475,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r78",
     "name": "Harissa Chicken Couscous",
-    "imageUrl": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 20,
     "difficulty": "medium",
@@ -5553,7 +5553,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r79",
     "name": "Veggie Egg Muffins (6)",
-    "imageUrl": "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 20,
     "difficulty": "easy",
@@ -5632,7 +5632,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r80",
     "name": "Pesto Turkey Pasta Salad",
-    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -5710,7 +5710,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r81",
     "name": "Ginger Beef Noodle Soup",
-    "imageUrl": "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 25,
     "difficulty": "medium",
@@ -5787,7 +5787,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r82",
     "name": "Roasted Veggie Grain Prep",
-    "imageUrl": "https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 35,
     "difficulty": "easy",
@@ -5863,7 +5863,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r83",
     "name": "Protein Cheesecake Cups",
-    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -5940,7 +5940,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r84",
     "name": "Sardine Toast Plate",
-    "imageUrl": "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 5,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -6018,7 +6018,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r85",
     "name": "Chicken Satay + Rice",
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 25,
     "cookMinutes": 15,
     "difficulty": "medium",
@@ -6095,7 +6095,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r86",
     "name": "Breakfast Burrito Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc7f3d?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 15,
     "difficulty": "easy",
@@ -6173,7 +6173,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r87",
     "name": "Lemon Garlic Chicken Orzo",
-    "imageUrl": "https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 25,
     "difficulty": "medium",
@@ -6250,7 +6250,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r88",
     "name": "Tempeh Power Salad",
-    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -6327,7 +6327,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r89",
     "name": "Blueberry Protein Muffins",
-    "imageUrl": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 18,
     "difficulty": "easy",
@@ -6407,7 +6407,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r90",
     "name": "Crispy Chickpea Snack Mix",
-    "imageUrl": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 5,
     "cookMinutes": 30,
     "difficulty": "easy",
@@ -6483,7 +6483,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r91",
     "name": "Poached Eggs + Greens",
-    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 8,
     "difficulty": "medium",
@@ -6561,7 +6561,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r92",
     "name": "Moroccan Chicken Tagine Light",
-    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 25,
     "cookMinutes": 45,
     "difficulty": "medium",
@@ -6637,7 +6637,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r93",
     "name": "Turkey Bolognese Zucchini",
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 30,
     "difficulty": "medium",
@@ -6712,7 +6712,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r94",
     "name": "Acai Protein Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -6788,7 +6788,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r95",
     "name": "Grilled Halloumi Salad",
-    "imageUrl": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -6865,7 +6865,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r96",
     "name": "Sheet-Pan Salmon Dinner",
-    "imageUrl": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 25,
     "difficulty": "easy",
@@ -6943,7 +6943,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r97",
     "name": "Chicken Caesar Wrap",
-    "imageUrl": "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -7021,7 +7021,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r98",
     "name": "Protein Banana Bread Slice",
-    "imageUrl": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 50,
     "difficulty": "medium",
@@ -7099,7 +7099,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r99",
     "name": "Spicy Turkey Sloppy Joes",
-    "imageUrl": "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 20,
     "difficulty": "easy",
@@ -7175,7 +7175,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r100",
     "name": "Cucumber Tuna Boats",
-    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -7254,7 +7254,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r101",
     "name": "Roasted Chicken + Farro",
-    "imageUrl": "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 15,
     "cookMinutes": 40,
     "difficulty": "medium",
@@ -7332,7 +7332,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r102",
     "name": "Green Goddess Smoothie",
-    "imageUrl": "https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 5,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -7409,7 +7409,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r103",
     "name": "Bibimbap Chicken Bowl",
-    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 25,
     "cookMinutes": 20,
     "difficulty": "medium",
@@ -7487,7 +7487,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r104",
     "name": "White Bean Tuna Salad",
-    "imageUrl": "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 10,
     "cookMinutes": 0,
     "difficulty": "easy",
@@ -7564,7 +7564,7 @@ export const EXPANDED_RECIPES: Recipe[] = [
   {
     "id": "r105",
     "name": "Cauliflower Pizza Protein",
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": null,
     "prepMinutes": 20,
     "cookMinutes": 20,
     "difficulty": "medium",

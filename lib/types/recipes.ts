@@ -29,7 +29,8 @@ export interface Ingredient {
 export interface Recipe {
   id: string;
   name: string;
-  imageUrl: string;
+  /** Only set when the photo actually depicts this dish; otherwise omit. */
+  imageUrl?: string | null;
   prepMinutes: number;
   cookMinutes: number;
   difficulty: "easy" | "medium" | "hard";

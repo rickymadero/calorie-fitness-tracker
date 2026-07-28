@@ -5,8 +5,7 @@ const CORE_RECIPES: Recipe[] = [
   {
     id: "r1",
     name: "High-Protein Overnight Oats",
-    imageUrl:
-      "https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=800&q=80",
+    imageUrl: null,
     prepMinutes: 10,
     cookMinutes: 0,
     difficulty: "easy",
@@ -38,8 +37,7 @@ const CORE_RECIPES: Recipe[] = [
   {
     id: "r2",
     name: "Chipotle-Style Chicken Bowl (Home)",
-    imageUrl:
-      "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
+    imageUrl: null,
     prepMinutes: 15,
     cookMinutes: 20,
     difficulty: "medium",
@@ -70,8 +68,7 @@ const CORE_RECIPES: Recipe[] = [
   {
     id: "r3",
     name: "Greek Turkey Wrap",
-    imageUrl:
-      "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=800&q=80",
+    imageUrl: null,
     prepMinutes: 10,
     cookMinutes: 0,
     difficulty: "easy",
@@ -98,8 +95,7 @@ const CORE_RECIPES: Recipe[] = [
   {
     id: "r4",
     name: "Post-Workout Banana Protein Smoothie",
-    imageUrl:
-      "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=800&q=80",
+    imageUrl: null,
     prepMinutes: 5,
     cookMinutes: 0,
     difficulty: "easy",
@@ -126,8 +122,7 @@ const CORE_RECIPES: Recipe[] = [
   {
     id: "r5",
     name: "Salmon, Quinoa & Greens",
-    imageUrl:
-      "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80",
+    imageUrl: null,
     prepMinutes: 10,
     cookMinutes: 20,
     difficulty: "medium",
@@ -154,8 +149,7 @@ const CORE_RECIPES: Recipe[] = [
   {
     id: "r6",
     name: "Low-Cal Veggie Egg Scramble",
-    imageUrl:
-      "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=80",
+    imageUrl: null,
     prepMinutes: 5,
     cookMinutes: 8,
     difficulty: "easy",
