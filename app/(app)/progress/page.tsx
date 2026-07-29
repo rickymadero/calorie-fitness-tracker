@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Camera,
   Crown,
@@ -28,6 +29,7 @@ import { weekStatsFromActivities } from "@/lib/activities/statsFromActivities";
 import type { WeekStats } from "@/lib/activities/statsFromActivities";
 import { pricingHref } from "@/lib/auth/pricingReturn";
 import { useLocalizedPricing } from "@/lib/pricing/useLocalizedPricing";
+import { useTrackExploreFeature } from "@/lib/explore/useTrackExploreFeature";
 
 const MEASUREMENT_KEYS = ["chest", "waist", "hips", "arms"] as const;
 const MEASUREMENT_VALUES: Record<(typeof MEASUREMENT_KEYS)[number], string> = {
@@ -37,6 +39,13 @@ const MEASUREMENT_VALUES: Record<(typeof MEASUREMENT_KEYS)[number], string> = {
   arms: "36 cm",
 };
 
+type ProgressView = "basic" | "analytics" | "body";
+
+function parseView(raw: string | null): ProgressView {
+  if (raw === "analytics" || raw === "body") return raw;
+  return "basic";
+}
+
 function formatDuration(totalMin: number) {
   const h = Math.floor(totalMin / 60);
   const m = totalMin % 60;
@@ -44,11 +53,59 @@ function formatDuration(totalMin: number) {
   return `${h}h ${m}m`;
 }
 
+function ProgressProUnlockCard({
+  title,
+  body,
+  returnPath,
+  priceLabel,
+  billedLabel,
+  perMonthLabel,
+  upgradeLabel,
+  viewPlansLabel,
+  onUpgrade,
+}: {
+  title: string;
+  body: string;
+  returnPath: string;
+  priceLabel: string;
+  billedLabel: string;
+  perMonthLabel: string;
+  upgradeLabel: string;
+  viewPlansLabel: string;
+  onUpgrade: () => void;
+}) {
+  return (
+    <Card className="mt-4 border-accent/30 bg-accent-soft/40 text-center">
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft text-accent-dim dark:text-accent">
+        <Crown size={22} />
+      </div>
+      <h3 className="mt-3 font-display text-lg font-semibold">{title}</h3>
+      <p className="mx-auto mt-2 max-w-md text-sm text-muted">{body}</p>
+      <p className="mt-3 font-display text-lg font-semibold">
+        {priceLabel}{" "}
+        <span className="text-sm font-medium text-muted">{perMonthLabel}</span>
+      </p>
+      <p className="mt-1 text-xs text-muted">{billedLabel}</p>
+      <div className="mt-4 flex flex-wrap justify-center gap-2">
+        <Button onClick={onUpgrade}>
+          <Crown size={16} />
+          {upgradeLabel}
+        </Button>
+        <Link href={pricingHref(returnPath)}>
+          <Button variant="outline">{viewPlansLabel}</Button>
+        </Link>
+      </div>
+    </Card>
+  );
+}
+
 export default function ProgressPage() {
+  const searchParams = useSearchParams();
+  const view = parseView(searchParams.get("view"));
   const { user, onboarding, updateOnboarding, setPlan } = useAuth();
   const { tick, weekStats } = usePosts();
   const { toast } = useToast();
-  const { t } = useAppTranslation(["progress", "common", "pricing"]);
+  const { t } = useAppTranslation(["progress", "common", "pricing", "explore"]);
   const pricing = useLocalizedPricing();
   const [weightOpen, setWeightOpen] = useState(false);
   const [measureOpen, setMeasureOpen] = useState(false);
@@ -57,6 +114,11 @@ export default function ProgressPage() {
   const [photos, setPhotos] = useState<{ id: string; label: string }[]>([]);
 
   const isPro = user?.plan === "pro";
+  useTrackExploreFeature(
+    isPro ? user?.id : undefined,
+    view === "analytics" ? "analytics" : view === "body" ? "body" : "basicStats",
+  );
+
   const unit =
     (user?.measurementSystem || onboarding.measurementSystem) === "imperial"
       ? "lb"
@@ -76,10 +138,8 @@ export default function ProgressPage() {
   const [remoteStats, setRemoteStats] = useState<WeekStats | null>(null);
 
   useEffect(() => {
-    if (!user?.id) {
-      setRemoteStats(null);
-      return;
-    }
+    if (!user?.id) return;
+    const userId = user.id;
     let cancelled = false;
     void (async () => {
       try {
@@ -88,7 +148,7 @@ export default function ProgressPage() {
         const supabase = createClient();
         const { data } = await activitiesService.getCurrentUserActivities(
           supabase,
-          user.id,
+          userId,
           { limit: 100, offset: 0 },
         );
         if (cancelled) return;
@@ -106,8 +166,7 @@ export default function ProgressPage() {
     };
   }, [user?.id, tick]);
 
-  const stats = remoteStats ?? localStats;
-
+  const stats = user?.id ? (remoteStats ?? localStats) : localStats;
   const maxMinutes = Math.max(1, ...stats.days.map((d) => d.minutes));
 
   const currentWeight =
@@ -129,327 +188,368 @@ export default function ProgressPage() {
   const minW = Math.min(...weightHistory.map((w) => w.value));
   const change = Math.round((weightHistory[0].value - currentWeight) * 10) / 10;
 
+  // Same names as the EvoFit Tools cards (explore features).
+  const headerTitle =
+    view === "analytics"
+      ? t("features.analytics.title", { ns: "explore" })
+      : view === "body"
+        ? t("features.body.title", { ns: "explore" })
+        : t("features.basicStats.title", { ns: "explore" });
+  const headerSubtitle =
+    view === "analytics"
+      ? t("features.analytics.desc", { ns: "explore" })
+      : view === "body"
+        ? t("features.body.desc", { ns: "explore" })
+        : t("basic.subtitle");
+  const unlockTitle =
+    view === "analytics"
+      ? t("views.analytics.unlockTitle", {
+          defaultValue: "Unlock Advanced Analytics",
+        })
+      : t("views.body.unlockTitle", {
+          defaultValue: "Unlock Body Tracking",
+        });
+  const unlockBody =
+    view === "analytics"
+      ? t("views.analytics.unlockBody", {
+          defaultValue:
+            "Weight trends, consistency charts, and monthly analytics are part of Evolve Pro.",
+        })
+      : t("views.body.unlockBody", {
+          defaultValue:
+            "Progress photos, body measurements, and weight logging are part of Evolve Pro.",
+        });
+
+  const returnPath =
+    view === "basic" ? "/progress?view=basic" : `/progress?view=${view}`;
+
+  function unlockCard() {
+    return (
+      <ProgressProUnlockCard
+        title={unlockTitle}
+        body={unlockBody}
+        returnPath={returnPath}
+        priceLabel={pricing.formattedAnnualMonthly}
+        billedLabel={t("pricing:billedAnnualShort")}
+        perMonthLabel={t("pricing:perMonth")}
+        upgradeLabel={t("proGate.upgradeDemo", { ns: "common" })}
+        viewPlansLabel={t("proGate.viewPlans", { ns: "common" })}
+        onUpgrade={() => {
+          setPlan("pro");
+          toast(t("success.upgradedPro", { ns: "common" }), "success");
+        }}
+      />
+    );
+  }
+
   return (
     <div>
-      <ExploreBackHeader title={t("basic.title")} />
-      {/* Free basic stats */}
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <p className="text-sm text-muted">{t("basic.subtitle")}</p>
-        </div>
-        <Badge variant="default">{t("basic.freeBadge")}</Badge>
-      </div>
+      <ExploreBackHeader title={headerTitle} />
 
-      <div className="mt-5 grid grid-cols-3 gap-2.5">
-        <Card padding="sm">
-          <div className="flex items-center gap-1.5 text-muted">
-            <Route size={14} />
-            <p className="text-[11px] font-medium uppercase tracking-wide">
-              {t("basic.distance")}
-            </p>
-          </div>
-          <p className="mt-2 font-display text-xl font-bold tabular-nums">
-            {stats.totals.distanceKm}
-            <span className="ml-1 text-xs font-medium text-muted">km</span>
-          </p>
-        </Card>
-        <Card padding="sm">
-          <div className="flex items-center gap-1.5 text-muted">
-            <Timer size={14} />
-            <p className="text-[11px] font-medium uppercase tracking-wide">
-              {t("basic.time")}
-            </p>
-          </div>
-          <p className="mt-2 font-display text-xl font-bold tabular-nums">
-            {formatDuration(stats.totals.minutes)}
-          </p>
-        </Card>
-        <Card padding="sm">
-          <div className="flex items-center gap-1.5 text-muted">
-            <Flame size={14} />
-            <p className="text-[11px] font-medium uppercase tracking-wide">
-              {t("basic.calories")}
-            </p>
-          </div>
-          <p className="mt-2 font-display text-xl font-bold tabular-nums">
-            {stats.totals.calories}
-          </p>
-        </Card>
-      </div>
-
-      <Card elevated className="mt-4">
-        <div className="flex items-center justify-between gap-2">
-          <h2 className="font-display text-lg font-semibold">
-            {t("basic.weeklyActivity")}
-          </h2>
-          <p className="text-xs text-muted">
-            {t("basic.workoutsCount", { n: stats.totals.workouts })}
-          </p>
-        </div>
-
-        {stats.totals.workouts === 0 ? (
-          <div className="mt-4">
-            <EmptyState
-              icon={<TrendingUp size={28} />}
-              title={t("basic.empty")}
-              description={t("basic.emptyHint")}
-              action={
-                <Link href="/posts/new">
-                  <Button size="sm">{t("basic.logWorkout")}</Button>
-                </Link>
-              }
-            />
-          </div>
-        ) : (
-          <div className="mt-6 flex h-40 items-end gap-2">
-            {stats.days.map((day) => {
-              const height =
-                day.minutes > 0
-                  ? Math.max(12, (day.minutes / maxMinutes) * 100)
-                  : 6;
-              return (
-                <div
-                  key={day.key}
-                  className="flex min-w-0 flex-1 flex-col items-center gap-1.5"
-                >
-                  <span className="text-[10px] tabular-nums text-muted">
-                    {day.minutes > 0 ? `${day.minutes}m` : "—"}
-                  </span>
-                  <div
-                    className={`w-full max-w-[40px] rounded-t-lg ${
-                      day.minutes > 0 ? "bg-accent" : "bg-muted-bg"
-                    }`}
-                    style={{ height }}
-                    title={`${day.label}: ${day.minutes} min`}
-                  />
-                  <span className="text-[10px] text-muted">{day.label}</span>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </Card>
-
-      {/* Advanced Pro analytics */}
-      <div className="mt-8 flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h2 className="font-display text-xl font-bold tracking-tight">
-            {t("title")}
-          </h2>
-          <p className="mt-1 text-sm text-muted">{t("subtitle")}</p>
-        </div>
-        {isPro ? (
-          <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={() => setMeasureOpen(true)}>
-              <Ruler size={16} />
-              {t("measurements")}
-            </Button>
-            <Button variant="outline" onClick={() => setPhotoOpen(true)}>
-              <Camera size={16} />
-              {t("photo")}
-            </Button>
-            <Button onClick={() => setWeightOpen(true)}>
-              <Scale size={16} />
-              {t("logWeight")}
-            </Button>
-          </div>
-        ) : (
-          <Badge variant="accent">
-            <Crown size={12} className="mr-1" />
-            {t("labels.pro", { ns: "common" })}
-          </Badge>
-        )}
-      </div>
-
-      {!isPro ? (
-        <Card className="mt-4 border-accent/30 bg-accent-soft/40 text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft text-accent-dim dark:text-accent">
-            <Crown size={22} />
-          </div>
-          <h3 className="mt-3 font-display text-lg font-semibold">
-            {t("basic.unlockTitle")}
-          </h3>
-          <p className="mx-auto mt-2 max-w-md text-sm text-muted">
-            {t("basic.unlockBody")}
-          </p>
-          <p className="mt-3 font-display text-lg font-semibold">
-            {pricing.formattedAnnualMonthly}{" "}
-            <span className="text-sm font-medium text-muted">
-              {t("pricing:perMonth")}
-            </span>
-          </p>
-          <p className="mt-1 text-xs text-muted">{t("pricing:billedAnnualShort")}</p>
-          <div className="mt-4 flex flex-wrap justify-center gap-2">
-            <Button
-              onClick={() => {
-                setPlan("pro");
-                toast(t("success.upgradedPro", { ns: "common" }), "success");
-              }}
-            >
-              <Crown size={16} />
-              {t("proGate.upgradeDemo", { ns: "common" })}
-            </Button>
-            <Link href={pricingHref("/progress")}>
-              <Button variant="outline">
-                {t("proGate.viewPlans", { ns: "common" })}
-              </Button>
-            </Link>
-          </div>
-        </Card>
-      ) : (
+      {view === "basic" && (
         <>
-          <div className="mt-6 grid gap-6 lg:grid-cols-3">
-            <Card elevated className="lg:col-span-2">
-              <div className="flex items-center justify-between">
-                <h2 className="font-display text-lg font-semibold">
-                  {t("weightTrend")}
-                </h2>
-                <Badge variant="accent">
-                  {t("changeThisMonth", {
-                    sign: change > 0 ? "−" : change < 0 ? "+" : "",
-                    amount: Math.abs(change),
-                    unit,
-                  })}
-                </Badge>
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="text-sm text-muted">{headerSubtitle}</p>
+            </div>
+            <Badge variant="default">{t("basic.freeBadge")}</Badge>
+          </div>
+
+          <div className="mt-5 grid grid-cols-3 gap-2.5">
+            <Card padding="sm">
+              <div className="flex items-center gap-1.5 text-muted">
+                <Route size={14} />
+                <p className="text-[11px] font-medium uppercase tracking-wide">
+                  {t("basic.distance")}
+                </p>
               </div>
-              <div className="mt-8 flex h-48 items-end gap-3">
-                {weightHistory.map((point) => {
-                  const pct =
-                    ((point.value - minW) / (maxW - minW || 1)) * 100;
-                  const height = 40 + pct * 0.9;
+              <p className="mt-2 font-display text-xl font-bold tabular-nums">
+                {stats.totals.distanceKm}
+                <span className="ml-1 text-xs font-medium text-muted">km</span>
+              </p>
+            </Card>
+            <Card padding="sm">
+              <div className="flex items-center gap-1.5 text-muted">
+                <Timer size={14} />
+                <p className="text-[11px] font-medium uppercase tracking-wide">
+                  {t("basic.time")}
+                </p>
+              </div>
+              <p className="mt-2 font-display text-xl font-bold tabular-nums">
+                {formatDuration(stats.totals.minutes)}
+              </p>
+            </Card>
+            <Card padding="sm">
+              <div className="flex items-center gap-1.5 text-muted">
+                <Flame size={14} />
+                <p className="text-[11px] font-medium uppercase tracking-wide">
+                  {t("basic.calories")}
+                </p>
+              </div>
+              <p className="mt-2 font-display text-xl font-bold tabular-nums">
+                {stats.totals.calories}
+              </p>
+            </Card>
+          </div>
+
+          <Card elevated className="mt-4">
+            <div className="flex items-center justify-between gap-2">
+              <h2 className="font-display text-lg font-semibold">
+                {t("basic.weeklyActivity")}
+              </h2>
+              <p className="text-xs text-muted">
+                {t("basic.workoutsCount", { n: stats.totals.workouts })}
+              </p>
+            </div>
+
+            {stats.totals.workouts === 0 ? (
+              <div className="mt-4">
+                <EmptyState
+                  icon={<TrendingUp size={28} />}
+                  title={t("basic.empty")}
+                  description={t("basic.emptyHint")}
+                  action={
+                    <Link href="/posts/new">
+                      <Button size="sm">{t("basic.logWorkout")}</Button>
+                    </Link>
+                  }
+                />
+              </div>
+            ) : (
+              <div className="mt-6 flex h-40 items-end gap-2">
+                {stats.days.map((day) => {
+                  const height =
+                    day.minutes > 0
+                      ? Math.max(12, (day.minutes / maxMinutes) * 100)
+                      : 6;
                   return (
                     <div
-                      key={point.date}
-                      className="flex flex-1 flex-col items-center gap-2"
+                      key={day.key}
+                      className="flex min-w-0 flex-1 flex-col items-center gap-1.5"
                     >
-                      <span className="text-[10px] text-muted">
-                        {point.value}
+                      <span className="text-[10px] tabular-nums text-muted">
+                        {day.minutes > 0 ? `${day.minutes}m` : "—"}
                       </span>
                       <div
-                        className="w-full max-w-[48px] rounded-t-xl bg-accent"
+                        className={`w-full max-w-[40px] rounded-t-lg ${
+                          day.minutes > 0 ? "bg-accent" : "bg-muted-bg"
+                        }`}
                         style={{ height }}
+                        title={`${day.label}: ${day.minutes} min`}
                       />
-                      <span className="text-[10px] text-muted">
-                        {point.date}
-                      </span>
+                      <span className="text-[10px] text-muted">{day.label}</span>
                     </div>
                   );
                 })}
               </div>
-              <p className="mt-4 text-sm text-muted">
-                {t("currentGoal", {
-                  current: currentWeight,
-                  unit,
-                  goal: goalWeight,
-                })}
-              </p>
-            </Card>
+            )}
+          </Card>
+        </>
+      )}
 
-            <Card>
-              <h2 className="font-display text-lg font-semibold">
-                {t("bodyMeasurements")}
-              </h2>
-              <ul className="mt-4 space-y-3">
-                {MEASUREMENT_KEYS.map((key) => (
-                  <li
-                    key={key}
-                    className="flex justify-between rounded-xl bg-muted-bg px-3 py-2 text-sm"
-                  >
-                    <span>{t(`measure.${key}`)}</span>
-                    <span className="font-medium">
-                      {MEASUREMENT_VALUES[key]}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </Card>
+      {view === "analytics" && (
+        <>
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <p className="text-sm text-muted">{headerSubtitle}</p>
+            {!isPro && (
+              <Badge variant="accent">
+                <Crown size={12} className="mr-1" />
+                {t("labels.pro", { ns: "common" })}
+              </Badge>
+            )}
           </div>
 
-          <div className="mt-6 grid gap-6 lg:grid-cols-2">
-            <Card>
-              <h2 className="font-display text-lg font-semibold">
-                {t("consistency")}
-              </h2>
-              <div className="mt-5 space-y-4">
-                <ProgressBar
-                  label={t("calorieAdherence")}
-                  value={86}
-                  max={100}
-                  showValue
-                />
-                <ProgressBar
-                  label={t("workoutConsistency")}
-                  value={75}
-                  max={100}
-                  showValue
-                />
-                <ProgressBar
-                  label={t("habitCompletion")}
-                  value={68}
-                  max={100}
-                  showValue
-                />
-              </div>
-            </Card>
+          {!isPro ? (
+            unlockCard()
+          ) : (
+            <>
+              <Card elevated className="mt-5">
+                <div className="flex items-center justify-between">
+                  <h2 className="font-display text-lg font-semibold">
+                    {t("weightTrend")}
+                  </h2>
+                  <Badge variant="accent">
+                    {t("changeThisMonth", {
+                      sign: change > 0 ? "−" : change < 0 ? "+" : "",
+                      amount: Math.abs(change),
+                      unit,
+                    })}
+                  </Badge>
+                </div>
+                <div className="mt-8 flex h-48 items-end gap-3">
+                  {weightHistory.map((point) => {
+                    const pct =
+                      ((point.value - minW) / (maxW - minW || 1)) * 100;
+                    const height = 40 + pct * 0.9;
+                    return (
+                      <div
+                        key={point.date}
+                        className="flex flex-1 flex-col items-center gap-2"
+                      >
+                        <span className="text-[10px] text-muted">
+                          {point.value}
+                        </span>
+                        <div
+                          className="w-full max-w-[48px] rounded-t-xl bg-accent"
+                          style={{ height }}
+                        />
+                        <span className="text-[10px] text-muted">
+                          {point.date}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <p className="mt-4 text-sm text-muted">
+                  {t("currentGoal", {
+                    current: currentWeight,
+                    unit,
+                    goal: goalWeight,
+                  })}
+                </p>
+              </Card>
 
-            <Card>
-              <div className="flex items-center justify-between">
+              <Card className="mt-6">
                 <h2 className="font-display text-lg font-semibold">
-                  {t("progressPhotos")}
+                  {t("consistency")}
                 </h2>
-                <TrendingUp size={18} className="text-muted" />
-              </div>
-              {photos.length === 0 ? (
-                <div className="mt-4">
-                  <EmptyState
-                    icon={<Camera size={28} />}
-                    title={t("photosEmptyTitle")}
-                    description={t("photosEmptyDescription")}
-                    action={
-                      <Button onClick={() => setPhotoOpen(true)}>
-                        {t("addPhoto")}
-                      </Button>
-                    }
+                <div className="mt-5 space-y-4">
+                  <ProgressBar
+                    label={t("calorieAdherence")}
+                    value={86}
+                    max={100}
+                    showValue
+                  />
+                  <ProgressBar
+                    label={t("workoutConsistency")}
+                    value={75}
+                    max={100}
+                    showValue
+                  />
+                  <ProgressBar
+                    label={t("habitCompletion")}
+                    value={68}
+                    max={100}
+                    showValue
                   />
                 </div>
-              ) : (
-                <div className="mt-4 grid grid-cols-2 gap-3">
-                  {photos.map((p) => (
-                    <div
-                      key={p.id}
-                      className="flex aspect-[3/4] items-end rounded-2xl border border-border bg-gradient-to-br from-muted-bg to-border p-3"
-                    >
-                      <span className="text-xs font-medium">{p.label}</span>
+              </Card>
+
+              <Card className="mt-6">
+                <h2 className="font-display text-lg font-semibold">
+                  {t("monthlyOverview")}
+                </h2>
+                <p className="mt-2 text-sm text-muted">
+                  {t("monthlyOverviewBody")}
+                </p>
+                <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                  {[
+                    { label: t("avgDailyCalories"), value: "2,080" },
+                    { label: t("workoutsCompleted"), value: "14" },
+                    {
+                      label: t("bestStreak"),
+                      value: t("bestStreakValue", { n: 9 }),
+                    },
+                  ].map((s) => (
+                    <div key={s.label} className="rounded-2xl bg-muted-bg p-4">
+                      <p className="text-xs text-muted">{s.label}</p>
+                      <p className="mt-1 font-display text-xl font-bold">
+                        {s.value}
+                      </p>
                     </div>
                   ))}
                 </div>
-              )}
-            </Card>
+              </Card>
+            </>
+          )}
+        </>
+      )}
+
+      {view === "body" && (
+        <>
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <p className="text-sm text-muted">{headerSubtitle}</p>
+            {isPro ? (
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" onClick={() => setMeasureOpen(true)}>
+                  <Ruler size={16} />
+                  {t("measurements")}
+                </Button>
+                <Button variant="outline" onClick={() => setPhotoOpen(true)}>
+                  <Camera size={16} />
+                  {t("photo")}
+                </Button>
+                <Button onClick={() => setWeightOpen(true)}>
+                  <Scale size={16} />
+                  {t("logWeight")}
+                </Button>
+              </div>
+            ) : (
+              <Badge variant="accent">
+                <Crown size={12} className="mr-1" />
+                {t("labels.pro", { ns: "common" })}
+              </Badge>
+            )}
           </div>
 
-          <Card className="mt-6">
-            <h2 className="font-display text-lg font-semibold">
-              {t("monthlyOverview")}
-            </h2>
-            <p className="mt-2 text-sm text-muted">{t("monthlyOverviewBody")}</p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-3">
-              {[
-                { label: t("avgDailyCalories"), value: "2,080" },
-                { label: t("workoutsCompleted"), value: "14" },
-                {
-                  label: t("bestStreak"),
-                  value: t("bestStreakValue", { n: 9 }),
-                },
-              ].map((s) => (
-                <div key={s.label} className="rounded-2xl bg-muted-bg p-4">
-                  <p className="text-xs text-muted">{s.label}</p>
-                  <p className="mt-1 font-display text-xl font-bold">
-                    {s.value}
-                  </p>
+          {!isPro ? (
+            unlockCard()
+          ) : (
+            <>
+              <Card className="mt-5">
+                <h2 className="font-display text-lg font-semibold">
+                  {t("bodyMeasurements")}
+                </h2>
+                <ul className="mt-4 space-y-3">
+                  {MEASUREMENT_KEYS.map((key) => (
+                    <li
+                      key={key}
+                      className="flex justify-between rounded-xl bg-muted-bg px-3 py-2 text-sm"
+                    >
+                      <span>{t(`measure.${key}`)}</span>
+                      <span className="font-medium">
+                        {MEASUREMENT_VALUES[key]}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+
+              <Card className="mt-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="font-display text-lg font-semibold">
+                    {t("progressPhotos")}
+                  </h2>
+                  <TrendingUp size={18} className="text-muted" />
                 </div>
-              ))}
-            </div>
-          </Card>
+                {photos.length === 0 ? (
+                  <div className="mt-4">
+                    <EmptyState
+                      icon={<Camera size={28} />}
+                      title={t("photosEmptyTitle")}
+                      description={t("photosEmptyDescription")}
+                      action={
+                        <Button onClick={() => setPhotoOpen(true)}>
+                          {t("addPhoto")}
+                        </Button>
+                      }
+                    />
+                  </div>
+                ) : (
+                  <div className="mt-4 grid grid-cols-2 gap-3">
+                    {photos.map((p) => (
+                      <div
+                        key={p.id}
+                        className="flex aspect-[3/4] items-end rounded-2xl border border-border bg-gradient-to-br from-muted-bg to-border p-3"
+                      >
+                        <span className="text-xs font-medium">{p.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Card>
+            </>
+          )}
         </>
       )}
 

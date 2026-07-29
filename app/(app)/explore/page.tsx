@@ -233,9 +233,14 @@ const PRO_CATALOG: ToolCard[] = [
   { href: "/food", feature: "macros", icon: Flame, pro: true },
   { href: "/plans", feature: "plans", icon: Dumbbell, pro: true },
   { href: "/food?scan=1", feature: "scanner", icon: ScanLine, pro: true },
-  { href: "/progress", feature: "analytics", icon: TrendingUp, pro: true },
+  {
+    href: "/progress?view=analytics",
+    feature: "analytics",
+    icon: TrendingUp,
+    pro: true,
+  },
   { href: "/plans", feature: "meals", icon: Utensils, pro: true },
-  { href: "/progress", feature: "body", icon: Activity, pro: true },
+  { href: "/progress?view=body", feature: "body", icon: Activity, pro: true },
   { href: "/workouts", feature: "history", icon: History, pro: true },
   { href: "/settings/help", feature: "support", icon: LifeBuoy, pro: true },
   { href: "/pricing", feature: "adFree", icon: Ban, pro: true },
@@ -281,7 +286,7 @@ export default function ExplorePage() {
   const forYou = useMemo<ToolCard[]>(() => {
     const base: ToolCard[] = [
       { href: "/posts/new", feature: "basicLogging", icon: Activity },
-      { href: "/progress", feature: "basicStats", icon: TrendingUp },
+      { href: "/progress?view=basic", feature: "basicStats", icon: TrendingUp },
       { href: "/plans", feature: "plans", icon: Dumbbell, pro: true },
       { href: "/food", feature: "macros", icon: Flame, pro: true },
       { href: "/food?scan=1", feature: "scanner", icon: ScanLine, pro: true },
@@ -322,9 +327,19 @@ export default function ExplorePage() {
 
   const tools = useMemo<ToolCard[]>(
     () => [
-      { href: "/progress", feature: "basicStats", icon: Calculator },
-      { href: "/progress", feature: "analytics", icon: TrendingUp, pro: true },
-      { href: "/progress", feature: "body", icon: Heart, pro: true },
+      { href: "/progress?view=basic", feature: "basicStats", icon: Calculator },
+      {
+        href: "/progress?view=analytics",
+        feature: "analytics",
+        icon: TrendingUp,
+        pro: true,
+      },
+      {
+        href: "/progress?view=body",
+        feature: "body",
+        icon: Heart,
+        pro: true,
+      },
       { href: "/settings/health", feature: "health", icon: Apple, pro: true },
     ],
     [],

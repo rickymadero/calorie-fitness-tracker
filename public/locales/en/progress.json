@@ -57,5 +57,19 @@
     "logWorkout": "Log a workout",
     "unlockTitle": "Unlock advanced Progress",
     "unlockBody": "Weight trends, body measurements, progress photos, and monthly analytics are part of Evolve Pro. Basic stats above stay free forever."
+  },
+  "views": {
+    "analytics": {
+      "title": "Advanced Analytics & Graphs",
+      "subtitle": "Trends, volume charts, and deeper insights.",
+      "unlockTitle": "Unlock Advanced Analytics",
+      "unlockBody": "Weight trends, consistency charts, and monthly analytics are part of Evolve Pro."
+    },
+    "body": {
+      "title": "Body Transformation Tracker",
+      "subtitle": "Photos, measurements, and change over time.",
+      "unlockTitle": "Unlock Body Tracking",
+      "unlockBody": "Progress photos, body measurements, and weight logging are part of Evolve Pro."
+    }
   }
 }
