@@ -92,15 +92,36 @@ export default function WorkoutsPage() {
           </div>
         </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { label: t("stat.goal"), value: assignedPlan.mainGoal.replace(/-/g, " ") },
-            { label: t("stat.progression"), value: assignedPlan.progressionStrategy.slice(0, 48) + "…" },
-            { label: t("stat.restGuidance"), value: assignedPlan.restDayGuidance.slice(0, 48) + "…" },
-            { label: t("stat.safety"), value: assignedPlan.safetyNotes.slice(0, 48) + "…" },
-          ].map((item) => (
+          {(
+            [
+              {
+                label: t("stat.goal"),
+                value: assignedPlan.mainGoal.replace(/-/g, " "),
+                capitalize: true,
+              },
+              {
+                label: t("stat.progression"),
+                value: assignedPlan.progressionStrategy,
+              },
+              {
+                label: t("stat.restGuidance"),
+                value: assignedPlan.restDayGuidance,
+              },
+              {
+                label: t("stat.safety"),
+                value: assignedPlan.safetyNotes,
+              },
+            ] as const
+          ).map((item) => (
             <div key={item.label} className="rounded-2xl bg-muted-bg p-3">
               <p className="text-xs text-muted">{item.label}</p>
-              <p className="mt-1 text-sm capitalize">{item.value}</p>
+              <p
+                className={`mt-1 text-sm leading-snug ${
+                  "capitalize" in item ? "capitalize" : ""
+                }`}
+              >
+                {item.value}
+              </p>
             </div>
           ))}
         </div>
