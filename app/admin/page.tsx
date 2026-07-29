@@ -14,6 +14,7 @@ import { useTraining } from "@/components/training/TrainingProvider";
 import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { generatePersonalizedPlan } from "@/lib/training/generatePlan";
+import { isAdminUser } from "@/lib/auth/isAdminUser";
 import type { FitnessGoal, ExperienceLevel } from "@/lib/types";
 
 const GOAL_KEY: Record<FitnessGoal, string> = {
@@ -48,10 +49,17 @@ export default function AdminHomePage() {
 
   useEffect(() => {
     if (!authReady) return;
-    if (!user) router.replace("/login");
+    if (!user) {
+      router.replace("/login");
+      return;
+    }
+    if (!isAdminUser(user)) {
+      router.replace("/feed");
+    }
   }, [authReady, user, router]);
 
   if (!authReady || !isReady || !user) return <PageLoader />;
+  if (!isAdminUser(user)) return <PageLoader />;
 
   const templates = plans.filter((p) => p.isTemplate);
   const assigned = plans.filter((p) => !p.isTemplate);

@@ -24,6 +24,7 @@ const PROTECTED_PREFIXES = [
   "/pricing",
   "/results",
   "/admin",
+  "/track",
 ];
 
 const AUTH_ONLY_PREFIXES = ["/login", "/register", "/forgot-password"];
@@ -54,9 +55,22 @@ export async function proxy(request: NextRequest) {
 
   if (isAuthOnly(pathname) && signedIn) {
     const homeUrl = request.nextUrl.clone();
-    homeUrl.pathname = "/";
+    homeUrl.pathname = "/feed";
     homeUrl.search = "";
     return NextResponse.redirect(homeUrl);
+  }
+
+  // Dev tooling stays local-only (preview layout also 404s in production).
+  if (
+    process.env.NODE_ENV === "production" &&
+    (pathname === "/dev" ||
+      pathname.startsWith("/dev/") ||
+      pathname.startsWith("/api/dev/"))
+  ) {
+    const notFoundUrl = request.nextUrl.clone();
+    notFoundUrl.pathname = "/feed";
+    notFoundUrl.search = "";
+    return NextResponse.redirect(notFoundUrl);
   }
 
   return response;

@@ -152,6 +152,7 @@
       "disconnected": "Garmin Connect disconnected.",
       "connectFirst": "Connect Garmin Connect first."
     },
-    "webNote": "Full native sync ships with the mobile app. This screen saves your Pro connection preferences for demo."
+    "comingSoon": "Apple Health and Garmin sync need the native Evolve apps. Preferences stay local for now.",
+    "webNote": "Full native sync ships with the mobile app. Connect is not available on web yet."
   }
 }

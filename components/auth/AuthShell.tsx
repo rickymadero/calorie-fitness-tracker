@@ -134,8 +134,13 @@ export function SocialAuthButtons({
   const router = useRouter();
   const { t } = useAppTranslation("auth");
   const [busy, setBusy] = useState<string | null>(null);
+  const allowDemoSocial = process.env.NODE_ENV !== "production";
 
   async function demoSocial(provider: string, email: string) {
+    if (!allowDemoSocial) {
+      toast(t("googleComing"), "info");
+      return;
+    }
     setBusy(provider);
     const password = "evolve-social-demo";
     let result = await login(email, password);
@@ -156,7 +161,7 @@ export function SocialAuthButtons({
     router.push(getPostAuthPath(result.user ?? null));
   }
 
-  const instagram = (
+  const instagram = allowDemoSocial ? (
     <Button
       type="button"
       variant={layout === "instagram-first" ? "secondary" : "outline"}
@@ -168,7 +173,7 @@ export function SocialAuthButtons({
       <AtSign size={18} />
       {t("continueInstagram")}
     </Button>
-  );
+  ) : null;
 
   const others = [
     {
@@ -195,9 +200,9 @@ export function SocialAuthButtons({
     return (
       <div className="space-y-3">
         {instagram}
-        <p className="text-center text-xs text-muted">
-          {t("demoSocialHint")}
-        </p>
+        {instagram ? (
+          <p className="text-center text-xs text-muted">{t("demoSocialHint")}</p>
+        ) : null}
         <div className="grid grid-cols-3 gap-2">
           {others.map((p) => (
             <Button

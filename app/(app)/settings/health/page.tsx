@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ComponentType } from "react";
+import { useState, type ComponentType } from "react";
 import { Apple, Footprints, HeartPulse, Dumbbell, Watch } from "lucide-react";
 import { ExploreBackHeader } from "@/components/layout/ExploreBackHeader";
 import { Badge } from "@/components/ui/Badge";
@@ -18,6 +18,22 @@ import {
 } from "@/lib/storage/appleHealth";
 
 type ProviderId = "apple" | "garmin";
+
+function clearFakeHealthConnections() {
+  for (const provider of [
+    { get: appleHealthPrefs.get, set: appleHealthPrefs.set },
+    { get: garminConnectPrefs.get, set: garminConnectPrefs.set },
+  ]) {
+    const prefs = provider.get();
+    if (prefs.connected) {
+      provider.set({
+        ...prefs,
+        connected: false,
+        connectedAt: undefined,
+      });
+    }
+  }
+}
 
 type ProviderConfig = {
   id: ProviderId;
@@ -64,17 +80,15 @@ export default function HealthIntegrationsPage() {
     },
   ];
 
-  const [state, setState] = useState<Record<ProviderId, HealthProviderPrefs>>({
-    apple: appleHealthPrefs.get(),
-    garmin: garminConnectPrefs.get(),
-  });
-
-  useEffect(() => {
-    setState({
-      apple: appleHealthPrefs.get(),
-      garmin: garminConnectPrefs.get(),
-    });
-  }, []);
+  const [state, setState] = useState<Record<ProviderId, HealthProviderPrefs>>(
+    () => {
+      clearFakeHealthConnections();
+      return {
+        apple: appleHealthPrefs.get(),
+        garmin: garminConnectPrefs.get(),
+      };
+    },
+  );
 
   function save(id: ProviderId, next: HealthProviderPrefs) {
     const provider = providers.find((p) => p.id === id)!;
@@ -93,12 +107,7 @@ export default function HealthIntegrationsPage() {
       toast(t(provider.disconnectedToast), "info");
       return;
     }
-    save(provider.id, {
-      ...prefs,
-      connected: true,
-      connectedAt: new Date().toISOString(),
-    });
-    toast(t(provider.connectedToast), "success");
+    toast(t("health.comingSoon"), "info");
   }
 
   function toggleSync(provider: ProviderConfig, key: HealthSyncKey) {

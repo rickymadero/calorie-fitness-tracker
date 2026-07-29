@@ -15,6 +15,7 @@ import { useTraining } from "@/components/training/TrainingProvider";
 import { useToast } from "@/components/providers/ToastProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { EXERCISES } from "@/lib/mock/exercises";
+import { isAdminUser } from "@/lib/auth/isAdminUser";
 import type {
   EquipmentType,
   PlanExercise,
@@ -83,7 +84,20 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
   const [booted, setBooted] = useState(false);
 
   useEffect(() => {
+    if (!authReady) return;
+    if (!user) {
+      router.replace("/login");
+      return;
+    }
+    if (!isAdminUser(user)) {
+      router.replace("/feed");
+    }
+  }, [authReady, user, router]);
+
+  useEffect(() => {
     if (!isReady || booted) return;
+    // Hydrate editor once training store is ready.
+    /* eslint-disable react-hooks/set-state-in-effect -- one-shot boot from local training store */
     if (planId) {
       const existing = plans.find((p) => p.id === planId);
       if (existing) setPlan(JSON.parse(JSON.stringify(existing)));
@@ -91,6 +105,7 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
       setPlan(emptyPlan(t));
     }
     setBooted(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [isReady, planId, plans, booted, t]);
 
   const day = plan?.days[selectedDay];
@@ -101,6 +116,7 @@ export function AdminPlanEditor({ planId }: { planId: string | null }) {
   );
 
   if (!authReady || !isReady || !user || !plan) return <PageLoader />;
+  if (!isAdminUser(user)) return <PageLoader />;
 
   function updatePlan(patch: Partial<WorkoutPlan>) {
     setPlan((prev) => (prev ? { ...prev, ...patch } : prev));

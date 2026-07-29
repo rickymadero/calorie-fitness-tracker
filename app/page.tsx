@@ -48,8 +48,12 @@ export default function LandingPage() {
         </Link>
       </div>
 
-      <AuthDivider />
-      <InstagramContinueButton />
+      {process.env.NODE_ENV !== "production" ? (
+        <>
+          <AuthDivider />
+          <InstagramContinueButton />
+        </>
+      ) : null}
     </MinimalAuthShell>
   );
 }

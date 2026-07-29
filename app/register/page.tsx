@@ -79,7 +79,7 @@ export default function RegisterPage() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="••••••••"
         />
-        {error && <p className="text-sm text-red-400">{error}</p>}
+        {error && <p className="text-sm text-danger">{error}</p>}
         <Button type="submit" fullWidth size="lg" loading={loading} className="mt-2">
           {t("createAccount", { ns: "auth" })}
         </Button>
@@ -88,8 +88,12 @@ export default function RegisterPage() {
         </p>
       </form>
 
-      <AuthDivider label={t("labels.or")} />
-      <InstagramContinueButton label={t("signUpInstagram", { ns: "auth" })} />
+      {process.env.NODE_ENV !== "production" ? (
+        <>
+          <AuthDivider label={t("labels.or")} />
+          <InstagramContinueButton label={t("signUpInstagram", { ns: "auth" })} />
+        </>
+      ) : null}
 
       <AuthSwitchLink
         prompt={t("hasAccount", { ns: "auth" })}

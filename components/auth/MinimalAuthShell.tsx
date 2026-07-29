@@ -82,6 +82,11 @@ export function InstagramContinueButton({ label }: { label?: string }) {
   const { t } = useAppTranslation("auth");
   const [busy, setBusy] = useState(false);
 
+  // Demo social entry must never ship as a real OAuth path in production.
+  if (process.env.NODE_ENV === "production") {
+    return null;
+  }
+
   async function demoSocial() {
     setBusy(true);
     const email = "instagram.demo@evolve.app";
