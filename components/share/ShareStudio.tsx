@@ -36,7 +36,7 @@ export function ShareStudio({ post, open, onClose }: ShareStudioProps) {
 
   const author = getCard(post.authorId);
   const displayName = author?.profile.displayName ?? t("labels.athlete");
-  const username = author?.profile.username ?? "athlete";
+  const username = author?.profile.username ?? t("labels.athlete");
   const avatarUrl = author?.profile.avatarUrl || undefined;
 
   const [atmosphereId, setAtmosphereId] = useState<AtmosphereId>("midnight");

@@ -78,7 +78,7 @@ export default function ForgotPasswordPage() {
               placeholder={t("emailPlaceholder", { ns: "auth" })}
               required
             />
-            {error && <p className="text-sm text-red-400">{error}</p>}
+            {error && <p className="text-sm text-danger">{error}</p>}
             <Button type="submit" fullWidth size="lg" loading={loading}>
               {t("forgotPassword.sendLink", { ns: "auth" })}
             </Button>

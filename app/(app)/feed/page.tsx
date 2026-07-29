@@ -79,7 +79,7 @@ export default function FeedPage() {
       </div>
 
       {feedError && (
-        <p className="mt-4 text-center text-sm text-red-400">{feedError}</p>
+        <p className="mt-4 text-center text-sm text-danger">{feedError}</p>
       )}
 
       <div className="mt-5">
@@ -104,7 +104,7 @@ export default function FeedPage() {
               variant="outline"
               onClick={() => void loadMoreFeed()}
             >
-              Load more
+              {t("feed:loadMore")}
             </Button>
           </div>
         )}

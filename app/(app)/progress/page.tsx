@@ -33,10 +33,10 @@ import { useTrackExploreFeature } from "@/lib/explore/useTrackExploreFeature";
 
 const MEASUREMENT_KEYS = ["chest", "waist", "hips", "arms"] as const;
 const MEASUREMENT_VALUES: Record<(typeof MEASUREMENT_KEYS)[number], string> = {
-  chest: "102 cm",
-  waist: "84 cm",
-  hips: "96 cm",
-  arms: "36 cm",
+  chest: "—",
+  waist: "—",
+  hips: "—",
+  arms: "—",
 };
 
 type ProgressView = "basic" | "analytics" | "body";

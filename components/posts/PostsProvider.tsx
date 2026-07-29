@@ -332,12 +332,9 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
     if (pendingLocal.length > 0) {
       return pendingLocal;
     }
-    // Empty real feed → demo only (clearly separate from production data)
-    if (feedStatus === "ready" || feedStatus === "error") {
-      return demoSeedFeed();
-    }
+    // Signed-in empty feed: real empty state (no unlabeled demo athletes).
     return [];
-  }, [tick, userId, remotePosts, feedStatus]);
+  }, [tick, userId, remotePosts]);
 
   const value = useMemo<PostsContextValue>(() => {
     void tick;
@@ -355,8 +352,9 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
       publicFeed: () => {
         const remote = remotePosts.filter((p) => p.visibility === "public");
         if (remote.length > 0) return remote;
+        // Logged-out / empty public: demo seed for marketing preview only
         if (!viewerId) return demoSeedFeed();
-        return demoSeedFeed();
+        return [];
       },
       postsByAuthor: (authorId, limit = 20) => {
         const fromRemote = remotePosts

@@ -12,40 +12,18 @@ import {
 } from "@/lib/geo/countryFlag";
 
 const KEY = "evolve.social";
-const STARTER_FOLLOWS_KEY = "evolve.starterFollows";
 const SEED_IDS = new Set(SEED_SOCIAL_PROFILES.map((p) => p.userId));
-const PUBLIC_SEED_IDS = SEED_SOCIAL_PROFILES.filter(
-  (p) => p.visibility === "public",
-).map((p) => p.userId);
 
 function canUse() {
   return typeof window !== "undefined";
 }
 
-/** One-time: follow public demo athletes so Feed + Stories feel populated. */
-function ensureStarterFollows(authUserId: string, store: SocialStore): boolean {
-  if (!canUse()) return false;
-  const flagKey = `${STARTER_FOLLOWS_KEY}.${authUserId}`;
-  if (localStorage.getItem(flagKey) === "1") return false;
-
-  let changed = false;
-  const now = new Date().toISOString();
-  for (const seedId of PUBLIC_SEED_IDS) {
-    if (seedId === authUserId) continue;
-    const exists = store.follows.some(
-      (f) => f.followerId === authUserId && f.followingId === seedId,
-    );
-    if (exists) continue;
-    store.follows.push({
-      id: `follow_starter_${authUserId.slice(0, 8)}_${seedId}`,
-      followerId: authUserId,
-      followingId: seedId,
-      createdAt: now,
-    });
-    changed = true;
-  }
-  localStorage.setItem(flagKey, "1");
-  return changed;
+/** Disabled: auto-following seed athletes made empty feeds look like real social data. */
+function ensureStarterFollows(
+  ..._args: [authUserId?: string, store?: SocialStore]
+): boolean {
+  void _args;
+  return false;
 }
 
 function normalizeProfile(p: SocialProfile): SocialProfile {

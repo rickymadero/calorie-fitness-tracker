@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useId, useRef, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
@@ -22,6 +22,9 @@ const widths = {
   lg: "max-w-lg",
 };
 
+const FOCUSABLE =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 function useIsClient() {
   return useSyncExternalStore(
     () => () => {},
@@ -40,17 +43,53 @@ export function Modal({
 }: ModalProps) {
   const mounted = useIsClient();
   const { t } = useAppTranslation("common");
+  const panelRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const titleId = useId();
 
   useEffect(() => {
     if (!open) return;
+    previousFocusRef.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !panelRef.current) return;
+      const nodes = Array.from(
+        panelRef.current.querySelectorAll<HTMLElement>(FOCUSABLE),
+      ).filter((el) => !el.hasAttribute("disabled") && el.tabIndex !== -1);
+      if (nodes.length === 0) return;
+      const first = nodes[0]!;
+      const last = nodes[nodes.length - 1]!;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
+
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
+
+    const focusTimer = window.setTimeout(() => {
+      const closeBtn = panelRef.current?.querySelector<HTMLElement>(
+        '[data-modal-close="true"]',
+      );
+      (closeBtn ?? panelRef.current)?.focus();
+    }, 0);
+
     return () => {
+      window.clearTimeout(focusTimer);
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
+      previousFocusRef.current?.focus?.();
     };
   }, [open, onClose]);
 
@@ -66,18 +105,20 @@ export function Modal({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-[var(--overlay)] backdrop-blur-sm"
             onClick={onClose}
           />
           <motion.div
+            ref={panelRef}
             role="dialog"
             aria-modal
-            aria-labelledby={title ? "modal-title" : undefined}
+            aria-labelledby={title ? titleId : undefined}
+            tabIndex={-1}
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 24 }}
             transition={{ type: "spring", stiffness: 380, damping: 32 }}
-            className={`relative z-10 flex max-h-[min(92dvh,100%)] w-full flex-col overflow-hidden rounded-t-3xl border border-border bg-card shadow-apex-lg sm:max-h-[90dvh] sm:rounded-apex-lg ${widths[size]}`}
+            className={`relative z-10 flex max-h-[min(92dvh,100%)] w-full flex-col overflow-hidden rounded-t-3xl border border-border bg-card shadow-apex-lg outline-none sm:max-h-[90dvh] sm:rounded-apex-lg ${widths[size]}`}
             style={{
               paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))",
             }}
@@ -88,7 +129,7 @@ export function Modal({
             <div className="flex shrink-0 items-center justify-between gap-4 px-5 pb-3 pt-2 sm:px-6 sm:pt-5">
               {title ? (
                 <h2
-                  id="modal-title"
+                  id={titleId}
                   className="font-display text-lg font-semibold"
                 >
                   {title}
@@ -98,8 +139,9 @@ export function Modal({
               )}
               <button
                 type="button"
+                data-modal-close="true"
                 onClick={onClose}
-                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted transition hover:bg-muted-bg hover:text-foreground"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted transition hover:bg-muted-bg hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
                 aria-label={t("buttons.close")}
               >
                 <X size={18} />
