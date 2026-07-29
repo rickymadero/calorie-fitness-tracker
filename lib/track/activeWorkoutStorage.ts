@@ -50,6 +50,8 @@ export type ActiveWorkoutSnapshot = {
   estimatedCadenceSpm: number | null;
   title: string;
   notes: string;
+  /** Optional share photo (compressed data URL) for publish */
+  photoUrl?: string | null;
   privacyRouteMode: "show" | "hide_route" | "hide_start_end" | "private";
   visibility: "public" | "followers" | "private";
   /** Set when finished locally */

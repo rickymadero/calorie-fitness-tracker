@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { ImagePlus } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { RouteMapPreview } from "@/components/feed/RouteMapPreview";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { useToast } from "@/components/providers/ToastProvider";
 import { useTrackWorkout } from "@/components/track/TrackWorkoutProvider";
 import { getTrackActivity } from "@/lib/track/activityCatalog";
 import {
@@ -16,28 +18,25 @@ import {
   paceSecondsPerKm,
   speedKmh,
 } from "@/lib/track/metrics";
-import {
-  computeElapsedSeconds,
-} from "@/lib/track/activeWorkoutStorage";
+import { computeElapsedSeconds } from "@/lib/track/activeWorkoutStorage";
 import { syncTrackedWorkout } from "@/lib/track/syncTrackedWorkout";
 import { trimRoutePrivacy } from "@/lib/track/routePrivacy";
+import { fileToCompressedDataUrl } from "@/lib/media/dualCapture";
 
 export default function TrackSummaryPage() {
   const { t } = useAppTranslation(["track", "common"]);
   const router = useRouter();
   const { user } = useAuth();
+  const { toast } = useToast();
   const units =
     user?.measurementSystem === "imperial" ? "imperial" : "metric";
-  const {
-    snapshot,
-    updateMeta,
-    clearLocal,
-    discard,
-    loadExisting,
-  } = useTrackWorkout();
+  const { snapshot, updateMeta, clearLocal, discard, loadExisting } =
+    useTrackWorkout();
   const [saving, setSaving] = useState(false);
+  const [photoBusy, setPhotoBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const hydratedRef = useRef(false);
+  const photoInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!snapshot && !hydratedRef.current) {
@@ -75,6 +74,31 @@ export default function TrackSummaryPage() {
       : trimRoutePrivacy(snapshot.points, snapshot.privacyRouteMode).map(
           (p) => ({ lat: p.latitude, lng: p.longitude }),
         );
+
+  async function onPhotoSelected(file: File | null) {
+    if (!file) {
+      updateMeta({ photoUrl: null });
+      return;
+    }
+    if (!file.type.startsWith("image/")) {
+      toast(t("common:errors.pickMedia"), "error");
+      return;
+    }
+    if (file.size > 2_000_000) {
+      toast(t("track:photoTooLarge"), "error");
+      return;
+    }
+    setPhotoBusy(true);
+    try {
+      const dataUrl = await fileToCompressedDataUrl(file);
+      updateMeta({ photoUrl: dataUrl });
+    } catch {
+      toast(t("common:errors.generic"), "error");
+    } finally {
+      setPhotoBusy(false);
+      if (photoInputRef.current) photoInputRef.current.value = "";
+    }
+  }
 
   async function save(publish: boolean) {
     if (!user || !snapshot) return;
@@ -219,6 +243,50 @@ export default function TrackSummaryPage() {
             onChange={(e) => updateMeta({ notes: e.target.value })}
           />
         </label>
+
+        <div>
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted">
+            {t("track:photoLabel")}
+          </span>
+          <p className="mt-1 text-xs text-muted">{t("track:photoHint")}</p>
+          <input
+            ref={photoInputRef}
+            type="file"
+            accept="image/*"
+            className="sr-only"
+            onChange={(e) =>
+              void onPhotoSelected(e.target.files?.[0] ?? null)
+            }
+          />
+          {snapshot.photoUrl ? (
+            <div className="relative mt-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={snapshot.photoUrl}
+                alt=""
+                className="max-h-56 w-full rounded-2xl object-cover"
+              />
+              <button
+                type="button"
+                className="absolute right-2 top-2 rounded-full bg-black/60 px-2.5 py-1 text-xs text-white"
+                onClick={() => updateMeta({ photoUrl: null })}
+              >
+                {t("track:photoRemove")}
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              disabled={photoBusy || saving}
+              onClick={() => photoInputRef.current?.click()}
+              className="mt-2 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-card px-3 py-3 text-sm font-medium text-muted transition hover:border-accent hover:text-foreground disabled:opacity-60"
+            >
+              <ImagePlus size={16} />
+              {photoBusy ? t("track:saving") : t("track:photoAdd")}
+            </button>
+          )}
+        </div>
+
         <label className="block">
           <span className="text-xs font-semibold uppercase tracking-wider text-muted">
             {t("track:visibilityLabel")}

@@ -217,6 +217,7 @@ export async function syncTrackedWorkout(opts: {
       caption: opts.snapshot.notes || "",
       occurredAt: new Date(opts.snapshot.startedAtMs).toISOString(),
       visibility: opts.snapshot.visibility,
+      photoUrl: opts.snapshot.photoUrl || undefined,
       distanceKm: distanceKm > 0 ? distanceKm : undefined,
       durationMin: Math.max(1, Math.round(elapsed / 60)),
       caloriesBurned: opts.snapshot.calories || undefined,
