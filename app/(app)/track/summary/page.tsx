@@ -24,7 +24,7 @@ import { trimRoutePrivacy } from "@/lib/track/routePrivacy";
 import { fileToCompressedDataUrl } from "@/lib/media/dualCapture";
 
 export default function TrackSummaryPage() {
-  const { t } = useAppTranslation(["track", "common"]);
+  const { t } = useAppTranslation(["track", "common", "posts"]);
   const router = useRouter();
   const { user } = useAuth();
   const { toast } = useToast();
@@ -33,10 +33,10 @@ export default function TrackSummaryPage() {
   const { snapshot, updateMeta, clearLocal, discard, loadExisting } =
     useTrackWorkout();
   const [saving, setSaving] = useState(false);
-  const [photoBusy, setPhotoBusy] = useState(false);
+  const [mediaBusy, setMediaBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const hydratedRef = useRef(false);
-  const photoInputRef = useRef<HTMLInputElement>(null);
+  const mediaInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!snapshot && !hydratedRef.current) {
@@ -75,38 +75,64 @@ export default function TrackSummaryPage() {
           (p) => ({ lat: p.latitude, lng: p.longitude }),
         );
 
-  async function onPhotoSelected(file: File | null) {
-    if (!file) {
-      updateMeta({ photoUrl: null });
+  async function onMediaSelected(file: File | null) {
+    if (!file) return;
+    if (file.type.startsWith("video/")) {
+      if (file.size > 4_000_000) {
+        toast(t("track:videoTooLarge"), "error");
+        return;
+      }
+      setMediaBusy(true);
+      try {
+        const dataUrl = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result));
+          reader.onerror = () => reject(new Error("read failed"));
+          reader.readAsDataURL(file);
+        });
+        updateMeta({ videoUrl: dataUrl, photoUrl: null });
+      } catch {
+        toast(t("common:errors.generic"), "error");
+      } finally {
+        setMediaBusy(false);
+        if (mediaInputRef.current) mediaInputRef.current.value = "";
+      }
       return;
     }
-    if (!file.type.startsWith("image/")) {
-      toast(t("common:errors.pickMedia"), "error");
+    if (file.type.startsWith("image/")) {
+      if (file.size > 2_000_000) {
+        toast(t("track:photoTooLarge"), "error");
+        return;
+      }
+      setMediaBusy(true);
+      try {
+        const dataUrl = await fileToCompressedDataUrl(file);
+        updateMeta({ photoUrl: dataUrl, videoUrl: null });
+      } catch {
+        toast(t("common:errors.generic"), "error");
+      } finally {
+        setMediaBusy(false);
+        if (mediaInputRef.current) mediaInputRef.current.value = "";
+      }
       return;
     }
-    if (file.size > 2_000_000) {
-      toast(t("track:photoTooLarge"), "error");
-      return;
-    }
-    setPhotoBusy(true);
-    try {
-      const dataUrl = await fileToCompressedDataUrl(file);
-      updateMeta({ photoUrl: dataUrl });
-    } catch {
-      toast(t("common:errors.generic"), "error");
-    } finally {
-      setPhotoBusy(false);
-      if (photoInputRef.current) photoInputRef.current.value = "";
-    }
+    toast(t("common:errors.pickMedia"), "error");
   }
 
   async function save(publish: boolean) {
     if (!user || !snapshot) return;
     setSaving(true);
     setError(null);
+    const snapToSave =
+      publish || snapshot.visibility === "private"
+        ? snapshot
+        : { ...snapshot, visibility: "private" as const };
+    if (!publish && snapshot.visibility !== "private") {
+      updateMeta({ visibility: "private" });
+    }
     const result = await syncTrackedWorkout({
       userId: user.id,
-      snapshot,
+      snapshot: snapToSave,
       publish,
     });
     setSaving(false);
@@ -227,7 +253,7 @@ export default function TrackSummaryPage() {
             {t("track:titleLabel")}
           </span>
           <input
-            className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-3 text-sm outline-none focus:border-accent"
+            className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-3 text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
             value={snapshot.title}
             onChange={(e) => updateMeta({ title: e.target.value })}
           />
@@ -237,7 +263,7 @@ export default function TrackSummaryPage() {
             {t("track:notesLabel")}
           </span>
           <textarea
-            className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-3 text-sm outline-none focus:border-accent"
+            className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-3 text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
             rows={3}
             value={snapshot.notes}
             onChange={(e) => updateMeta({ notes: e.target.value })}
@@ -250,39 +276,72 @@ export default function TrackSummaryPage() {
           </span>
           <p className="mt-1 text-xs text-muted">{t("track:photoHint")}</p>
           <input
-            ref={photoInputRef}
+            ref={mediaInputRef}
             type="file"
-            accept="image/*"
+            accept="image/*,video/*"
             className="sr-only"
             onChange={(e) =>
-              void onPhotoSelected(e.target.files?.[0] ?? null)
+              void onMediaSelected(e.target.files?.[0] ?? null)
             }
           />
-          {snapshot.photoUrl ? (
-            <div className="relative mt-2">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={snapshot.photoUrl}
-                alt=""
-                className="max-h-56 w-full rounded-2xl object-cover"
-              />
-              <button
-                type="button"
-                className="absolute right-2 top-2 rounded-full bg-black/60 px-2.5 py-1 text-xs text-white"
-                onClick={() => updateMeta({ photoUrl: null })}
-              >
-                {t("track:photoRemove")}
-              </button>
+          {(snapshot.photoUrl || snapshot.videoUrl) && (
+            <div className="mt-2 space-y-3">
+              {snapshot.photoUrl ? (
+                <div className="relative">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={snapshot.photoUrl}
+                    alt=""
+                    className="max-h-56 w-full rounded-2xl object-cover"
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-2 top-2 rounded-full bg-black/60 px-2.5 py-1 text-xs text-white"
+                    onClick={() => updateMeta({ photoUrl: null })}
+                    aria-label={t("track:photoRemove")}
+                  >
+                    {t("track:photoRemove")}
+                  </button>
+                </div>
+              ) : null}
+              {snapshot.videoUrl ? (
+                <div className="relative">
+                  <video
+                    src={snapshot.videoUrl}
+                    controls
+                    playsInline
+                    className="max-h-56 w-full rounded-2xl bg-black"
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-2 top-2 rounded-full bg-black/60 px-2.5 py-1 text-xs text-white"
+                    onClick={() => updateMeta({ videoUrl: null })}
+                    aria-label={t("track:videoRemove")}
+                  >
+                    {t("track:videoRemove")}
+                  </button>
+                </div>
+              ) : null}
             </div>
-          ) : (
+          )}
+          {!snapshot.photoUrl && !snapshot.videoUrl ? (
             <button
               type="button"
-              disabled={photoBusy || saving}
-              onClick={() => photoInputRef.current?.click()}
+              disabled={mediaBusy || saving}
+              onClick={() => mediaInputRef.current?.click()}
               className="mt-2 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-card px-3 py-3 text-sm font-medium text-muted transition hover:border-accent hover:text-foreground disabled:opacity-60"
             >
               <ImagePlus size={16} />
-              {photoBusy ? t("track:saving") : t("track:photoAdd")}
+              {mediaBusy ? t("track:saving") : t("track:photoAdd")}
+            </button>
+          ) : (
+            <button
+              type="button"
+              disabled={mediaBusy || saving}
+              onClick={() => mediaInputRef.current?.click()}
+              className="mt-2 text-sm font-medium text-accent-dim underline-offset-2 hover:underline dark:text-accent disabled:opacity-60"
+            >
+              {mediaBusy ? t("track:saving") : t("track:photoAdd")}
             </button>
           )}
         </div>
@@ -292,7 +351,7 @@ export default function TrackSummaryPage() {
             {t("track:visibilityLabel")}
           </span>
           <select
-            className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-3 text-sm"
+            className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-3 text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
             value={snapshot.visibility}
             onChange={(e) =>
               updateMeta({
@@ -304,7 +363,9 @@ export default function TrackSummaryPage() {
             }
           >
             <option value="public">{t("common:labels.public")}</option>
-            <option value="followers">Followers</option>
+            <option value="followers">
+              {t("posts:visibility.followers")}
+            </option>
             <option value="private">{t("common:labels.private")}</option>
           </select>
         </label>
@@ -314,7 +375,7 @@ export default function TrackSummaryPage() {
               {t("track:routePrivacyLabel")}
             </span>
             <select
-              className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-3 text-sm"
+              className="mt-1 w-full rounded-xl border border-border bg-card px-3 py-3 text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
               value={snapshot.privacyRouteMode}
               onChange={(e) =>
                 updateMeta({

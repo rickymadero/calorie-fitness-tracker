@@ -117,6 +117,7 @@ export function snapshotToActivityPayload(
     max_speed_kmh: maxSpeed,
     status: "completed",
     privacy_route_mode: privacy,
+    // Caller may force private for "Save private" even if the UI picker differs.
     visibility: snap.visibility,
   };
 
@@ -183,8 +184,11 @@ export async function syncTrackedWorkout(opts: {
     }
 
     if (!activityId) {
+      const snapForSave = opts.publish
+        ? opts.snapshot
+        : { ...opts.snapshot, visibility: "private" as const };
       const { activity, splits, routePoints } = snapshotToActivityPayload(
-        opts.snapshot,
+        snapForSave,
         authId,
       );
       const created = await activitiesService.createActivityWithMetrics(
@@ -210,7 +214,9 @@ export async function syncTrackedWorkout(opts: {
     const elapsed = computeElapsedSeconds(opts.snapshot);
     const distanceKm = (opts.snapshot.distanceMeters || 0) / 1000;
     const localType = mapTrackIdToLocalPostType(opts.snapshot.activityId);
-    const hideStartEnd = opts.snapshot.privacyRouteMode === "hide_start_end";
+    const privacy = opts.snapshot.privacyRouteMode;
+    const hideStartEnd = privacy === "hide_start_end";
+    const trimmedPoints = trimRoutePrivacy(opts.snapshot.points, privacy);
     const post = postsStorage.createPost(authId, {
       type: localType,
       title: opts.snapshot.title || localType,
@@ -218,18 +224,18 @@ export async function syncTrackedWorkout(opts: {
       occurredAt: new Date(opts.snapshot.startedAtMs).toISOString(),
       visibility: opts.snapshot.visibility,
       photoUrl: opts.snapshot.photoUrl || undefined,
+      videoUrl: opts.snapshot.videoUrl || undefined,
       distanceKm: distanceKm > 0 ? distanceKm : undefined,
       durationMin: Math.max(1, Math.round(elapsed / 60)),
       caloriesBurned: opts.snapshot.calories || undefined,
       elevationGainM: opts.snapshot.elevationGainMeters || undefined,
-      routeVisible: opts.snapshot.privacyRouteMode === "show" || hideStartEnd,
+      routeVisible: privacy === "show" || hideStartEnd,
       hideStart: hideStartEnd,
       hideEnd: hideStartEnd,
       route:
-        opts.snapshot.privacyRouteMode === "hide_route" ||
-        opts.snapshot.privacyRouteMode === "private"
+        privacy === "hide_route" || privacy === "private"
           ? undefined
-          : opts.snapshot.points.map((p) => ({
+          : trimmedPoints.map((p) => ({
               lat: p.latitude,
               lng: p.longitude,
             })),

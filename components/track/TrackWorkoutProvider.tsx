@@ -79,7 +79,7 @@ type TrackWorkoutContextValue = {
     patch: Partial<
       Pick<
         ActiveWorkoutSnapshot,
-        "title" | "notes" | "photoUrl" | "visibility" | "privacyRouteMode"
+        "title" | "notes" | "photoUrl" | "videoUrl" | "visibility" | "privacyRouteMode"
       >
     >,
   ) => void;
@@ -554,7 +554,7 @@ export function TrackWorkoutProvider({ children }: { children: ReactNode }) {
       patch: Partial<
         Pick<
           ActiveWorkoutSnapshot,
-          "title" | "notes" | "photoUrl" | "visibility" | "privacyRouteMode"
+          "title" | "notes" | "photoUrl" | "videoUrl" | "visibility" | "privacyRouteMode"
         >
       >,
     ) => {
