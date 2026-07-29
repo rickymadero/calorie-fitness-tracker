@@ -20,6 +20,7 @@ import enPlans from "../../public/locales/en/plans.json";
 import enProgress from "../../public/locales/en/progress.json";
 import enRecipes from "../../public/locales/en/recipes.json";
 import enAdmin from "../../public/locales/en/admin.json";
+import enTrack from "../../public/locales/en/track.json";
 
 export const I18N_LOCALES = [
   "en",
@@ -58,6 +59,7 @@ export const I18N_NAMESPACES = [
   "progress",
   "recipes",
   "admin",
+  "track",
 ] as const;
 
 export const LANGUAGE_META: {
@@ -119,6 +121,7 @@ const enResources = {
   progress: enProgress,
   recipes: enRecipes,
   admin: enAdmin,
+  track: enTrack,
 };
 
 async function loadLocaleBundles(lng: string) {

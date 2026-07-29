@@ -8,7 +8,8 @@
     "dev:preview": "next dev --hostname 127.0.0.1 --port 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:track": "npx --yes tsx --test lib/track/metrics.test.ts lib/track/liveMetrics.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.3",

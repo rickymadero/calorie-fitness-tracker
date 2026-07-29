@@ -312,6 +312,8 @@ export const activitiesService = {
           longitude: p.longitude,
           elevation_meters: p.elevation_meters ?? null,
           recorded_at: p.recorded_at ?? null,
+          accuracy_meters: p.accuracy_meters ?? null,
+          speed_mps: p.speed_mps ?? null,
         }));
         const { error } = await client.from("route_points").insert(chunk);
         if (error) throw new Error(error.message);

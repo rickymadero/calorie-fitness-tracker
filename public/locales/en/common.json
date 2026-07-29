@@ -63,6 +63,15 @@
     "meals": "Meals",
     "fitnessTools": "Fitness tools"
   },
+  "create": {
+    "title": "Create",
+    "trackWorkout": "Track workout",
+    "trackWorkoutDesc": "Live timer and GPS while this tab stays open",
+    "logWorkout": "Log workout",
+    "logWorkoutDesc": "Enter distance and duration manually",
+    "createPost": "Create post",
+    "createPostDesc": "Share a workout or update"
+  },
   "labels": {
     "pro": "Pro",
     "free": "Free",

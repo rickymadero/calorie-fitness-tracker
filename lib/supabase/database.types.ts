@@ -20,6 +20,7 @@ export type Database = {
           average_heart_rate: number | null
           average_pace_seconds_per_km: number | null
           average_speed_kmh: number | null
+          best_pace_seconds_per_km: number | null
           calories: number | null
           created_at: string
           description: string | null
@@ -27,12 +28,18 @@ export type Database = {
           distance_meters: number | null
           duration_seconds: number | null
           elevation_gain_meters: number | null
+          ended_at: string | null
           external_activity_id: string | null
           id: string
           is_wearable_imported: boolean
+          max_speed_kmh: number | null
           maximum_heart_rate: number | null
+          moving_seconds: number | null
+          paused_seconds: number | null
+          privacy_route_mode: string | null
           source: Database["public"]["Enums"]["activity_source"]
           started_at: string | null
+          status: Database["public"]["Enums"]["activity_status"] | null
           title: string
           updated_at: string
           user_id: string
@@ -43,6 +50,7 @@ export type Database = {
           average_heart_rate?: number | null
           average_pace_seconds_per_km?: number | null
           average_speed_kmh?: number | null
+          best_pace_seconds_per_km?: number | null
           calories?: number | null
           created_at?: string
           description?: string | null
@@ -50,12 +58,18 @@ export type Database = {
           distance_meters?: number | null
           duration_seconds?: number | null
           elevation_gain_meters?: number | null
+          ended_at?: string | null
           external_activity_id?: string | null
           id?: string
           is_wearable_imported?: boolean
+          max_speed_kmh?: number | null
           maximum_heart_rate?: number | null
+          moving_seconds?: number | null
+          paused_seconds?: number | null
+          privacy_route_mode?: string | null
           source?: Database["public"]["Enums"]["activity_source"]
           started_at?: string | null
+          status?: Database["public"]["Enums"]["activity_status"] | null
           title: string
           updated_at?: string
           user_id: string
@@ -66,6 +80,7 @@ export type Database = {
           average_heart_rate?: number | null
           average_pace_seconds_per_km?: number | null
           average_speed_kmh?: number | null
+          best_pace_seconds_per_km?: number | null
           calories?: number | null
           created_at?: string
           description?: string | null
@@ -73,12 +88,18 @@ export type Database = {
           distance_meters?: number | null
           duration_seconds?: number | null
           elevation_gain_meters?: number | null
+          ended_at?: string | null
           external_activity_id?: string | null
           id?: string
           is_wearable_imported?: boolean
+          max_speed_kmh?: number | null
           maximum_heart_rate?: number | null
+          moving_seconds?: number | null
+          paused_seconds?: number | null
+          privacy_route_mode?: string | null
           source?: Database["public"]["Enums"]["activity_source"]
           started_at?: string | null
+          status?: Database["public"]["Enums"]["activity_status"] | null
           title?: string
           updated_at?: string
           user_id?: string
@@ -671,6 +692,7 @@ export type Database = {
       }
       route_points: {
         Row: {
+          accuracy_meters: number | null
           activity_id: string
           elevation_meters: number | null
           id: number
@@ -678,8 +700,10 @@ export type Database = {
           longitude: number
           recorded_at: string | null
           sequence_number: number
+          speed_mps: number | null
         }
         Insert: {
+          accuracy_meters?: number | null
           activity_id: string
           elevation_meters?: number | null
           id?: never
@@ -687,8 +711,10 @@ export type Database = {
           longitude: number
           recorded_at?: string | null
           sequence_number: number
+          speed_mps?: number | null
         }
         Update: {
+          accuracy_meters?: number | null
           activity_id?: string
           elevation_meters?: number | null
           id?: never
@@ -696,6 +722,7 @@ export type Database = {
           longitude?: number
           recorded_at?: string | null
           sequence_number?: number
+          speed_mps?: number | null
         }
         Relationships: [
           {
@@ -873,6 +900,9 @@ export type Database = {
         | "garmin"
         | "imported_file"
         | "other"
+        | "evolve_phone"
+        | "evolve_apple_watch"
+      activity_status: "active" | "paused" | "completed" | "discarded"
       activity_type:
         | "running"
         | "cycling"
@@ -1031,7 +1061,10 @@ export const Constants = {
         "garmin",
         "imported_file",
         "other",
+        "evolve_phone",
+        "evolve_apple_watch",
       ],
+      activity_status: ["active", "paused", "completed", "discarded"],
       activity_type: [
         "running",
         "cycling",

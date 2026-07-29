@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, useReducedMotion } from "framer-motion";
@@ -21,6 +22,7 @@ import { EvolveLogo } from "@/components/ui/EvolveLogo";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useMessages } from "@/components/messages/MessagesProvider";
 import { useAppTranslation } from "@/components/providers/LanguageProvider";
+import { CreateActionSheet } from "@/components/create/CreateActionSheet";
 
 /** Desktop side rail — secondary. Mobile bottom tabs are primary. */
 const DESKTOP_PRIMARY = [
@@ -42,12 +44,12 @@ const DESKTOP_TOOLS = [
 
 /**
  * Mobile bottom bar — Instagram/Strava pattern.
- * Center Post is the primary create action.
+ * Center create opens an action sheet (Track / Log / Post).
  */
 const MOBILE_TABS = [
   { href: "/feed", icon: Home, kind: "tab" as const },
   { href: "/explore", icon: Dumbbell, kind: "tab" as const },
-  { href: "/posts/new", icon: Plus, kind: "create" as const },
+  { href: "create", icon: Plus, kind: "create" as const },
   { href: "/network", icon: Users, kind: "tab" as const },
   { href: "/profile", icon: User, kind: "tab" as const },
 ];
@@ -57,6 +59,7 @@ export function SideNav() {
   const { user } = useAuth();
   const { tick, unreadTotal } = useMessages();
   const { t } = useAppTranslation("common");
+  const [createOpen, setCreateOpen] = useState(false);
   const isPro = user?.plan === "pro";
   void tick;
   const unread = unreadTotal();
@@ -99,13 +102,18 @@ export function SideNav() {
           );
         })}
 
-        <Link
-          href="/posts/new"
+        <button
+          type="button"
+          onClick={() => setCreateOpen(true)}
           className="mt-2 flex min-h-11 items-center justify-center gap-2 rounded-xl bg-accent px-3 py-2.5 text-sm font-semibold text-accent-fg transition hover:brightness-110 active:scale-[0.98]"
         >
           <Plus size={18} />
-          {t("buttons.shareWorkout")}
-        </Link>
+          {t("create.title")}
+        </button>
+        <CreateActionSheet
+          open={createOpen}
+          onClose={() => setCreateOpen(false)}
+        />
 
         <div className="my-3 border-t border-white/10 pt-3">
           <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-wider text-white/35">
@@ -146,6 +154,7 @@ export function BottomNav() {
   const pathname = usePathname();
   const reduce = useReducedMotion();
   const { t } = useAppTranslation("common");
+  const [createOpen, setCreateOpen] = useState(false);
 
   const labels: Record<string, string> = {
     "/feed": t("nav.feed"),
@@ -159,21 +168,28 @@ export function BottomNav() {
       className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/90 shadow-[0_-8px_24px_rgba(17,20,24,0.06)] backdrop-blur-xl dark:shadow-[0_-8px_24px_rgba(0,0,0,0.4)] lg:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
+      <CreateActionSheet
+        open={createOpen}
+        onClose={() => setCreateOpen(false)}
+      />
       <div className="mx-auto grid w-full max-w-full grid-cols-5 px-1 pt-1.5">
         {MOBILE_TABS.map((item) => {
           const active =
             item.kind === "create"
-              ? pathname.startsWith("/posts")
+              ? createOpen ||
+                pathname.startsWith("/track") ||
+                pathname.startsWith("/posts")
               : pathname === item.href || pathname.startsWith(item.href + "/");
           const Icon = item.icon;
 
           if (item.kind === "create") {
             return (
-              <Link
+              <button
                 key={item.href}
-                href={item.href}
+                type="button"
+                onClick={() => setCreateOpen(true)}
                 className="flex min-h-[52px] flex-col items-center justify-center gap-0.5 py-1.5"
-                aria-label={t("nav.post")}
+                aria-label={t("create.title")}
               >
                 <motion.span
                   whileHover={reduce ? undefined : { scale: 1.06 }}
@@ -187,7 +203,7 @@ export function BottomNav() {
                 >
                   <Plus size={26} strokeWidth={2.5} />
                 </motion.span>
-              </Link>
+              </button>
             );
           }
 

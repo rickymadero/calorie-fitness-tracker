@@ -36,6 +36,8 @@ export type RoutePointInput = {
   longitude: number;
   elevation_meters?: number | null;
   recorded_at?: string | null;
+  accuracy_meters?: number | null;
+  speed_mps?: number | null;
 };
 
 export type HeartRateZoneInput = {
@@ -56,7 +58,10 @@ export type ActivityInsertPayload = {
   device_name?: string | null;
   is_wearable_imported?: boolean;
   started_at?: string | null;
+  ended_at?: string | null;
   duration_seconds?: number | null;
+  moving_seconds?: number | null;
+  paused_seconds?: number | null;
   distance_meters?: number | null;
   calories?: number | null;
   elevation_gain_meters?: number | null;
@@ -64,6 +69,10 @@ export type ActivityInsertPayload = {
   maximum_heart_rate?: number | null;
   average_pace_seconds_per_km?: number | null;
   average_speed_kmh?: number | null;
+  best_pace_seconds_per_km?: number | null;
+  max_speed_kmh?: number | null;
+  status?: Database["public"]["Enums"]["activity_status"] | null;
+  privacy_route_mode?: string | null;
   visibility?: DbVisibility;
   created_at?: string;
 };
