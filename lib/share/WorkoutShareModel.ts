@@ -100,6 +100,8 @@ export interface BuildShareModelInput {
   post: WorkoutPost;
   athlete: ShareAthlete;
   heroKey?: HeroMetricKey;
+  /** Previous hero — boosted into the left supporting column when swapped. */
+  previousHeroKey?: HeroMetricKey;
   atmosphereId?: AtmosphereId;
   title?: string;
   showLocation?: boolean;

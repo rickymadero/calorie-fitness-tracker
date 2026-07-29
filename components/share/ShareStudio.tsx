@@ -41,6 +41,9 @@ export function ShareStudio({ post, open, onClose }: ShareStudioProps) {
 
   const [atmosphereId, setAtmosphereId] = useState<AtmosphereId>("midnight");
   const [heroKey, setHeroKey] = useState<HeroMetricKey | undefined>();
+  const [previousHeroKey, setPreviousHeroKey] = useState<
+    HeroMetricKey | undefined
+  >();
   const [title, setTitle] = useState(defaultShareTitle(post));
   const [showLocation, setShowLocation] = useState(Boolean(post.locationName));
   const [showDate, setShowDate] = useState(true);
@@ -61,6 +64,7 @@ export function ShareStudio({ post, open, onClose }: ShareStudioProps) {
         athlete: { displayName, username, avatarUrl },
         atmosphereId,
         heroKey,
+        previousHeroKey,
         title,
         showLocation,
         showDate,
@@ -74,12 +78,21 @@ export function ShareStudio({ post, open, onClose }: ShareStudioProps) {
       avatarUrl,
       atmosphereId,
       heroKey,
+      previousHeroKey,
       title,
       showLocation,
       showDate,
       showRouteContext,
     ],
   );
+
+  function handleHeroChange(next: HeroMetricKey) {
+    const current = heroKey ?? draft.hero.key;
+    if (current !== next) {
+      setPreviousHeroKey(current);
+    }
+    setHeroKey(next);
+  }
 
   const rebuild = useCallback(() => {
     if (!open) return;
@@ -93,6 +106,7 @@ export function ShareStudio({ post, open, onClose }: ShareStudioProps) {
       avatarUrl,
       atmosphereId: draft.atmosphereId,
       heroKey: draft.hero.key,
+      previousHeroKey,
       title: draft.title,
       showLocation: draft.showLocation,
       showDate: draft.showDate,
@@ -115,7 +129,7 @@ export function ShareStudio({ post, open, onClose }: ShareStudioProps) {
       .finally(() => {
         if (gen === renderGen.current) setBusy(false);
       });
-  }, [open, post, displayName, username, avatarUrl, draft, toast, t]);
+  }, [open, post, displayName, username, avatarUrl, draft, previousHeroKey, toast, t]);
 
   useEffect(() => {
     if (!open) {
@@ -130,6 +144,7 @@ export function ShareStudio({ post, open, onClose }: ShareStudioProps) {
         setPreviewUrl(null);
         setAtmosphereId("midnight");
         setHeroKey(undefined);
+        setPreviousHeroKey(undefined);
         setTitle(defaultShareTitle(post));
         setShowLocation(Boolean(post.locationName));
         setShowDate(true);
@@ -278,7 +293,7 @@ export function ShareStudio({ post, open, onClose }: ShareStudioProps) {
           onTitleChange={setTitle}
           availableHeroes={draft.availableHeroes}
           heroKey={draft.hero.key}
-          onHeroChange={setHeroKey}
+          onHeroChange={handleHeroChange}
           atmospheres={ATMOSPHERE_LIST}
           atmosphereId={draft.atmosphereId}
           onAtmosphereChange={setAtmosphereId}

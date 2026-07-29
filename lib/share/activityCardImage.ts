@@ -16,6 +16,7 @@ export interface ShareCardInput {
   theme?: "light" | "dark";
   atmosphereId?: AtmosphereId;
   heroKey?: HeroMetricKey;
+  previousHeroKey?: HeroMetricKey;
   title?: string;
   showLocation?: boolean;
   showDate?: boolean;
@@ -39,6 +40,7 @@ export async function generateActivityShareImage(
     },
     atmosphereId: input.atmosphereId,
     heroKey: input.heroKey,
+    previousHeroKey: input.previousHeroKey,
     title: input.title,
     showLocation: input.showLocation,
     showDate: input.showDate,

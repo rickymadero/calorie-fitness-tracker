@@ -20,6 +20,7 @@ export function buildWorkoutShareModel(
     post,
     athlete,
     heroKey,
+    previousHeroKey,
     atmosphereId,
     title,
     showLocation = Boolean(post.locationName),
@@ -39,7 +40,12 @@ export function buildWorkoutShareModel(
       label: "Session",
       value: "—",
     } as const);
-  const supporting = pickSupportingMetrics(post, hero.key, 4);
+  const supporting = pickSupportingMetrics(
+    post,
+    hero.key,
+    4,
+    previousHeroKey,
+  );
 
   return {
     activityId: post.id,

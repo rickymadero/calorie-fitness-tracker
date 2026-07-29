@@ -87,15 +87,28 @@ function drawRouteContext(
     minY = Math.min(minY, p.y);
     maxY = Math.max(maxY, p.y);
   }
-  // Expand footprint toward full signal box so the map fills the art plane.
+
+  // Same footprint size as before — only recenter it on the marked middle
+  // under EVOLVE. Do not pin min/max back to the box edges (that locked the
+  // map to the top and ignored the center).
   const padX = box.w * 0.06;
   const padY = box.h * 0.08;
-  minX = Math.min(minX, box.x + padX);
-  maxX = Math.max(maxX, box.x + box.w - padX);
-  minY = Math.min(minY, box.y + padY);
-  maxY = Math.max(maxY, box.y + box.h - padY);
-  const bw = Math.max(80, maxX - minX);
-  const bh = Math.max(80, maxY - minY);
+  const fullW = box.w - padX * 2;
+  const fullH = box.h - padY * 2;
+  const targetCx = box.x + box.w / 2;
+  const targetCy = box.y + box.h * 0.58;
+  const dx = targetCx - (minX + maxX) / 2;
+  const dy = targetCy - (minY + maxY) / 2;
+  for (const p of projected) {
+    p.x += dx;
+    p.y += dy;
+  }
+  minX = targetCx - fullW / 2;
+  maxX = targetCx + fullW / 2;
+  minY = targetCy - fullH / 2;
+  maxY = targetCy + fullH / 2;
+  const bw = fullW;
+  const bh = fullH;
 
   ctx.save();
   ctx.beginPath();

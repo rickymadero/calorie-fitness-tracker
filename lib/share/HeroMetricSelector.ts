@@ -186,8 +186,9 @@ export function pickHeroMetric(
   return all.find((m) => m.key === key) ?? all[0] ?? null;
 }
 
-/** Prefer clean Stories hierarchy: time → pace → best → calories, then rest. */
+/** Prefer clean Stories hierarchy; distance/time lead when not the hero. */
 const SUPPORT_PRIORITY: HeroMetricKey[] = [
+  "distance",
   "duration",
   "pace",
   "best_pace",
@@ -205,21 +206,49 @@ const SUPPORT_PRIORITY: HeroMetricKey[] = [
   "reps",
 ];
 
-/** Supporting metrics for the badge — capped for a clean layout. */
+/**
+ * Supporting metrics for the left badge column.
+ * The current hero is excluded; the displaced previous hero (and the sport's
+ * default focal metric) are boosted so swapping Time ↔ Distance always keeps
+ * the other value visible on the left.
+ */
 export function pickSupportingMetrics(
   post: WorkoutPost,
   heroKey: HeroMetricKey | undefined,
   limit = 4,
+  previousHeroKey?: HeroMetricKey,
 ): ShareMetric[] {
   const available = collectAvailableMetrics(post).filter(
     (m) => m.key !== heroKey,
   );
+  const sportDefault = defaultHeroKey(post);
+
   const rank = (key: HeroMetricKey) => {
+    // Metric the user just swapped off the hero always leads the left column.
+    if (
+      previousHeroKey &&
+      previousHeroKey !== heroKey &&
+      key === previousHeroKey
+    ) {
+      return -3;
+    }
+    // Sport default focal (e.g. distance for runs) when not the hero.
+    if (sportDefault && key === sportDefault && key !== heroKey) {
+      return -2;
+    }
+    // Explicit distance ↔ time pair.
+    if (heroKey === "duration" && key === "distance") return -1;
+    if (heroKey === "distance" && key === "duration") return -1;
     const i = SUPPORT_PRIORITY.indexOf(key);
     return i === -1 ? SUPPORT_PRIORITY.length + 1 : i;
   };
+
   return [...available]
-    .sort((a, b) => rank(a.key) - rank(b.key))
+    .sort((a, b) => {
+      const d = rank(a.key) - rank(b.key);
+      if (d !== 0) return d;
+      return a.label.localeCompare(b.label);
+    })
     .slice(0, limit);
 }
 
